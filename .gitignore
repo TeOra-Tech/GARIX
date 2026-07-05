@@ -8,3 +8,4 @@ out/
 coverage/
 playwright-report/
 supabase/.temp/
+tsconfig.tsbuildinfo
