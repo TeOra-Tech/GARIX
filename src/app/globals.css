@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: 'Archivo', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-ink text-paper font-body antialiased;
+  }
+  ::selection {
+    @apply bg-signal text-ink;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-volt-bright ring-offset-2 ring-offset-ink;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Hexagon motif lifted from the logo mark — the brand's structural signature */
+  .hex-clip {
+    clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-volt px-6 py-3
+           font-display font-semibold text-white transition
+           hover:bg-volt-bright active:bg-volt-deep;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-ink-line
+           px-6 py-3 font-display font-semibold text-paper transition hover:border-volt;
+  }
+}

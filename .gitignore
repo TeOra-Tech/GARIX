@@ -1,0 +1,10 @@
+node_modules/
+.claude/settings.local.json
+.next/
+out/
+.env
+.env.local
+.netlify/
+coverage/
+playwright-report/
+supabase/.temp/
