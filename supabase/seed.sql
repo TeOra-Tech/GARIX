@@ -37,6 +37,52 @@ insert into vehicle_makes (name) values
   ('BMW'), ('Audi'), ('Mercedes-Benz'), ('Nissan'), ('Renault'), ('Peugeot'),
   ('Opel'), ('Dacia'), ('Honda'), ('Mazda'), ('SEAT'), ('Tesla'), ('Volvo'), ('Land Rover');
 
+-- ---------- Vehicle models (common Irish-market models per make) ----------
+insert into vehicle_models (make_id, name)
+select m.id, v.model
+from (values
+  ('Toyota','Corolla'), ('Toyota','Yaris'), ('Toyota','C-HR'), ('Toyota','RAV4'),
+  ('Toyota','Auris'), ('Toyota','Avensis'), ('Toyota','Land Cruiser'), ('Toyota','Prius'),
+  ('Volkswagen','Golf'), ('Volkswagen','Passat'), ('Volkswagen','Polo'), ('Volkswagen','Tiguan'),
+  ('Volkswagen','T-Roc'), ('Volkswagen','ID.4'), ('Volkswagen','Touran'), ('Volkswagen','Caddy'),
+  ('Hyundai','Tucson'), ('Hyundai','i10'), ('Hyundai','i20'), ('Hyundai','i30'),
+  ('Hyundai','Kona'), ('Hyundai','Santa Fe'), ('Hyundai','Ioniq 5'),
+  ('Skoda','Octavia'), ('Skoda','Superb'), ('Skoda','Fabia'), ('Skoda','Kodiaq'),
+  ('Skoda','Karoq'), ('Skoda','Enyaq'),
+  ('Kia','Sportage'), ('Kia','Ceed'), ('Kia','Rio'), ('Kia','Niro'),
+  ('Kia','Sorento'), ('Kia','Picanto'), ('Kia','EV6'),
+  ('Ford','Focus'), ('Ford','Fiesta'), ('Ford','Kuga'), ('Ford','Puma'),
+  ('Ford','Mondeo'), ('Ford','Ranger'), ('Ford','Transit'),
+  ('BMW','1 Series'), ('BMW','3 Series'), ('BMW','5 Series'), ('BMW','X1'),
+  ('BMW','X3'), ('BMW','X5'), ('BMW','i4'),
+  ('Audi','A3'), ('Audi','A4'), ('Audi','A6'), ('Audi','Q2'),
+  ('Audi','Q3'), ('Audi','Q5'), ('Audi','e-tron'),
+  ('Mercedes-Benz','A-Class'), ('Mercedes-Benz','B-Class'), ('Mercedes-Benz','C-Class'),
+  ('Mercedes-Benz','E-Class'), ('Mercedes-Benz','GLA'), ('Mercedes-Benz','GLC'),
+  ('Nissan','Qashqai'), ('Nissan','Juke'), ('Nissan','Micra'), ('Nissan','X-Trail'),
+  ('Nissan','Leaf'), ('Nissan','Navara'),
+  ('Renault','Clio'), ('Renault','Megane'), ('Renault','Captur'), ('Renault','Kadjar'),
+  ('Renault','Scenic'), ('Renault','Zoe'),
+  ('Peugeot','208'), ('Peugeot','2008'), ('Peugeot','308'), ('Peugeot','3008'),
+  ('Peugeot','508'), ('Peugeot','Partner'),
+  ('Opel','Corsa'), ('Opel','Astra'), ('Opel','Mokka'), ('Opel','Crossland'),
+  ('Opel','Grandland'), ('Opel','Insignia'),
+  ('Dacia','Duster'), ('Dacia','Sandero'), ('Dacia','Logan'), ('Dacia','Jogger'),
+  ('Dacia','Spring'),
+  ('Honda','Civic'), ('Honda','CR-V'), ('Honda','Jazz'), ('Honda','HR-V'), ('Honda','Accord'),
+  ('Mazda','Mazda2'), ('Mazda','Mazda3'), ('Mazda','Mazda6'), ('Mazda','CX-30'),
+  ('Mazda','CX-5'), ('Mazda','MX-5'),
+  ('SEAT','Leon'), ('SEAT','Ibiza'), ('SEAT','Ateca'), ('SEAT','Arona'), ('SEAT','Tarraco'),
+  ('Tesla','Model 3'), ('Tesla','Model Y'), ('Tesla','Model S'), ('Tesla','Model X'),
+  ('Volvo','XC40'), ('Volvo','XC60'), ('Volvo','XC90'), ('Volvo','S60'),
+  ('Volvo','V40'), ('Volvo','V60'),
+  ('Land Rover','Range Rover'), ('Land Rover','Range Rover Evoque'),
+  ('Land Rover','Range Rover Sport'), ('Land Rover','Discovery'),
+  ('Land Rover','Discovery Sport'), ('Land Rover','Defender')
+) as v(make, model)
+join vehicle_makes m on m.name = v.make
+on conflict (make_id, name) do nothing;
+
 -- ---------- Repair taxonomy: categories + detailed repair types ----------
 with cats as (
   insert into repair_categories (name, slug, sort_order) values
