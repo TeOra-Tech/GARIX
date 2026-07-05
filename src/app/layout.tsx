@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Archivo, Inter } from 'next/font/google';
+import { Providers } from '@/components/providers';
 import './globals.css';
 
 const display = Archivo({ subsets: ['latin'], variable: '--font-display', weight: ['600', '700', '800'] });
@@ -29,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en-IE" className={`${display.variable} ${body.variable}`}>
       <body>
-        {children}
+        <Providers>{children}</Providers>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
