@@ -16,6 +16,7 @@ import {
 import { IRISH_COUNTIES } from '@/lib/validation/auth';
 import { searchPlaces, type PlaceResult } from '@/lib/geo/osm';
 import { formatEur } from '@/lib/vat';
+import { track } from '@/lib/analytics';
 import { Field, inputCls } from '@/components/auth/field';
 import { cn } from '@/lib/utils';
 
@@ -138,6 +139,7 @@ export default function NewRequestPage() {
       { data: parsed.data, files },
       {
         onSuccess: (r) => {
+          track('request_created', { urgency: parsed.data!.urgency, attachments: files.length });
           const flag = r.failedAttachments.length ? '&attachments=failed' : '';
           router.push(`/dashboard/requests?posted=1${flag}`);
         },

@@ -15,6 +15,7 @@ import {
 import { quoteSchema, quoteTotals, type QuoteItemData } from '@/lib/validation/quote';
 import { calculateVat, formatEur, IRELAND_VAT } from '@/lib/vat';
 import { URGENCY_LABELS } from '@/lib/validation/request';
+import { track } from '@/lib/analytics';
 import { Field, inputCls } from '@/components/auth/field';
 import { cn } from '@/lib/utils';
 
@@ -81,7 +82,10 @@ export default function WriteQuotePage() {
     submit.mutate(
       { requestId, garageId: garage.data.id, data: parsed.data },
       {
-        onSuccess: () => router.push('/dashboard/garage/requests?quoted=1'),
+        onSuccess: () => {
+          track('quote_submitted', { priority: isPriority, total: vat.grandTotal });
+          router.push('/dashboard/garage/requests?quoted=1');
+        },
         onError: (err) => setError(submitErrorMessage(err, cost)),
       },
     );

@@ -1,8 +1,9 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { track } from '@/lib/analytics';
 import { useMyGarage } from '@/lib/garages/queries';
 import { useWallet } from '@/lib/quotes/queries';
 import { TX_LABELS, useCreditPacks, useStartCheckout, useTransactions } from '@/lib/wallet/queries';
@@ -21,6 +22,10 @@ function WalletContent() {
 
   const balance = wallet.data?.balance ?? 0;
   const lowBalance = wallet.data != null && balance < (wallet.data.low_balance_threshold ?? 10);
+
+  useEffect(() => {
+    if (purchase === 'success') track('credits_purchased');
+  }, [purchase]);
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-12">
