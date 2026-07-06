@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import type { Database } from '@/types/database';
 import { roleHome } from '@/lib/auth/roles';
 
-const PROTECTED_PREFIXES = ['/dashboard', '/admin'];
+const PROTECTED_PREFIXES = ['/dashboard', '/admin', '/requests'];
 const AUTH_PAGES = ['/auth/login', '/auth/register'];
 
 export async function middleware(request: NextRequest) {
