@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useOpenConversation } from '@/lib/messages/queries';
 import { ReviewSection } from '@/components/reviews/review-section';
+import { track } from '@/lib/analytics';
 import {
   useAcceptQuote,
   useMyRequest,
@@ -255,7 +256,11 @@ export default function RequestDetailPage() {
                 quote={q}
                 canAccept={canAccept}
                 accepted={request.data.accepted_quote_id === q.id || q.status === 'accepted'}
-                onAccept={() => accept.mutate(q.id)}
+                onAccept={() =>
+                  accept.mutate(q.id, {
+                    onSuccess: () => track('quote_accepted', { total: Number(q.grand_total) }),
+                  })
+                }
                 accepting={accept.isPending}
               />
             ))}

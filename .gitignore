@@ -9,3 +9,5 @@ coverage/
 playwright-report/
 supabase/.temp/
 tsconfig.tsbuildinfo
+test-results/
+playwright-report/

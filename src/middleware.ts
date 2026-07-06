@@ -61,5 +61,5 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   // Everything except static assets — the session refresh must see all app routes.
-  matcher: ['/((?!_next/static|_next/image|favicon\\.png|icons/|logo\\.png|manifest\\.json|.*\\.(?:svg|png|jpg|jpeg|webp)$).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon\\.png|icons/|logo\\.png|manifest\\.json|sw\\.js|.*\\.(?:svg|png|jpg|jpeg|webp)$).*)'],
 };

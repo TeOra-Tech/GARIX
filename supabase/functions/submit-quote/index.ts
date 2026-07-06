@@ -4,7 +4,16 @@
 // quote, or do neither. This function runs with the service role.
 import { createClient } from 'jsr:@supabase/supabase-js@2';
 
+// Browsers preflight cross-origin functions.invoke calls — without these
+// headers the quote form fails in every real browser (Node clients never hit it).
+const CORS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+};
+
 Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') return new Response('ok', { headers: CORS });
   const auth = req.headers.get('Authorization') ?? '';
   const admin = createClient(
     Deno.env.get('SUPABASE_URL')!,
@@ -102,6 +111,6 @@ Deno.serve(async (req) => {
 
 function json(payload: unknown, status = 200) {
   return new Response(JSON.stringify(payload), {
-    status, headers: { 'Content-Type': 'application/json' },
+    status, headers: { 'Content-Type': 'application/json', ...CORS },
   });
 }
