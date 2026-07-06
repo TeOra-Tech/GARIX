@@ -67,7 +67,11 @@ function RequestsList() {
               .filter(Boolean)
               .join(' ');
             return (
-              <li key={r.id} className="rounded-hex border border-ink-line bg-ink-soft p-6">
+              <li key={r.id}>
+                <Link
+                  href={`/dashboard/requests/${r.id}`}
+                  className="block rounded-hex border border-ink-line bg-ink-soft p-6 transition hover:border-volt"
+                >
                 <div className="flex items-start justify-between gap-4">
                   <h2 className="font-display text-lg font-semibold">{r.title}</h2>
                   <span
@@ -95,6 +99,7 @@ function RequestsList() {
                   Posted {new Date(r.created_at).toLocaleDateString('en-IE', { day: 'numeric', month: 'short', year: 'numeric' })}
                   {' · '}expires {new Date(r.expires_at).toLocaleDateString('en-IE', { day: 'numeric', month: 'short' })}
                 </p>
+                </Link>
               </li>
             );
           })}

@@ -175,6 +175,10 @@ function GarageManager() {
                 <Link href={`/garages/${garage.data.slug}`} className="text-volt-bright hover:underline">
                   View public profile
                 </Link>
+                {' · '}
+                <Link href="/dashboard/garage/requests" className="text-volt-bright hover:underline">
+                  Request feed
+                </Link>
               </>
             )}
           </p>
