@@ -9,6 +9,7 @@ const quickLinks = [
   { href: '/requests/new', title: 'New repair request', body: 'Describe the fault and get quotes from local garages.' },
   { href: '/dashboard/requests', title: 'My requests', body: 'Track your open requests and incoming quotes.' },
   { href: '/dashboard/messages', title: 'Messages', body: 'Chat with garages about your jobs.' },
+  { href: '/dashboard/garage', title: 'My garage', body: 'Run a garage? Manage your profile and quotes.' },
 ];
 
 export default async function DashboardPage() {
