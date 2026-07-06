@@ -7,6 +7,7 @@ export const metadata = { title: 'Dashboard' };
 const quickLinks = [
   { href: '/dashboard/vehicles', title: 'My vehicles', body: 'Add and manage the cars you want serviced.' },
   { href: '/requests/new', title: 'New repair request', body: 'Describe the fault and get quotes from local garages.' },
+  { href: '/dashboard/requests', title: 'My requests', body: 'Track your open requests and incoming quotes.' },
   { href: '/dashboard/messages', title: 'Messages', body: 'Chat with garages about your jobs.' },
 ];
 
