@@ -179,6 +179,10 @@ function GarageManager() {
                 <Link href="/dashboard/garage/requests" className="text-volt-bright hover:underline">
                   Request feed
                 </Link>
+                {' · '}
+                <Link href="/dashboard/wallet" className="text-volt-bright hover:underline">
+                  Wallet
+                </Link>
               </>
             )}
           </p>
