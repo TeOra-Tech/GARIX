@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { SignOutButton } from '@/components/auth/sign-out-button';
+import { NotificationBell } from '@/components/notifications/bell';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -11,7 +12,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <Image src="/logo.png" alt="Garix" width={40} height={40} className="rounded" priority />
             GARIX
           </Link>
-          <SignOutButton />
+          <div className="flex items-center gap-3">
+            <NotificationBell />
+            <SignOutButton />
+          </div>
         </nav>
       </header>
       {children}
