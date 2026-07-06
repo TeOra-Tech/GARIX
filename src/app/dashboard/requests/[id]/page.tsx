@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useOpenConversation } from '@/lib/messages/queries';
+import { ReviewSection } from '@/components/reviews/review-section';
 import {
   useAcceptQuote,
   useMyRequest,
@@ -259,6 +260,14 @@ export default function RequestDetailPage() {
               />
             ))}
           </ul>
+
+          <ReviewSection
+            requestId={id}
+            garageId={
+              quotes.data?.find((q) => q.id === request.data.accepted_quote_id)?.garage_id ?? null
+            }
+            status={request.data.status}
+          />
         </>
       )}
     </main>

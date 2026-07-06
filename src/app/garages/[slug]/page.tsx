@@ -50,7 +50,7 @@ export default async function GarageProfilePage({
 
   const { data: reviews } = await supabase
     .from('reviews')
-    .select('*, user_profiles!reviews_customer_id_fkey(full_name)')
+    .select('*, user_profiles!reviews_customer_id_fkey(full_name), review_photos(*)')
     .eq('garage_id', garage.id)
     .order('created_at', { ascending: false })
     .limit(10);
@@ -210,6 +210,21 @@ export default async function GarageProfilePage({
                 <Stars rating={r.rating_overall} />
               </div>
               {r.body && <p className="mt-3 text-sm text-paper/80">{r.body}</p>}
+              {r.review_photos.length > 0 && (
+                <ul className="mt-3 flex gap-2">
+                  {r.review_photos.map((p) => (
+                    <li key={p.id}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/review-photos/${p.storage_path}`}
+                        alt="Customer review photo"
+                        className="h-16 w-16 rounded-lg object-cover"
+                        loading="lazy"
+                      />
+                    </li>
+                  ))}
+                </ul>
+              )}
               {r.garage_response && (
                 <p className="mt-3 border-l-2 border-volt pl-3 text-sm text-paper/60">
                   <span className="font-medium text-paper/80">Response from {garage.name}:</span>{' '}
