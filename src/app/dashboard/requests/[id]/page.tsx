@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { useOpenConversation } from '@/lib/messages/queries';
 import {
   useAcceptQuote,
   useMyRequest,
@@ -20,6 +21,26 @@ const SORTS = {
   rating: { label: 'Garage rating', fn: (a: QuoteWithGarage, b: QuoteWithGarage) => Number(b.garages?.avg_rating ?? 0) - Number(a.garages?.avg_rating ?? 0) },
 } as const;
 type SortKey = keyof typeof SORTS;
+
+function MessageGarageButton({ requestId, garageId }: { requestId: string; garageId: string }) {
+  const router = useRouter();
+  const open = useOpenConversation();
+  return (
+    <button
+      type="button"
+      className="btn-ghost !px-4 !py-2 text-sm"
+      disabled={open.isPending}
+      onClick={() =>
+        open.mutate(
+          { requestId, garageId },
+          { onSuccess: (conversationId) => router.push(`/dashboard/messages/${conversationId}`) },
+        )
+      }
+    >
+      {open.isPending ? 'Opening…' : 'Message garage'}
+    </button>
+  );
+}
 
 function QuoteCard({
   quote,
@@ -129,9 +150,9 @@ function QuoteCard({
         </p>
       )}
 
-      {canAccept && quote.status === 'submitted' && !expired && (
-        <div className="mt-4 flex gap-3">
-          {confirming ? (
+      <div className="mt-4 flex flex-wrap gap-3">
+        {canAccept && quote.status === 'submitted' && !expired && (
+          confirming ? (
             <>
               <button type="button" className="btn-primary !px-4 !py-2 text-sm" onClick={onAccept} disabled={accepting}>
                 {accepting ? 'Accepting…' : 'Confirm — accept this quote'}
@@ -144,9 +165,12 @@ function QuoteCard({
             <button type="button" className="btn-primary !px-4 !py-2 text-sm" onClick={() => setConfirming(true)}>
               Accept quote
             </button>
-          )}
-        </div>
-      )}
+          )
+        )}
+        {(quote.status === 'submitted' || accepted) && (
+          <MessageGarageButton requestId={quote.request_id} garageId={quote.garage_id} />
+        )}
+      </div>
     </li>
   );
 }
