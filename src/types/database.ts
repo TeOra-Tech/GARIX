@@ -2938,6 +2938,7 @@ export type Database = {
           }
       complete_job: { Args: { p_request_id: string }; Returns: undefined }
       disablelongtransactions: { Args: never; Returns: string }
+      dispatched_to_my_garage: { Args: { b: string }; Returns: boolean }
       dropgeometrycolumn:
         | {
             Args: {
@@ -3077,8 +3078,12 @@ export type Database = {
       }
       geomfromewkt: { Args: { "": string }; Returns: unknown }
       gettransactionid: { Args: never; Returns: unknown }
+      in_fleet: { Args: { f: string }; Returns: boolean }
+      is_active_garage_owner: { Args: never; Returns: boolean }
       is_admin: { Args: never; Returns: boolean }
+      is_own_request: { Args: { req: string }; Returns: boolean }
       longtransactionsenabled: { Args: never; Returns: boolean }
+      owns_fleet: { Args: { f: string }; Returns: boolean }
       owns_garage: { Args: { g: string }; Returns: boolean }
       populate_geometry_columns:
         | { Args: { tbl_oid: unknown; use_typmod?: boolean }; Returns: number }
@@ -3128,6 +3133,8 @@ export type Database = {
           p_lat: number
           p_lng: number
           p_min_rating?: number
+          p_min_reviews?: number
+          p_open_now?: boolean
           p_radius_km?: number
         }
         Returns: {
@@ -3135,8 +3142,13 @@ export type Database = {
           county: string
           distance_km: number
           garage_id: string
+          is_ev_specialist: boolean
+          lat: number
+          lng: number
           logo_url: string
           name: string
+          offers_collection: boolean
+          opening_hours: Json
           review_count: number
           slug: string
           town: string
@@ -3746,6 +3758,7 @@ export type Database = {
         }
         Returns: string
       }
+      won_request: { Args: { req: string }; Returns: boolean }
     }
     Enums: {
       conversation_status: "active" | "archived" | "closed"
