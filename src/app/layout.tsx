@@ -3,6 +3,7 @@ import { Archivo, Inter } from 'next/font/google';
 import { Providers } from '@/components/providers';
 import { Analytics } from '@/components/analytics';
 import { RegisterServiceWorker } from '@/components/register-sw';
+import { HashSessionHandler } from '@/components/auth/hash-session';
 import './globals.css';
 
 const display = Archivo({ subsets: ['latin'], variable: '--font-display', weight: ['600', '700', '800'] });
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>{children}</Providers>
         <Analytics />
         <RegisterServiceWorker />
+        <HashSessionHandler />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
