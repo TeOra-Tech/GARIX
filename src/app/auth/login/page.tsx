@@ -114,7 +114,8 @@ function LoginForm() {
       ) : (
         <form onSubmit={verifyCode} className="mt-8 space-y-4" noValidate>
           <p className="text-sm text-paper/60">
-            Code sent to <span className="font-medium text-paper">{email}</span>.{' '}
+            Check <span className="font-medium text-paper">{email}</span> — click the sign-in link
+            in the email, or enter the code below if your email includes one.{' '}
             <button type="button" className="underline hover:text-volt-bright" onClick={() => { setStep('email'); setCode(''); setError(null); }}>
               Change email
             </button>

@@ -241,8 +241,8 @@ export default function Page() {
       ) : (
         <form onSubmit={verifyAndSave} className="mt-8 space-y-4" noValidate>
           <p className="text-sm text-paper/60">
-            We emailed a 6-digit code to{' '}
-            <span className="font-medium text-paper">{validated?.email}</span>.{' '}
+            Check <span className="font-medium text-paper">{validated?.email}</span> — click the
+            verification link in the email, or enter the code below if your email includes one.{' '}
             <button type="button" className="underline hover:text-volt-bright"
               onClick={() => { setStep('details'); setCode(''); setFormError(null); }}>
               Change details
