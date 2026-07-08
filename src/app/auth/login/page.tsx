@@ -84,7 +84,7 @@ function LoginForm() {
     <main className="mx-auto max-w-md px-4 py-20">
       <h1 className="font-display text-4xl font-bold">Log in</h1>
       <p className="mt-2 text-paper/60">
-        We&rsquo;ll email you a 6-digit code — no password needed.
+        We&rsquo;ll email you a one-time code — no password needed.
       </p>
 
       {callbackFailed && (
@@ -120,12 +120,12 @@ function LoginForm() {
               Change email
             </button>
           </p>
-          <Field label="6-digit code" htmlFor="code" error={error ?? undefined}>
+          <Field label="Verification code" htmlFor="code" error={error ?? undefined}>
             <input
               id="code"
               inputMode="numeric"
               autoComplete="one-time-code"
-              maxLength={6}
+              maxLength={10}
               required
               className={inputCls}
               value={code}
