@@ -1,5 +1,11 @@
 import Script from 'next/script';
-import { GA_ID, gaEnabled } from '@/lib/analytics';
+
+// Server component. Reads the env var directly — NEXT_PUBLIC_* is inlined at
+// build for both server and client, so no client-module import is needed (and
+// importing the gate from a 'use client' module would break it — see
+// lib/analytics.ts).
+const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+const gaEnabled = Boolean(GA_ID && /^G-[A-Z0-9]{6,}$/.test(GA_ID) && GA_ID !== 'G-XXXXXXX');
 
 /** GA4 loader — renders nothing unless a real measurement ID is configured. */
 export function Analytics() {
