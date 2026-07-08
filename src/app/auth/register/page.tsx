@@ -248,8 +248,8 @@ export default function Page() {
               Change details
             </button>
           </p>
-          <Field label="6-digit code" htmlFor="code" error={formError ?? undefined}>
-            <input id="code" inputMode="numeric" autoComplete="one-time-code" maxLength={6} required
+          <Field label="Verification code" htmlFor="code" error={formError ?? undefined}>
+            <input id="code" inputMode="numeric" autoComplete="one-time-code" maxLength={10} required
               className={inputCls} value={code} onChange={(e) => setCode(e.target.value)} placeholder="123456" />
           </Field>
           <button type="submit" className="btn-primary w-full" disabled={pending}>

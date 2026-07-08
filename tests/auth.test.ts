@@ -76,9 +76,11 @@ describe('eircode validation', () => {
 });
 
 describe('otp code validation', () => {
-  it('accepts exactly six digits', () => {
+  it('accepts 6-10 digit codes (server OTP length is configurable)', () => {
     expect(otpSchema.safeParse(' 123456 ').success).toBe(true);
+    expect(otpSchema.safeParse('12345678').success).toBe(true);
     expect(otpSchema.safeParse('12345').success).toBe(false);
+    expect(otpSchema.safeParse('12345678901').success).toBe(false);
     expect(otpSchema.safeParse('12345a').success).toBe(false);
   });
 });

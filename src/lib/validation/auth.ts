@@ -13,10 +13,13 @@ export const emailSchema = z
   .toLowerCase()
   .email('Enter a valid email address');
 
+// Supabase's OTP length is a server-side setting (currently 6, was 8 on this
+// project's defaults) — accept the plausible range so config drift can't
+// lock users out of the code input.
 export const otpSchema = z
   .string()
   .trim()
-  .regex(/^\d{6}$/, 'Enter the 6-digit code from your email');
+  .regex(/^\d{6,10}$/, 'Enter the code from your email');
 
 /** Irish mobiles: 08x… or +3538x…, spaces/dashes tolerated. */
 export const mobileSchema = z
