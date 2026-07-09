@@ -28,7 +28,7 @@ export default function MessagesPage() {
 
       {conversations.isPending && <p className="mt-8 text-paper/60">Loading conversations…</p>}
       {conversations.isError && (
-        <p role="alert" className="mt-8 text-signal">Could not load your messages. Refresh to try again.</p>
+        <p role="alert" className="mt-8 text-danger">Could not load your messages. Refresh to try again.</p>
       )}
       {conversations.data?.length === 0 && (
         <div className="mt-8 rounded-hex border border-ink-line bg-ink-soft p-8 text-center">

@@ -72,7 +72,7 @@ function WalletContent() {
           <section className="mt-10">
             <h2 className="font-display text-2xl font-bold">Buy credits</h2>
             {checkout.isError && (
-              <p role="alert" className="mt-3 text-sm text-signal">
+              <p role="alert" className="mt-3 text-sm text-danger">
                 Could not start the checkout. Try again.
               </p>
             )}

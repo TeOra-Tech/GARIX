@@ -35,7 +35,7 @@ export function StarInput({
                 aria-hidden
                 className={cn(
                   'text-2xl transition',
-                  n <= value ? 'text-signal' : 'text-paper/20 hover:text-signal-soft',
+                  n <= value ? 'text-danger' : 'text-paper/20 hover:text-signal-soft',
                 )}
               >
                 ★
@@ -45,7 +45,7 @@ export function StarInput({
           ))}
         </div>
       </div>
-      {error && <p role="alert" className="mt-1 text-sm text-signal">{error}</p>}
+      {error && <p role="alert" className="mt-1 text-sm text-danger">{error}</p>}
     </fieldset>
   );
 }

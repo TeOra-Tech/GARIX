@@ -23,7 +23,7 @@ function photoUrl(path: string): string {
 
 function Stars({ rating }: { rating: number }) {
   return (
-    <span aria-label={`${rating.toFixed(1)} out of 5`} className="text-signal">
+    <span aria-label={`${rating.toFixed(1)} out of 5`} className="text-gold">
       {'★'.repeat(Math.round(rating))}
       <span className="text-paper/20">{'★'.repeat(5 - Math.round(rating))}</span>
     </span>

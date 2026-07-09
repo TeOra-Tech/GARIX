@@ -28,7 +28,7 @@ function SubmittedReview({ review }: { review: Review }) {
           return (
             <div key={c.key} className="flex justify-between">
               <dt className="text-paper/60">{c.label}</dt>
-              <dd aria-label={`${v} out of 5`} className="text-signal">
+              <dd aria-label={`${v} out of 5`} className="text-gold">
                 {'★'.repeat(v)}
                 <span className="text-paper/20">{'★'.repeat(5 - v)}</span>
               </dd>
@@ -89,7 +89,7 @@ export function ReviewSection({
           Once the garage has finished, mark the job complete — then you can leave a review.
         </p>
         {complete.isError && (
-          <p role="alert" className="mt-3 text-sm text-signal">Could not mark the job complete. Try again.</p>
+          <p role="alert" className="mt-3 text-sm text-danger">Could not mark the job complete. Try again.</p>
         )}
         <button
           type="button"
@@ -174,15 +174,15 @@ export function ReviewSection({
           {photos.length > 0 && (
             <p className="mt-1 text-xs text-paper/50">
               {photos.map((p) => p.name).join(', ')}{' '}
-              <button type="button" className="underline hover:text-signal" onClick={() => setPhotos([])}>
+              <button type="button" className="underline hover:text-danger" onClick={() => setPhotos([])}>
                 clear
               </button>
             </p>
           )}
-          {errors['photos'] && <p role="alert" className="mt-1 text-sm text-signal">{errors['photos']}</p>}
+          {errors['photos'] && <p role="alert" className="mt-1 text-sm text-danger">{errors['photos']}</p>}
         </div>
         {create.isError && (
-          <p role="alert" className="text-sm text-signal">Could not submit your review. Try again.</p>
+          <p role="alert" className="text-sm text-danger">Could not submit your review. Try again.</p>
         )}
         <button type="submit" className="btn-primary !px-4 !py-2 text-sm" disabled={create.isPending}>
           {create.isPending ? 'Submitting…' : 'Submit review'}

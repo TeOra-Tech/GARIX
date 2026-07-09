@@ -57,7 +57,7 @@ export default function NotificationPreferencesPage() {
       )}
 
       {update.isError && (
-        <p role="alert" className="mt-4 text-sm text-signal">Could not save — try again.</p>
+        <p role="alert" className="mt-4 text-sm text-danger">Could not save — try again.</p>
       )}
       {update.isSuccess && !update.isPending && (
         <p className="mt-4 text-sm text-volt-bright" role="status">Saved.</p>

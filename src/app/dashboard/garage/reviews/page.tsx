@@ -26,7 +26,7 @@ function ReviewCard({ review }: { review: Review }) {
   return (
     <li className="rounded-hex border border-ink-line bg-ink-soft p-6">
       <div className="flex items-center justify-between">
-        <span aria-label={`${review.rating_overall} out of 5 overall`} className="text-signal">
+        <span aria-label={`${review.rating_overall} out of 5 overall`} className="text-gold">
           {'★'.repeat(review.rating_overall)}
           <span className="text-paper/20">{'★'.repeat(5 - review.rating_overall)}</span>
         </span>
@@ -70,7 +70,7 @@ function ReviewCard({ review }: { review: Review }) {
             maxLength={1000}
           />
           {(error || respond.isError) && (
-            <p role="alert" className="text-sm text-signal">{error ?? 'Could not save your response. Try again.'}</p>
+            <p role="alert" className="text-sm text-danger">{error ?? 'Could not save your response. Try again.'}</p>
           )}
           <button type="submit" className="btn-ghost !px-4 !py-2 text-sm" disabled={respond.isPending}>
             {respond.isPending ? 'Saving…' : 'Respond'}
@@ -94,7 +94,7 @@ export default function GarageReviewsPage() {
         <h1 className="font-display text-3xl font-bold">Reviews</h1>
         {garage.data && garage.data.review_count > 0 && (
           <p className="text-sm text-paper/60">
-            <span className="text-signal">★</span> {Number(garage.data.avg_rating).toFixed(1)} average ·{' '}
+            <span className="text-gold">★</span> {Number(garage.data.avg_rating).toFixed(1)} average ·{' '}
             {garage.data.review_count} review{garage.data.review_count > 1 ? 's' : ''}
           </p>
         )}

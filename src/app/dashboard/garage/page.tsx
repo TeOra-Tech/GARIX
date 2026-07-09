@@ -41,7 +41,7 @@ function PhotosSection({ garageId, photos }: { garageId: string; photos: { id: s
           e.target.value = '';
         }}
       />
-      {add.isError && <p role="alert" className="text-sm text-signal">Upload failed. Try a smaller image.</p>}
+      {add.isError && <p role="alert" className="text-sm text-danger">Upload failed. Try a smaller image.</p>}
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {photos.map((p) => (
           <li key={p.id} className="relative">
@@ -50,7 +50,7 @@ function PhotosSection({ garageId, photos }: { garageId: string; photos: { id: s
             <button
               type="button"
               aria-label="Remove photo"
-              className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-ink/80 text-xs hover:bg-signal hover:text-ink"
+              className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-navy/85 text-xs text-white hover:bg-danger"
               onClick={() => remove.mutate(p)}
             >
               &#10005;
@@ -104,7 +104,7 @@ function CertificationsSection({
             ) : (
               <span className="rounded-full border border-ink-line px-2 py-0.5 text-xs text-paper/40">Pending review</span>
             )}
-            <button type="button" className="ml-auto text-xs text-paper/50 underline hover:text-signal"
+            <button type="button" className="ml-auto text-xs text-paper/50 underline hover:text-danger"
               onClick={() => remove.mutate(c)}>
               Remove
             </button>
@@ -129,7 +129,7 @@ function CertificationsSection({
             className="block w-full text-sm text-paper/70 file:mr-4 file:rounded-lg file:border-0 file:bg-ink-line file:px-4 file:py-2 file:text-paper"
             onChange={(e) => setDocument(e.target.files?.[0] ?? null)} />
         </Field>
-        {add.isError && <p role="alert" className="text-sm text-signal">Could not add the certification. Try again.</p>}
+        {add.isError && <p role="alert" className="text-sm text-danger">Could not add the certification. Try again.</p>}
         <button type="submit" className="btn-ghost !px-4 !py-2 text-sm" disabled={add.isPending}>
           {add.isPending ? 'Adding…' : 'Add certification'}
         </button>

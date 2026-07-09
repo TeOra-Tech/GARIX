@@ -3,19 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --font-display: 'Archivo', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-sans: 'Poppins', system-ui, sans-serif;
+  /* legacy aliases (some code still reads these) */
+  --font-display: var(--font-sans);
+  --font-body: var(--font-sans);
 }
 
 @layer base {
   body {
-    @apply bg-ink text-paper font-body antialiased;
+    @apply bg-white text-charcoal font-body antialiased;
   }
   ::selection {
-    @apply bg-signal text-ink;
+    @apply bg-gold text-navy;
   }
   :focus-visible {
-    @apply outline-none ring-2 ring-volt-bright ring-offset-2 ring-offset-ink;
+    @apply outline-none ring-2 ring-navy ring-offset-2 ring-offset-white;
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -26,17 +28,25 @@
 }
 
 @layer components {
-  /* Hexagon motif lifted from the logo mark — the brand's structural signature */
+  /* Hexagon motif from the logo mark — the brand's structural signature */
   .hex-clip {
     clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
   }
+  /* Primary: navy fill, white text */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-volt px-6 py-3
-           font-display font-semibold text-white transition
-           hover:bg-volt-bright active:bg-volt-deep;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-navy px-6 py-3
+           font-display font-semibold text-white shadow-sm transition
+           hover:bg-navy-soft active:bg-navy-deep;
   }
+  /* Secondary: white, navy border + text */
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-ink-line
-           px-6 py-3 font-display font-semibold text-paper transition hover:border-volt;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-navy/20 bg-white
+           px-6 py-3 font-display font-semibold text-navy transition
+           hover:border-navy hover:bg-navy/[0.04];
+  }
+  /* Accent: gold fill, navy text — reserved for high-priority actions */
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-gold px-6 py-3
+           font-display font-semibold text-navy shadow-sm transition hover:bg-gold-soft;
   }
 }

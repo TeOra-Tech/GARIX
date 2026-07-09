@@ -22,7 +22,7 @@ export function Field({
       </label>
       {children}
       {error && (
-        <p role="alert" className={cn('mt-1.5 text-sm text-signal')}>
+        <p role="alert" className={cn('mt-1.5 text-sm text-danger')}>
           {error}
         </p>
       )}

@@ -43,8 +43,8 @@ function SettingRow({ setting }: { setting: { key: string; value: unknown; descr
           <button type="submit" className="btn-primary !px-4 !py-1.5 text-sm" disabled={!dirty || save.isPending}>
             {save.isPending ? 'Saving…' : 'Save'}
           </button>
-          {error && <p role="alert" className="text-sm text-signal">{error}</p>}
-          {save.isError && !error && <p role="alert" className="text-sm text-signal">Save failed.</p>}
+          {error && <p role="alert" className="text-sm text-danger">{error}</p>}
+          {save.isError && !error && <p role="alert" className="text-sm text-danger">Save failed.</p>}
           {save.isSuccess && !dirty && <p className="text-sm text-volt-bright">Saved.</p>}
         </div>
       </form>

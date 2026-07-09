@@ -302,7 +302,7 @@ export function GarageForm({
       <section className="space-y-4">
         <h2 className="font-display text-xl font-semibold">Services you offer</h2>
         {errors['serviceCategoryIds'] && (
-          <p role="alert" className="text-sm text-signal">{errors['serviceCategoryIds']}</p>
+          <p role="alert" className="text-sm text-danger">{errors['serviceCategoryIds']}</p>
         )}
         <div className="grid gap-2 sm:grid-cols-2">
           {categories.data?.parents.map((c) => (
@@ -346,13 +346,13 @@ export function GarageForm({
               <span className="text-sm text-paper/40">Closed</span>
             )}
             {errors[`openingHours.${d}`] && (
-              <span role="alert" className="text-sm text-signal">{errors[`openingHours.${d}`]}</span>
+              <span role="alert" className="text-sm text-danger">{errors[`openingHours.${d}`]}</span>
             )}
           </div>
         ))}
       </section>
 
-      {serverError && <p role="alert" className="text-sm text-signal">{serverError}</p>}
+      {serverError && <p role="alert" className="text-sm text-danger">{serverError}</p>}
 
       <button type="submit" className="btn-primary" disabled={pending}>
         {pending ? 'Saving…' : submitLabel}

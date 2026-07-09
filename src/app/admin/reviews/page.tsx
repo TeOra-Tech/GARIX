@@ -21,7 +21,7 @@ export default function AdminReviewsPage() {
                 <span className="font-medium">{r.user_profiles?.full_name ?? 'Customer'}</span>
                 <span className="text-paper/50"> on </span>
                 <span className="font-medium">{r.garages?.name ?? 'garage'}</span>
-                <span className="ml-2 text-signal">{'★'.repeat(r.rating_overall)}</span>
+                <span className="ml-2 text-gold">{'★'.repeat(r.rating_overall)}</span>
               </p>
               <div className="flex items-center gap-3 text-xs">
                 {r.fraud_score != null && Number(r.fraud_score) > 0.5 && (

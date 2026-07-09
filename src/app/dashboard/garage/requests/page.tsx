@@ -80,7 +80,7 @@ export default function GarageRequestFeedPage() {
 
           {feed.isPending && <p className="mt-8 text-paper/60">Loading open requests…</p>}
           {feed.isError && (
-            <p role="alert" className="mt-8 text-signal">Could not load the feed. Refresh to try again.</p>
+            <p role="alert" className="mt-8 text-danger">Could not load the feed. Refresh to try again.</p>
           )}
           {feed.data?.length === 0 && (
             <p className="mt-8 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/60">

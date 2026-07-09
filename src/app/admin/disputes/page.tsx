@@ -52,7 +52,7 @@ function DisputeCard({ dispute }: { dispute: AdminDispute }) {
               Resolve
             </button>
           </form>
-          {resolve.isError && <p role="alert" className="text-sm text-signal">Update failed.</p>}
+          {resolve.isError && <p role="alert" className="text-sm text-danger">Update failed.</p>}
         </div>
       )}
     </li>

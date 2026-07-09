@@ -21,7 +21,7 @@ export default function RegisterGaragePage() {
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-12">
-      <p className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-signal">
+      <p className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-gold-ink">
         For garages
       </p>
       <h1 className="mt-2 font-display text-3xl font-bold md:text-4xl">Register your garage</h1>

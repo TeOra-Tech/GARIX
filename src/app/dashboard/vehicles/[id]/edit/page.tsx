@@ -20,7 +20,7 @@ export default function EditVehiclePage() {
 
       {vehicle.isPending && <p className="mt-8 text-paper/60">Loading…</p>}
       {vehicle.isError && (
-        <p role="alert" className="mt-8 text-signal">
+        <p role="alert" className="mt-8 text-danger">
           Could not load this vehicle — it may have been deleted.
         </p>
       )}

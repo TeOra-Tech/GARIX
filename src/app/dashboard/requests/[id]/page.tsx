@@ -92,7 +92,7 @@ function QuoteCard({
           <p className="mt-1 text-sm text-paper/60">
             {g && g.review_count > 0 ? (
               <>
-                <span className="text-signal">★</span> {Number(g.avg_rating).toFixed(1)} ({g.review_count})
+                <span className="text-gold">★</span> {Number(g.avg_rating).toFixed(1)} ({g.review_count})
               </>
             ) : (
               'No reviews yet'
@@ -102,7 +102,7 @@ function QuoteCard({
             {expired && <span className="text-signal-soft"> (expired)</span>}
           </p>
         </div>
-        <p className="font-display text-2xl font-bold text-signal">{formatEur(Number(quote.grand_total))}</p>
+        <p className="font-display text-2xl font-bold text-navy">{formatEur(Number(quote.grand_total))}</p>
       </div>
 
       {/* full VAT breakdown — always visible for like-for-like comparison */}
@@ -195,7 +195,7 @@ export default function RequestDetailPage() {
         &larr; My requests
       </Link>
 
-      {request.isError && <p role="alert" className="mt-8 text-signal">Could not load this request.</p>}
+      {request.isError && <p role="alert" className="mt-8 text-danger">Could not load this request.</p>}
 
       {request.data && (
         <>

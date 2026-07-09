@@ -105,7 +105,7 @@ export default function WriteQuotePage() {
       )}
 
       {request.isError && (
-        <p role="alert" className="mt-8 text-signal">This request is no longer available.</p>
+        <p role="alert" className="mt-8 text-danger">This request is no longer available.</p>
       )}
 
       {isActive && request.data && (
@@ -176,7 +176,7 @@ export default function WriteQuotePage() {
                         <button
                           type="button"
                           aria-label={`Remove item ${i + 1}`}
-                          className="text-paper/40 hover:text-signal disabled:opacity-30"
+                          className="text-paper/40 hover:text-danger disabled:opacity-30"
                           disabled={rows.length === 1}
                           onClick={() => setRows((rs) => rs.filter((_, j) => j !== i))}
                         >
@@ -237,7 +237,7 @@ export default function WriteQuotePage() {
                     <dd>{v}</dd>
                   </div>
                 ))}
-                <div className="flex justify-between border-t border-ink-line pt-3 font-display text-base font-bold text-signal">
+                <div className="flex justify-between border-t border-ink-line pt-3 font-display text-base font-bold text-navy">
                   <dt>Grand total</dt>
                   <dd>{formatEur(vat.grandTotal)}</dd>
                 </div>
@@ -245,7 +245,7 @@ export default function WriteQuotePage() {
               <p className="mt-4 text-xs text-paper/50">
                 Submitting costs <span className="text-paper">{cost} credits</span> — balance {balance}.
               </p>
-              {error && <p role="alert" className="mt-3 text-xs text-signal">{error}</p>}
+              {error && <p role="alert" className="mt-3 text-xs text-danger">{error}</p>}
               <button type="submit" className="btn-primary mt-4 w-full" disabled={submit.isPending || liveItems.length === 0}>
                 {submit.isPending ? 'Submitting…' : 'Submit quote'}
               </button>

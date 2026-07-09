@@ -207,7 +207,7 @@ export default function Page() {
                 </span>
               </label>
               {errors['termsAccepted'] && (
-                <p role="alert" className="text-sm text-signal">{errors['termsAccepted']}</p>
+                <p role="alert" className="text-sm text-danger">{errors['termsAccepted']}</p>
               )}
               <label className="flex items-start gap-3 text-sm text-paper/60">
                 <input type="checkbox" className="mt-0.5 h-4 w-4 accent-volt"
@@ -216,7 +216,7 @@ export default function Page() {
               </label>
             </div>
 
-            {formError && <p role="alert" className="text-sm text-signal">{formError}</p>}
+            {formError && <p role="alert" className="text-sm text-danger">{formError}</p>}
 
             <button type="submit" className="btn-primary w-full" disabled={pending}>
               {pending ? 'Sending code…' : 'Continue'}

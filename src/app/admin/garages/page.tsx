@@ -46,7 +46,7 @@ function CreditAdjuster({ garage }: { garage: AdminGarage }) {
         {adjust.isPending ? '…' : 'Adjust'}
       </button>
       {adjust.isError && (
-        <span role="alert" className="text-xs text-signal">
+        <span role="alert" className="text-xs text-danger">
           {adjust.error.message === 'BALANCE_WOULD_GO_NEGATIVE' ? 'Balance cannot go negative' : 'Failed'}
         </span>
       )}
@@ -134,7 +134,7 @@ function GaragesAdmin() {
               )}
             </div>
             {statusAction.isError && (
-              <p role="alert" className="mt-2 text-sm text-signal">Action failed — try again.</p>
+              <p role="alert" className="mt-2 text-sm text-danger">Action failed — try again.</p>
             )}
 
             <CreditAdjuster garage={g} />

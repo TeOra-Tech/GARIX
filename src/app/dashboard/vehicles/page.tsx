@@ -41,7 +41,7 @@ function VehicleCard({ vehicle }: { vehicle: VehicleRow }) {
           <>
             <button
               type="button"
-              className="btn-ghost !border-signal !px-4 !py-2 text-signal"
+              className="btn-ghost !border-signal !px-4 !py-2 text-danger"
               onClick={() => del.mutate(vehicle.id)}
               disabled={del.isPending}
             >
@@ -58,7 +58,7 @@ function VehicleCard({ vehicle }: { vehicle: VehicleRow }) {
         )}
       </div>
       {del.isError && (
-        <p role="alert" className="mt-3 text-sm text-signal">
+        <p role="alert" className="mt-3 text-sm text-danger">
           Could not delete this vehicle. It may be attached to a service request.
         </p>
       )}
@@ -80,7 +80,7 @@ export default function VehiclesPage() {
 
       {vehicles.isPending && <p className="mt-8 text-paper/60">Loading your vehicles…</p>}
       {vehicles.isError && (
-        <p role="alert" className="mt-8 text-signal">
+        <p role="alert" className="mt-8 text-danger">
           Could not load your vehicles. Refresh to try again.
         </p>
       )}

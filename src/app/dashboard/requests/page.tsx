@@ -47,7 +47,7 @@ function RequestsList() {
 
       {requests.isPending && <p className="mt-8 text-paper/60">Loading your requests…</p>}
       {requests.isError && (
-        <p role="alert" className="mt-8 text-signal">Could not load your requests. Refresh to try again.</p>
+        <p role="alert" className="mt-8 text-danger">Could not load your requests. Refresh to try again.</p>
       )}
       {requests.data?.length === 0 && (
         <div className="mt-8 rounded-hex border border-ink-line bg-ink-soft p-8 text-center">

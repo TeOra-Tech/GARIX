@@ -29,7 +29,7 @@ export default function AdminUsersPage() {
       </form>
 
       {users.isPending && <p className="mt-8 text-paper/60">Loading…</p>}
-      {setRole.isError && <p role="alert" className="mt-4 text-sm text-signal">Role change failed.</p>}
+      {setRole.isError && <p role="alert" className="mt-4 text-sm text-danger">Role change failed.</p>}
 
       <div className="mt-6 overflow-x-auto">
         <table className="w-full text-sm">

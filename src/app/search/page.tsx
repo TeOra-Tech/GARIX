@@ -209,7 +209,7 @@ export default function SearchPage() {
           </div>
 
           {search.isError && (
-            <p role="alert" className="mt-8 text-signal">Search failed. Adjust the filters and try again.</p>
+            <p role="alert" className="mt-8 text-danger">Search failed. Adjust the filters and try again.</p>
           )}
 
           {view === 'map' ? (
@@ -240,7 +240,7 @@ export default function SearchPage() {
                         <div className="text-right text-sm">
                           {r.review_count > 0 ? (
                             <>
-                              <span className="text-signal">★</span>{' '}
+                              <span className="text-gold">★</span>{' '}
                               <span className="font-medium">{Number(r.avg_rating).toFixed(1)}</span>{' '}
                               <span className="text-paper/50">({r.review_count})</span>
                             </>
