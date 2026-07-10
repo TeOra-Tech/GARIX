@@ -45,7 +45,7 @@ export function OAuthButtons({ next }: { next?: string | null }) {
         {pending === 'apple' ? 'Redirecting…' : 'Continue with Apple'}
       </button>
       {error && (
-        <p role="alert" className="text-sm text-signal">
+        <p role="alert" className="text-sm text-danger">
           {error}
         </p>
       )}

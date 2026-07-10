@@ -9,7 +9,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <header className="sticky top-0 z-40 border-b border-ink-line bg-ink/90 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3" aria-label="Dashboard">
           <Link href="/dashboard" className="flex items-center gap-2 font-display text-xl font-bold tracking-wide">
-            <Image src="/logo.png" alt="Garix" width={40} height={40} className="rounded" priority />
+            <Image src="/brand-mark.png" alt="Garix" width={36} height={36} priority />
             GARIX
           </Link>
           <div className="flex items-center gap-3">

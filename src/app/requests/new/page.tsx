@@ -217,7 +217,7 @@ export default function NewRequestPage() {
                 </label>
               ))}
             </div>
-            {errors['vehicleId'] && <p role="alert" className="mt-2 text-sm text-signal">{errors['vehicleId']}</p>}
+            {errors['vehicleId'] && <p role="alert" className="mt-2 text-sm text-danger">{errors['vehicleId']}</p>}
           </fieldset>
         )}
 
@@ -308,7 +308,7 @@ export default function NewRequestPage() {
                     <button
                       type="button"
                       aria-label={`Remove ${p.file.name}`}
-                      className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-ink-line text-xs hover:bg-signal hover:text-ink"
+                      className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-navy text-xs text-white hover:bg-danger"
                       onClick={() => setFiles((prev) => prev.filter((_, j) => j !== i))}
                     >
                       &#10005;
@@ -438,9 +438,9 @@ export default function NewRequestPage() {
               Your request stays open for 14 days. Verified garages nearby will be able to see it and send quotes.
             </p>
             {create.isError && (
-              <p role="alert" className="text-sm text-signal">Could not post your request. Try again.</p>
+              <p role="alert" className="text-sm text-danger">Could not post your request. Try again.</p>
             )}
-            {errors['form'] && <p role="alert" className="text-sm text-signal">{errors['form']}</p>}
+            {errors['form'] && <p role="alert" className="text-sm text-danger">{errors['form']}</p>}
           </div>
         )}
       </div>

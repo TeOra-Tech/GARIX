@@ -1,13 +1,18 @@
 import type { Metadata, Viewport } from 'next';
-import { Archivo, Inter } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import { Providers } from '@/components/providers';
 import { Analytics } from '@/components/analytics';
 import { RegisterServiceWorker } from '@/components/register-sw';
 import { HashSessionHandler } from '@/components/auth/hash-session';
 import './globals.css';
 
-const display = Archivo({ subsets: ['latin'], variable: '--font-display', weight: ['600', '700', '800'] });
-const body = Inter({ subsets: ['latin'], variable: '--font-body' });
+// Poppins is the brand's sole typeface (Brand Guidelines §15).
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-sans',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://garix.ie'),
@@ -27,11 +32,11 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = { themeColor: '#070B14' };
+export const viewport: Viewport = { themeColor: '#FFFFFF' };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-IE" className={`${display.variable} ${body.variable}`}>
+    <html lang="en-IE" className={poppins.variable}>
       <body>
         <Providers>{children}</Providers>
         <Analytics />

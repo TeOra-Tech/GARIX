@@ -247,7 +247,7 @@ export function VehicleForm({
         </>
       )}
 
-      {serverError && <p role="alert" className="text-sm text-signal">{serverError}</p>}
+      {serverError && <p role="alert" className="text-sm text-danger">{serverError}</p>}
 
       <button type="submit" className="btn-primary" disabled={pending}>
         {pending ? 'Saving…' : submitLabel}

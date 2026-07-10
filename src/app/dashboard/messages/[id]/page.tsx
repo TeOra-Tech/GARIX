@@ -142,14 +142,14 @@ export default function ThreadPage() {
         {file && (
           <p className="mb-2 flex items-center gap-2 text-sm text-paper/60">
             &#128206; {file.name}
-            <button type="button" className="text-paper/40 hover:text-signal" aria-label="Remove attachment"
+            <button type="button" className="text-paper/40 hover:text-danger" aria-label="Remove attachment"
               onClick={() => setFile(null)}>
               &#10005;
             </button>
           </p>
         )}
         {send.isError && (
-          <p role="alert" className="mb-2 text-sm text-signal">
+          <p role="alert" className="mb-2 text-sm text-danger">
             {send.error instanceof Error && /under \d+ MB/.test(send.error.message)
               ? send.error.message
               : 'Could not send — try again.'}
