@@ -35,7 +35,7 @@ export function StarInput({
                 aria-hidden
                 className={cn(
                   'text-2xl transition',
-                  n <= value ? 'text-danger' : 'text-paper/20 hover:text-signal-soft',
+                  n <= value ? 'text-gold' : 'text-paper/20 hover:text-gold',
                 )}
               >
                 ★
