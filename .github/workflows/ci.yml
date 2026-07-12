@@ -24,6 +24,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: supabase/setup-cli@v1
+        with:
+          # must match the project's CLI (config.toml schema is version-coupled)
+          version: 2.109.0
       - name: Verify migrations apply cleanly
         run: supabase db start && supabase db reset
 
