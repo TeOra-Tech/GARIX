@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useDeleteVehicle, useVehicles, type VehicleRow } from '@/lib/vehicles/queries';
+import { VehicleAvatar } from '@/components/dashboard/customer-overview';
+import { TransferInbox } from '@/components/vehicles/transfer-inbox';
 
 function vehicleName(v: VehicleRow): string {
   const make = v.vehicle_makes?.name ?? v.make_text;
@@ -16,9 +18,12 @@ function VehicleCard({ vehicle }: { vehicle: VehicleRow }) {
 
   return (
     <li className="rounded-hex border border-ink-line bg-ink-soft p-6">
-      <div className="flex items-start justify-between gap-4">
+      <Link href={`/dashboard/vehicles/${vehicle.id}`} className="flex items-start gap-4">
+        <VehicleAvatar photoPath={vehicle.photo_path} label={vehicleName(vehicle)} />
         <div>
-          <h2 className="font-display text-lg font-semibold">{vehicleName(vehicle)}</h2>
+          <h2 className="font-display text-lg font-semibold hover:text-volt-bright">
+            {vehicleName(vehicle)}
+          </h2>
           <p className="mt-1 font-mono text-sm text-volt-bright">{vehicle.registration_number}</p>
           <p className="mt-2 text-sm text-paper/60">
             {[
@@ -32,8 +37,11 @@ function VehicleCard({ vehicle }: { vehicle: VehicleRow }) {
               .join(' · ') || 'No details yet'}
           </p>
         </div>
-      </div>
-      <div className="mt-4 flex gap-3 text-sm">
+      </Link>
+      <div className="mt-4 flex flex-wrap gap-3 text-sm">
+        <Link href={`/dashboard/vehicles/${vehicle.id}`} className="btn-primary !px-4 !py-2">
+          History &amp; reminders
+        </Link>
         <Link href={`/dashboard/vehicles/${vehicle.id}/edit`} className="btn-ghost !px-4 !py-2">
           Edit
         </Link>
@@ -76,6 +84,10 @@ export default function VehiclesPage() {
         <Link href="/dashboard/vehicles/new" className="btn-primary !px-4 !py-2 text-sm">
           Add a vehicle
         </Link>
+      </div>
+
+      <div className="mt-6">
+        <TransferInbox />
       </div>
 
       {vehicles.isPending && <p className="mt-8 text-paper/60">Loading your vehicles…</p>}
