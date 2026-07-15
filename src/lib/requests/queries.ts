@@ -35,9 +35,17 @@ export function useMyRequests() {
   return useQuery({
     queryKey: ['service_requests', 'mine'],
     queryFn: async () => {
-      const { data, error } = await createClient()
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not signed in');
+      // RLS also shows garages the open-request feed — "my requests" must
+      // scope to the customer explicitly.
+      const { data, error } = await supabase
         .from('service_requests')
         .select('*, vehicles(registration_number, make_text, vehicle_makes(name), vehicle_models(name)), request_attachments(id)')
+        .eq('customer_id', user.id)
         .order('created_at', { ascending: false });
       if (error) throw error;
       return data;

@@ -41,6 +41,9 @@ async function ownerId(): Promise<string> {
   return user.id;
 }
 
+// "My vehicles" means vehicles I own. RLS is deliberately wider here —
+// active garages may read vehicles attached to open requests so they can
+// quote — so these reads must scope to the owner explicitly.
 export function useVehicles() {
   return useQuery({
     queryKey: ['vehicles'],
@@ -48,6 +51,7 @@ export function useVehicles() {
       const { data, error } = await createClient()
         .from('vehicles')
         .select(VEHICLE_SELECT)
+        .eq('owner_id', await ownerId())
         .order('created_at', { ascending: false });
       if (error) throw error;
       return data;
@@ -63,6 +67,7 @@ export function useVehicle(id: string) {
         .from('vehicles')
         .select(VEHICLE_SELECT)
         .eq('id', id)
+        .eq('owner_id', await ownerId())
         .single();
       if (error) throw error;
       return data;

@@ -236,10 +236,18 @@ export function useMyRequest(requestId: string) {
   return useQuery({
     queryKey: ['service_requests', 'mine', requestId],
     queryFn: async () => {
-      const { data, error } = await createClient()
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not signed in');
+      // customer-side page: RLS also lets garages read open requests,
+      // so pin the row to the signed-in customer
+      const { data, error } = await supabase
         .from('service_requests')
         .select('*, vehicles(registration_number, make_text, model_text, vehicle_makes(name), vehicle_models(name))')
         .eq('id', requestId)
+        .eq('customer_id', user.id)
         .single();
       if (error) throw error;
       return data;
