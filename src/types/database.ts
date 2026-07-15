@@ -7,6 +7,36 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.5"
+  }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       appointments: {
@@ -2570,36 +2600,67 @@ export type Database = {
       }
       vehicle_history: {
         Row: {
+          cost_eur: number | null
           created_at: string
+          created_by: string | null
           description: string | null
           event_date: string
           event_type: string
           garage_id: string | null
+          garage_name: string | null
           id: string
           mileage_km: number | null
+          next_due_date: string | null
+          next_due_mileage_km: number | null
+          parts_replaced: string | null
+          title: string | null
           vehicle_id: string
+          warranty_until: string | null
         }
         Insert: {
+          cost_eur?: number | null
           created_at?: string
+          created_by?: string | null
           description?: string | null
           event_date: string
           event_type: string
           garage_id?: string | null
+          garage_name?: string | null
           id?: string
           mileage_km?: number | null
+          next_due_date?: string | null
+          next_due_mileage_km?: number | null
+          parts_replaced?: string | null
+          title?: string | null
           vehicle_id: string
+          warranty_until?: string | null
         }
         Update: {
+          cost_eur?: number | null
           created_at?: string
+          created_by?: string | null
           description?: string | null
           event_date?: string
           event_type?: string
           garage_id?: string | null
+          garage_name?: string | null
           id?: string
           mileage_km?: number | null
+          next_due_date?: string | null
+          next_due_mileage_km?: number | null
+          parts_replaced?: string | null
+          title?: string | null
           vehicle_id?: string
+          warranty_until?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "vehicle_history_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "vehicle_history_garage_id_fkey"
             columns: ["garage_id"]
@@ -2657,6 +2718,114 @@ export type Database = {
           },
         ]
       }
+      vehicle_reminders: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          due_date: string
+          due_mileage_km: number | null
+          id: string
+          interval_months: number | null
+          last_notified_at: string | null
+          notes: string | null
+          reminder_type: string
+          title: string | null
+          updated_at: string
+          vehicle_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          due_date: string
+          due_mileage_km?: number | null
+          id?: string
+          interval_months?: number | null
+          last_notified_at?: string | null
+          notes?: string | null
+          reminder_type: string
+          title?: string | null
+          updated_at?: string
+          vehicle_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          due_date?: string
+          due_mileage_km?: number | null
+          id?: string
+          interval_months?: number | null
+          last_notified_at?: string | null
+          notes?: string | null
+          reminder_type?: string
+          title?: string | null
+          updated_at?: string
+          vehicle_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicle_reminders_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vehicle_transfers: {
+        Row: {
+          created_at: string
+          from_user_id: string
+          id: string
+          responded_at: string | null
+          status: string
+          to_user_id: string
+          vehicle_id: string
+          vehicle_label: string
+        }
+        Insert: {
+          created_at?: string
+          from_user_id: string
+          id?: string
+          responded_at?: string | null
+          status?: string
+          to_user_id: string
+          vehicle_id: string
+          vehicle_label: string
+        }
+        Update: {
+          created_at?: string
+          from_user_id?: string
+          id?: string
+          responded_at?: string | null
+          status?: string
+          to_user_id?: string
+          vehicle_id?: string
+          vehicle_label?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicle_transfers_from_user_id_fkey"
+            columns: ["from_user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicle_transfers_to_user_id_fkey"
+            columns: ["to_user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicle_transfers_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       vehicles: {
         Row: {
           created_at: string
@@ -2672,6 +2841,7 @@ export type Database = {
           model_id: string | null
           model_text: string | null
           owner_id: string
+          photo_path: string | null
           registration_number: string
           transmission: Database["public"]["Enums"]["transmission_type"] | null
           updated_at: string
@@ -2693,6 +2863,7 @@ export type Database = {
           model_id?: string | null
           model_text?: string | null
           owner_id: string
+          photo_path?: string | null
           registration_number: string
           transmission?: Database["public"]["Enums"]["transmission_type"] | null
           updated_at?: string
@@ -2714,6 +2885,7 @@ export type Database = {
           model_id?: string | null
           model_text?: string | null
           owner_id?: string
+          photo_path?: string | null
           registration_number?: string
           transmission?: Database["public"]["Enums"]["transmission_type"] | null
           updated_at?: string
@@ -2936,7 +3108,15 @@ export type Database = {
             }
             Returns: string
           }
+      cancel_vehicle_transfer: {
+        Args: { p_transfer_id: string }
+        Returns: undefined
+      }
       complete_job: { Args: { p_request_id: string }; Returns: undefined }
+      current_user_role: {
+        Args: never
+        Returns: Database["public"]["Enums"]["user_role"]
+      }
       disablelongtransactions: { Args: never; Returns: string }
       dispatched_to_my_garage: { Args: { b: string }; Returns: boolean }
       dropgeometrycolumn:
@@ -3079,6 +3259,10 @@ export type Database = {
       geomfromewkt: { Args: { "": string }; Returns: unknown }
       gettransactionid: { Args: never; Returns: unknown }
       in_fleet: { Args: { f: string }; Returns: boolean }
+      initiate_vehicle_transfer: {
+        Args: { p_to_email: string; p_vehicle_id: string }
+        Returns: string
+      }
       is_active_garage_owner: { Args: never; Returns: boolean }
       is_admin: { Args: never; Returns: boolean }
       is_own_request: { Args: { req: string }; Returns: boolean }
@@ -3125,6 +3309,11 @@ export type Database = {
       }
       postgis_version: { Args: never; Returns: string }
       postgis_wagyu_version: { Args: never; Returns: string }
+      process_due_reminders: { Args: never; Returns: number }
+      respond_vehicle_transfer: {
+        Args: { p_accept: boolean; p_transfer_id: string }
+        Returns: undefined
+      }
       search_garages: {
         Args: {
           p_category?: string
@@ -3800,7 +3989,11 @@ export type Database = {
         | "system"
       payment_status: "pending" | "succeeded" | "failed" | "refunded"
       quote_status:
-        "submitted" | "accepted" | "rejected" | "withdrawn" | "expired"
+        | "submitted"
+        | "accepted"
+        | "rejected"
+        | "withdrawn"
+        | "expired"
       request_status:
         | "draft"
         | "open"
@@ -3836,12 +4029,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends (DefaultSchemaTableNameOrOptions extends {
+  TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never) = never,
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -3863,12 +4056,13 @@ export type Tables<
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
-    keyof DefaultSchema["Tables"] | { schema: keyof DatabaseWithoutInternals },
-  TableName extends (DefaultSchemaTableNameOrOptions extends {
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never) = never,
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -3887,12 +4081,13 @@ export type TablesInsert<
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
-    keyof DefaultSchema["Tables"] | { schema: keyof DatabaseWithoutInternals },
-  TableName extends (DefaultSchemaTableNameOrOptions extends {
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never) = never,
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -3911,12 +4106,13 @@ export type TablesUpdate<
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
-    keyof DefaultSchema["Enums"] | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never) = never,
+    : never = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -3929,11 +4125,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never) = never,
+    : never = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -3943,6 +4139,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       conversation_status: ["active", "archived", "closed"],

@@ -1,9 +1,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { getSessionProfile } from '@/lib/auth/server';
 import { SignOutButton } from '@/components/auth/sign-out-button';
 import { NotificationBell } from '@/components/notifications/bell';
+import { DashboardNav } from '@/components/dashboard/nav';
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const session = await getSessionProfile();
+  if (!session) redirect('/auth/login?next=/dashboard');
+
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b border-ink-line bg-ink/90 backdrop-blur">
@@ -17,6 +23,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <SignOutButton />
           </div>
         </nav>
+        <DashboardNav role={session.profile.role} />
       </header>
       {children}
     </div>
