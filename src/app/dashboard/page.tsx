@@ -1,17 +1,9 @@
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getSessionProfile } from '@/lib/auth/server';
 import { CustomerOverview } from '@/components/dashboard/customer-overview';
+import { GarageOverview } from '@/components/dashboard/garage-overview';
 
 export const metadata = { title: 'Dashboard' };
-
-const garageLinks = [
-  { href: '/dashboard/garage', title: 'My garage', body: 'Manage your profile, services, hours and gallery.' },
-  { href: '/dashboard/garage/requests', title: 'Request feed', body: 'Browse open repair requests and send quotes.' },
-  { href: '/dashboard/wallet', title: 'Credit wallet', body: 'Top up credits and track your spending.' },
-  { href: '/dashboard/garage/reviews', title: 'Reviews', body: 'Read and respond to customer reviews.' },
-  { href: '/dashboard/messages', title: 'Messages', body: 'Chat with customers about their jobs.' },
-];
 
 export default async function DashboardPage() {
   const session = await getSessionProfile();
@@ -34,22 +26,7 @@ export default async function DashboardPage() {
         </p>
       )}
 
-      {isGarage ? (
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {garageLinks.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="rounded-hex border border-ink-line bg-ink-soft p-6 transition hover:border-volt"
-            >
-              <h2 className="font-display text-lg font-semibold text-volt-bright">{l.title}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-paper/60">{l.body}</p>
-            </Link>
-          ))}
-        </div>
-      ) : (
-        <CustomerOverview />
-      )}
+      {isGarage ? <GarageOverview /> : <CustomerOverview />}
     </main>
   );
 }
