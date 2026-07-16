@@ -70,8 +70,8 @@ export async function POST(request: Request) {
       credits: String(pack.credits),
       credit_pack_id: creditPackId,
     },
-    success_url: `${origin}/dashboard/wallet?purchase=success`,
-    cancel_url: `${origin}/dashboard/wallet?purchase=cancelled`,
+    success_url: `${origin}/dashboard/garages/${garageId}/wallet?purchase=success`,
+    cancel_url: `${origin}/dashboard/garages/${garageId}/wallet?purchase=cancelled`,
   });
 
   return NextResponse.json({ url: session.url });

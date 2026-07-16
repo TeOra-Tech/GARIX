@@ -30,26 +30,6 @@ function coreColumns(d: GarageData): Omit<TablesInsert<'garages'>, 'name' | 'slu
   };
 }
 
-export function useMyGarage() {
-  return useQuery({
-    queryKey: ['garages', 'mine'],
-    queryFn: async (): Promise<GarageWithRelations | null> => {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) return null;
-      const { data, error } = await supabase
-        .from('garages')
-        .select(GARAGE_SELECT)
-        .eq('owner_id', user.id)
-        .maybeSingle();
-      if (error) throw error;
-      return data;
-    },
-  });
-}
-
 export function useCreateGarage() {
   const qc = useQueryClient();
   return useMutation({

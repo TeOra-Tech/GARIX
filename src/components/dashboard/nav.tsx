@@ -14,11 +14,8 @@ const CUSTOMER_TABS = [
 
 const GARAGE_TABS = [
   { href: '/dashboard', label: 'Overview' },
-  { href: '/dashboard/garage', label: 'My garage' },
-  { href: '/dashboard/garage/requests', label: 'Request feed' },
-  { href: '/dashboard/wallet', label: 'Wallet' },
-  { href: '/dashboard/garage/reviews', label: 'Reviews' },
-  { href: '/dashboard/messages', label: 'Messages' },
+  { href: '/dashboard/garages', label: 'My garages' },
+  { href: '/dashboard/account', label: 'Account details' },
 ];
 
 export function DashboardNav({ role }: { role: string }) {

@@ -4,13 +4,14 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { useCreateGarage, useMyGarage } from '@/lib/garages/queries';
+import { useCreateGarage } from '@/lib/garages/queries';
+import { useMyGarages } from '@/lib/garages/portal';
 import { GarageForm } from '@/components/garages/garage-form';
 
 export default function RegisterGaragePage() {
   const router = useRouter();
   const [authState, setAuthState] = useState<'checking' | 'anonymous' | 'authed'>('checking');
-  const myGarage = useMyGarage();
+  const myGarages = useMyGarages();
   const create = useCreateGarage();
 
   useEffect(() => {
@@ -47,27 +48,29 @@ export default function RegisterGaragePage() {
         </div>
       )}
 
-      {authState === 'authed' && myGarage.data && (
-        <div className="mt-10 rounded-hex border border-ink-line bg-ink-soft p-8">
-          <p className="text-paper/80">
-            You&rsquo;ve already registered <span className="font-semibold">{myGarage.data.name}</span>
-            {myGarage.data.status === 'pending_verification' && ' — it’s awaiting verification.'}
-          </p>
-          <Link href="/dashboard/garage" className="btn-primary mt-6 inline-flex">
-            Manage your garage
-          </Link>
-        </div>
-      )}
-
-      {authState === 'authed' && myGarage.isSuccess && !myGarage.data && (
+      {authState === 'authed' && myGarages.isSuccess && (
         <div className="mt-10">
+          {myGarages.data.length > 0 && (
+            <p className="mb-6 rounded-lg border border-ink-line bg-ink-soft p-4 text-sm text-paper/70">
+              You already run{' '}
+              <span className="font-semibold">
+                {myGarages.data.map((g) => g.name).join(', ')}
+              </span>{' '}
+              — registering here adds another garage to your account.{' '}
+              <Link href="/dashboard/garages" className="text-volt-bright hover:underline">
+                My garages
+              </Link>
+            </p>
+          )}
           <GarageForm
             requirePoint
             submitLabel="Register garage — free"
             pending={create.isPending}
             serverError={create.isError ? 'Could not register the garage. Check the form and try again.' : null}
             onSubmit={(data) =>
-              create.mutate(data, { onSuccess: () => router.push('/dashboard/garage?registered=1') })
+              create.mutate(data, {
+                onSuccess: (garage) => router.push(`/dashboard/garages/${garage.id}/profile?registered=1`),
+              })
             }
           />
         </div>

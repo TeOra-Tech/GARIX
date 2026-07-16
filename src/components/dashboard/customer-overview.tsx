@@ -5,6 +5,7 @@ import { useVehicles, type VehicleRow } from '@/lib/vehicles/queries';
 import { useUpcomingReminders, useVehiclePhotoUrl } from '@/lib/vehicles/care';
 import { reminderTypeLabel } from '@/lib/validation/vehicle-care';
 import { TransferInbox } from '@/components/vehicles/transfer-inbox';
+import { GarageTransferInbox } from '@/components/garages/transfer-inbox';
 import { cn } from '@/lib/utils';
 
 function vehicleName(v: VehicleRow): string {
@@ -134,6 +135,7 @@ export function CustomerOverview() {
   return (
     <div className="mt-8 space-y-6">
       <TransferInbox />
+      <GarageTransferInbox />
       <div className="grid gap-6 md:grid-cols-2">
         <VehiclesSnapshot />
         <UpcomingReminders />

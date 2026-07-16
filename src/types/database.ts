@@ -998,6 +998,61 @@ export type Database = {
           },
         ]
       }
+      garage_transfers: {
+        Row: {
+          created_at: string
+          from_user_id: string
+          garage_id: string
+          garage_label: string
+          id: string
+          responded_at: string | null
+          status: string
+          to_user_id: string
+        }
+        Insert: {
+          created_at?: string
+          from_user_id: string
+          garage_id: string
+          garage_label: string
+          id?: string
+          responded_at?: string | null
+          status?: string
+          to_user_id: string
+        }
+        Update: {
+          created_at?: string
+          from_user_id?: string
+          garage_id?: string
+          garage_label?: string
+          id?: string
+          responded_at?: string | null
+          status?: string
+          to_user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "garage_transfers_from_user_id_fkey"
+            columns: ["from_user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "garage_transfers_garage_id_fkey"
+            columns: ["garage_id"]
+            isOneToOne: false
+            referencedRelation: "garages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "garage_transfers_to_user_id_fkey"
+            columns: ["to_user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       garages: {
         Row: {
           approved_at: string | null
@@ -3108,6 +3163,10 @@ export type Database = {
             }
             Returns: string
           }
+      cancel_garage_transfer: {
+        Args: { p_transfer_id: string }
+        Returns: undefined
+      }
       cancel_vehicle_transfer: {
         Args: { p_transfer_id: string }
         Returns: undefined
@@ -3257,8 +3316,25 @@ export type Database = {
         Returns: boolean
       }
       geomfromewkt: { Args: { "": string }; Returns: unknown }
+      get_garage_customers: {
+        Args: { p_garage_id: string }
+        Returns: {
+          customer_id: string
+          email: string
+          full_name: string
+          jobs_completed: number
+          jobs_total: number
+          last_job_at: string
+          mobile_number: string
+          total_value: number
+        }[]
+      }
       gettransactionid: { Args: never; Returns: unknown }
       in_fleet: { Args: { f: string }; Returns: boolean }
+      initiate_garage_transfer: {
+        Args: { p_garage_id: string; p_to_email: string }
+        Returns: string
+      }
       initiate_vehicle_transfer: {
         Args: { p_to_email: string; p_vehicle_id: string }
         Returns: string
@@ -3310,6 +3386,10 @@ export type Database = {
       postgis_version: { Args: never; Returns: string }
       postgis_wagyu_version: { Args: never; Returns: string }
       process_due_reminders: { Args: never; Returns: number }
+      respond_garage_transfer: {
+        Args: { p_accept: boolean; p_transfer_id: string }
+        Returns: undefined
+      }
       respond_vehicle_transfer: {
         Args: { p_accept: boolean; p_transfer_id: string }
         Returns: undefined

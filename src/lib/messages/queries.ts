@@ -29,14 +29,16 @@ export type Message = Tables<'messages'>;
 const CONVERSATION_SELECT =
   '*, garages(name, slug, owner_id), customer:user_profiles!conversations_customer_id_fkey(full_name), service_requests(title)';
 
-export function useConversations() {
+export function useConversations(garageId?: string) {
   return useQuery({
-    queryKey: ['conversations'],
+    queryKey: garageId ? ['conversations', 'garage', garageId] : ['conversations'],
     queryFn: async (): Promise<Conversation[]> => {
-      const { data, error } = await createClient()
+      let query = createClient()
         .from('conversations')
         .select(CONVERSATION_SELECT)
         .order('last_message_at', { ascending: false, nullsFirst: false });
+      if (garageId) query = query.eq('garage_id', garageId);
+      const { data, error } = await query;
       if (error) throw error;
       return data as unknown as Conversation[];
     },
