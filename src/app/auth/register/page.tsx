@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { registerSchema, otpSchema, IRISH_COUNTIES, type RegisterData } from '@/lib/validation/auth';
 import { OAuthButtons } from '@/components/auth/oauth-buttons';
@@ -26,8 +26,10 @@ const EMPTY: FormState = {
   county: '', eircode: '', termsAccepted: false, marketingOptIn: false,
 };
 
-export default function Page() {
+function RegisterForm() {
   const router = useRouter();
+  const params = useSearchParams();
+  const isFleet = params.get('type') === 'fleet';
   const [form, setForm] = useState<FormState>(EMPTY);
   const [validated, setValidated] = useState<RegisterData | null>(null);
   const [step, setStep] = useState<'details' | 'code'>('details');
@@ -73,7 +75,11 @@ export default function Page() {
       email: parsed.data.email,
       options: {
         shouldCreateUser: true,
-        data: { full_name: parsed.data.fullName, role: 'customer' },
+        data: {
+          full_name: parsed.data.fullName,
+          role: 'customer',
+          ...(isFleet ? { account_type: 'fleet' } : {}),
+        },
       },
     });
     setPending(false);
@@ -135,20 +141,29 @@ export default function Page() {
       setFormError(
         'Your account was created but we could not save all your details. You can finish them from your dashboard.',
       );
-      setTimeout(() => router.replace('/dashboard'), 2500);
+      setTimeout(() => router.replace(isFleet ? '/dashboard/billing' : '/dashboard'), 2500);
       return;
     }
-    router.replace('/dashboard');
+    router.replace(isFleet ? '/dashboard/billing' : '/dashboard');
   }
 
   return (
     <main className="mx-auto max-w-md px-4 py-20">
-      <h1 className="font-display text-4xl font-bold">Create your account</h1>
+      {isFleet && (
+        <p className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-gold-ink">
+          For businesses &amp; fleets
+        </p>
+      )}
+      <h1 className="mt-1 font-display text-4xl font-bold">
+        {isFleet ? 'Create your fleet account' : 'Create your account'}
+      </h1>
 
       {step === 'details' ? (
         <>
           <p className="mt-2 text-paper/60">
-            Post repair requests, compare VAT-itemised quotes, and book trusted garages.
+            {isFleet
+              ? `Manage unlimited vehicles, service history and reminders for your whole fleet — €${5}/vehicle per month. Set up billing after you verify your email.`
+              : 'Post repair requests, compare VAT-itemised quotes, and book trusted garages.'}
           </p>
           <form onSubmit={submitDetails} className="mt-8 space-y-4" noValidate>
             <Field label="Full name" htmlFor="fullName" error={errors['fullName']}>
@@ -237,6 +252,23 @@ export default function Page() {
             Run a garage?{' '}
             <Link href="/garages/register" className="text-volt-bright hover:underline">Register it here</Link>
           </p>
+          <p className="mt-2 text-sm text-paper/60">
+            {isFleet ? (
+              <>
+                Just one or two cars?{' '}
+                <Link href="/auth/register" className="text-volt-bright hover:underline">
+                  Create a free individual account
+                </Link>
+              </>
+            ) : (
+              <>
+                Managing a fleet of vehicles?{' '}
+                <Link href="/auth/register?type=fleet" className="text-volt-bright hover:underline">
+                  Create a business account
+                </Link>
+              </>
+            )}
+          </p>
         </>
       ) : (
         <form onSubmit={verifyAndSave} className="mt-8 space-y-4" noValidate>
@@ -258,5 +290,13 @@ export default function Page() {
         </form>
       )}
     </main>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<main className="mx-auto max-w-md px-4 py-20 text-paper/60">Loading…</main>}>
+      <RegisterForm />
+    </Suspense>
   );
 }
