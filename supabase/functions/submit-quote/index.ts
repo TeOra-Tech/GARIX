@@ -47,23 +47,23 @@ Deno.serve(async (req) => {
     return json({ error: 'REQUEST_NOT_OPEN' }, 409);
   }
 
-  // 3. Price from admin-tunable settings
-  const settingKey = isPriority ? 'credits.priority_quote' : 'credits.submit_quote';
-  const { data: setting } = await admin
-    .from('system_settings').select('value').eq('key', settingKey).single();
-  const cost: number = setting?.value?.cost ?? (isPriority ? 5 : 2);
-
-  // 4. Spend credits atomically (raises INSUFFICIENT_CREDITS inside Postgres)
-  const { error: spendErr } = await admin.rpc('spend_credits', {
+  // 3-4. Plan-aware charge: Pro → free/unlimited; Basic → daily cap + credits.
+  // charge_for_quote centralises the plan rules and returns the credits taken
+  // (0 for Pro). When plans are disabled it behaves like the old credit flow.
+  const { data: charged, error: spendErr } = await admin.rpc('charge_for_quote', {
     p_garage_id: garageId,
-    p_amount: cost,
-    p_type: isPriority ? 'priority_quote_fee' : 'quote_fee',
-    p_description: `Quote on request ${requestId}`,
+    p_is_priority: !!isPriority,
+    p_request_id: requestId,
   });
   if (spendErr) {
-    const code = spendErr.message.includes('INSUFFICIENT_CREDITS') ? 402 : 500;
+    const code = spendErr.message.includes('INSUFFICIENT_CREDITS')
+      ? 402
+      : spendErr.message.includes('QUOTE_DAILY_LIMIT')
+        ? 429
+        : 500;
     return json({ error: spendErr.message }, code);
   }
+  const cost: number = charged ?? 0;
 
   // 5. Create the quote (+ items); refund credits if it fails
   const { data: quote, error: quoteErr } = await admin
@@ -78,10 +78,12 @@ Deno.serve(async (req) => {
     .select().single();
 
   if (quoteErr) {
-    await admin.rpc('add_credits', {
-      p_garage_id: garageId, p_amount: cost, p_type: 'refund',
-      p_description: `Refund: quote creation failed on ${requestId}`,
-    });
+    if (cost > 0) {
+      await admin.rpc('add_credits', {
+        p_garage_id: garageId, p_amount: cost, p_type: 'refund',
+        p_description: `Refund: quote creation failed on ${requestId}`,
+      });
+    }
     return json({ error: quoteErr.message }, 409);
   }
 

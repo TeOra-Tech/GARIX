@@ -2,11 +2,14 @@
 
 import { useParams } from 'next/navigation';
 import { useGarageCustomers } from '@/lib/garages/portal';
+import { ProUpsell } from '@/components/garages/pro-upsell';
 import { formatEur } from '@/lib/vat';
 
 export default function GarageCustomersPage() {
   const { id } = useParams<{ id: string }>();
   const customers = useGarageCustomers(id);
+  const needsPro =
+    customers.isError && customers.error instanceof Error && customers.error.message.includes('PRO_REQUIRED');
 
   return (
     <section className="py-8">
@@ -15,8 +18,15 @@ export default function GarageCustomersPage() {
         Everyone who has accepted a quote from this garage — your book of business.
       </p>
 
+      {needsPro && (
+        <ProUpsell
+          garageId={id}
+          feature="The customer CRM"
+          body="See everyone who's accepted a quote from this garage, with contact details, job counts and total value."
+        />
+      )}
       {customers.isPending && <p className="mt-6 text-paper/60">Loading customers…</p>}
-      {customers.isError && (
+      {customers.isError && !needsPro && (
         <p role="alert" className="mt-6 text-danger">Could not load customers. Refresh to try again.</p>
       )}
       {customers.data?.length === 0 && (
