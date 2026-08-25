@@ -125,6 +125,22 @@ export function isDuplicateReg(error: unknown): boolean {
   return typeof error === 'object' && error !== null && 'code' in error && error.code === '23505';
 }
 
+function errorMessage(error: unknown): string {
+  return typeof error === 'object' && error !== null && 'message' in error
+    ? String((error as { message: unknown }).message)
+    : '';
+}
+
+/** Individual account hit the 3-vehicle cap (enforce_vehicle_limit trigger). */
+export function isVehicleLimitError(error: unknown): boolean {
+  return errorMessage(error).includes('VEHICLE_LIMIT_REACHED');
+}
+
+/** Fleet account has no active billing (enforce_vehicle_limit trigger). */
+export function isFleetBillingError(error: unknown): boolean {
+  return errorMessage(error).includes('FLEET_BILLING_REQUIRED');
+}
+
 export function useCreateVehicle() {
   const qc = useQueryClient();
   return useMutation({

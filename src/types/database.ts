@@ -2477,6 +2477,7 @@ export type Database = {
       }
       user_profiles: {
         Row: {
+          account_type: string
           avatar_url: string | null
           created_at: string
           data_deletion_requested_at: string | null
@@ -2492,6 +2493,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          account_type?: string
           avatar_url?: string | null
           created_at?: string
           data_deletion_requested_at?: string | null
@@ -2507,6 +2509,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          account_type?: string
           avatar_url?: string | null
           created_at?: string
           data_deletion_requested_at?: string | null
@@ -2522,6 +2525,56 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      fleet_subscriptions: {
+        Row: {
+          cancel_at_period_end: boolean
+          created_at: string
+          current_period_end: string | null
+          price_per_vehicle_cents: number
+          quantity: number
+          status: string
+          stripe_customer_id: string | null
+          stripe_item_id: string | null
+          stripe_subscription_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          price_per_vehicle_cents?: number
+          quantity?: number
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_item_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          price_per_vehicle_cents?: number
+          quantity?: number
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_item_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fleet_subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       vat_calculations: {
         Row: {

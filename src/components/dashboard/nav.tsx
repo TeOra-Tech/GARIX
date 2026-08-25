@@ -12,15 +12,22 @@ const CUSTOMER_TABS = [
   { href: '/dashboard/messages', label: 'Messages' },
 ];
 
+const FLEET_TAB = { href: '/dashboard/billing', label: 'Billing' };
+
 const GARAGE_TABS = [
   { href: '/dashboard', label: 'Overview' },
   { href: '/dashboard/garages', label: 'My garages' },
   { href: '/dashboard/account', label: 'Account details' },
 ];
 
-export function DashboardNav({ role }: { role: string }) {
+export function DashboardNav({ role, accountType }: { role: string; accountType?: string }) {
   const pathname = usePathname();
-  const tabs = role === 'garage_owner' ? GARAGE_TABS : CUSTOMER_TABS;
+  const tabs =
+    role === 'garage_owner'
+      ? GARAGE_TABS
+      : accountType === 'fleet'
+        ? [...CUSTOMER_TABS, FLEET_TAB]
+        : CUSTOMER_TABS;
   return (
     <nav aria-label="Dashboard sections" className="mx-auto max-w-6xl overflow-x-auto px-4">
       <ul className="flex gap-1 text-sm">

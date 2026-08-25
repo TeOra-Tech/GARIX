@@ -23,7 +23,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
             <SignOutButton />
           </div>
         </nav>
-        <DashboardNav role={session.profile.role} />
+        <DashboardNav role={session.profile.role} accountType={session.profile.account_type} />
       </header>
       {children}
     </div>
