@@ -14,6 +14,57 @@ const admin = createClient(
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
 );
 
+async function syncGarageFromSubscription(sub: Stripe.Subscription) {
+  const item = sub.items?.data?.[0];
+  let garageId = sub.metadata?.garage_id as string | undefined;
+  if (!garageId) {
+    const { data } = await admin
+      .from('garage_subscriptions')
+      .select('garage_id')
+      .eq('stripe_customer_id', sub.customer as string)
+      .maybeSingle();
+    garageId = data?.garage_id;
+  }
+  if (!garageId) return;
+
+  const periodEnd =
+    (sub as unknown as { current_period_end?: number }).current_period_end ??
+    (item as unknown as { current_period_end?: number })?.current_period_end;
+
+  await admin.from('garage_subscriptions').upsert(
+    {
+      garage_id: garageId,
+      stripe_customer_id: sub.customer as string,
+      stripe_subscription_id: sub.id,
+      stripe_item_id: item?.id ?? null,
+      status: sub.status,
+      current_period_end: periodEnd ? new Date(periodEnd * 1000).toISOString() : null,
+      cancel_at_period_end: sub.cancel_at_period_end ?? false,
+    },
+    { onConflict: 'garage_id' },
+  );
+
+  // cache the plan on the garage for easy UI/search reads
+  const isPro = sub.status === 'active' || sub.status === 'trialing';
+  await admin.from('garages').update({ plan: isPro ? 'pro' : 'basic' }).eq('id', garageId);
+
+  if (sub.status === 'past_due' || sub.status === 'unpaid') {
+    const { data: g } = await admin.from('garages').select('owner_id').eq('id', garageId).single();
+    if (g) {
+      await admin.from('notifications').insert({
+        user_id: g.owner_id, type: 'system',
+        title: 'Pro subscription payment failed',
+        body: 'Your garage Pro payment failed. Update your payment method to keep your Pro features.',
+        data: { kind: 'garage_plan_billing', link: '/dashboard/garages' },
+      });
+    }
+  }
+}
+
+function isGarageSub(sub: Stripe.Subscription): boolean {
+  return !!sub.metadata?.garage_id;
+}
+
 async function syncFleetFromSubscription(sub: Stripe.Subscription) {
   const item = sub.items?.data?.[0];
   // find the fleet user: subscription metadata first, else by stripe customer id
@@ -76,13 +127,13 @@ Deno.serve(async (req) => {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
 
-        // ----- Fleet subscription checkout -----
+        // ----- Subscription checkout (garage Pro or fleet) -----
         if (session.mode === 'subscription' && session.subscription) {
           const sub = await stripe.subscriptions.retrieve(session.subscription as string);
-          if (!sub.metadata?.user_id && session.metadata?.user_id) {
-            sub.metadata = { ...sub.metadata, user_id: session.metadata.user_id };
-          }
-          await syncFleetFromSubscription(sub);
+          const md = session.metadata ?? {};
+          sub.metadata = { ...sub.metadata, ...md };
+          if (isGarageSub(sub)) await syncGarageFromSubscription(sub);
+          else await syncFleetFromSubscription(sub);
           break;
         }
 
@@ -128,7 +179,9 @@ Deno.serve(async (req) => {
       case 'customer.subscription.created':
       case 'customer.subscription.updated':
       case 'customer.subscription.deleted': {
-        await syncFleetFromSubscription(event.data.object as Stripe.Subscription);
+        const sub = event.data.object as Stripe.Subscription;
+        if (isGarageSub(sub)) await syncGarageFromSubscription(sub);
+        else await syncFleetFromSubscription(sub);
         break;
       }
 
@@ -138,7 +191,8 @@ Deno.serve(async (req) => {
         const subId = (invoice as unknown as { subscription?: string }).subscription;
         if (subId) {
           const sub = await stripe.subscriptions.retrieve(subId);
-          await syncFleetFromSubscription(sub);
+          if (isGarageSub(sub)) await syncGarageFromSubscription(sub);
+          else await syncFleetFromSubscription(sub);
         }
         break;
       }

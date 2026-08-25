@@ -1053,6 +1053,53 @@ export type Database = {
           },
         ]
       }
+      garage_subscriptions: {
+        Row: {
+          cancel_at_period_end: boolean
+          created_at: string
+          current_period_end: string | null
+          garage_id: string
+          price_cents: number
+          status: string
+          stripe_customer_id: string | null
+          stripe_item_id: string | null
+          stripe_subscription_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          garage_id: string
+          price_cents?: number
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_item_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          garage_id?: string
+          price_cents?: number
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_item_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "garage_subscriptions_garage_id_fkey"
+            columns: ["garage_id"]
+            isOneToOne: true
+            referencedRelation: "garages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       garages: {
         Row: {
           approved_at: string | null
@@ -1072,6 +1119,7 @@ export type Database = {
           opening_hours: Json
           owner_id: string
           phone: string
+          plan: string
           review_count: number
           service_radius_km: number
           slug: string
@@ -1098,6 +1146,7 @@ export type Database = {
           opening_hours?: Json
           owner_id: string
           phone: string
+          plan?: string
           review_count?: number
           service_radius_km?: number
           slug: string
@@ -1124,6 +1173,7 @@ export type Database = {
           opening_hours?: Json
           owner_id?: string
           phone?: string
+          plan?: string
           review_count?: number
           service_radius_km?: number
           slug?: string
@@ -3382,6 +3432,8 @@ export type Database = {
           total_value: number
         }[]
       }
+      garage_is_pro: { Args: { p_garage_id: string }; Returns: boolean }
+      garage_quotes_today: { Args: { p_garage_id: string }; Returns: number }
       gettransactionid: { Args: never; Returns: unknown }
       in_fleet: { Args: { f: string }; Returns: boolean }
       initiate_garage_transfer: {

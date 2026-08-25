@@ -10,6 +10,13 @@ import {
   useWallet,
   type FeedRequest,
 } from '@/lib/quotes/queries';
+import {
+  BASIC_DAILY_QUOTE_LIMIT,
+  garagePlanIsPro,
+  useGarageQuotesToday,
+  useGarageSubscription,
+  usePlansEnabled,
+} from '@/lib/garage-plan/queries';
 import { URGENCY_LABELS } from '@/lib/validation/request';
 import { formatEur } from '@/lib/vat';
 import { cn } from '@/lib/utils';
@@ -31,9 +38,16 @@ export default function GarageRequestFeedPage() {
   const wallet = useWallet(garage.data?.id);
   const costs = useQuoteCosts();
 
+  const plansEnabled = usePlansEnabled();
+  const sub = useGarageSubscription(id);
+  const isPro = garagePlanIsPro(sub.data);
+  const quotesToday = useGarageQuotesToday(id, isActive && !!plansEnabled.data && !isPro);
+
   const quotedRequestIds = new Set(myQuotes.data?.map((q) => q.request_id));
   const balance = wallet.data?.balance ?? 0;
   const lowBalance = wallet.data != null && balance < (wallet.data.low_balance_threshold ?? 10);
+  const plansOn = !!plansEnabled.data;
+  const remainingToday = Math.max(0, BASIC_DAILY_QUOTE_LIMIT - (quotesToday.data ?? 0));
 
   return (
     <section className="py-8">
@@ -47,26 +61,49 @@ export default function GarageRequestFeedPage() {
 
       {isActive && (
         <>
-          <div
-            className={cn(
-              'flex flex-wrap items-center justify-between gap-3 rounded-lg border p-4 text-sm',
-              lowBalance ? 'border-signal/40 bg-signal/10' : 'border-ink-line bg-ink-soft',
-            )}
-          >
-            <p>
-              Balance: <span className="font-display font-semibold">{balance} credits</span>
-              {costs.data && (
-                <span className="text-paper/50">
-                  {' '}· quote costs {costs.data.standard} credits ({costs.data.priority} priority)
-                </span>
-              )}
-            </p>
-            {lowBalance && (
-              <Link href={`/dashboard/garages/${id}/wallet`} className="text-volt-bright hover:underline">
-                Low balance — top up
+          {plansOn && isPro ? (
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-gold/40 bg-gold/10 p-4 text-sm">
+              <p>
+                <span className="font-display font-semibold text-gold-ink">Pro</span> · unlimited quotes,
+                no per-quote credits.
+              </p>
+              <Link href={`/dashboard/garages/${id}/plan`} className="text-volt-bright hover:underline">
+                Manage plan
               </Link>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div
+              className={cn(
+                'flex flex-wrap items-center justify-between gap-3 rounded-lg border p-4 text-sm',
+                lowBalance ? 'border-signal/40 bg-signal/10' : 'border-ink-line bg-ink-soft',
+              )}
+            >
+              <p>
+                {plansOn && (
+                  <span className="mr-2 font-semibold">
+                    {remainingToday} of {BASIC_DAILY_QUOTE_LIMIT} quotes left today ·
+                  </span>
+                )}
+                Balance: <span className="font-display font-semibold">{balance} credits</span>
+                {costs.data && (
+                  <span className="text-paper/50">
+                    {' '}· quote costs {costs.data.standard} credits ({costs.data.priority} priority)
+                  </span>
+                )}
+              </p>
+              {plansOn ? (
+                <Link href={`/dashboard/garages/${id}/plan`} className="text-volt-bright hover:underline">
+                  Upgrade to Pro for unlimited
+                </Link>
+              ) : (
+                lowBalance && (
+                  <Link href={`/dashboard/garages/${id}/wallet`} className="text-volt-bright hover:underline">
+                    Low balance — top up
+                  </Link>
+                )
+              )}
+            </div>
+          )}
 
           {feed.isPending && <p className="mt-8 text-paper/60">Loading open requests…</p>}
           {feed.isError && (

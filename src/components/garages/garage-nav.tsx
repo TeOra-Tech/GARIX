@@ -13,6 +13,7 @@ const TABS = [
   { path: '/customers', label: 'Customers' },
   { path: '/wallet', label: 'Wallet' },
   { path: '/reviews', label: 'Reviews' },
+  { path: '/plan', label: 'Plan' },
   { path: '/profile', label: 'Public profile' },
 ];
 

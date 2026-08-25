@@ -4,10 +4,16 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useOwnedGarage } from '@/lib/garages/portal';
 import { reviewPhotoUrl, useGarageReviews, useRespondToReview, type Review } from '@/lib/reviews/queries';
+import {
+  garagePlanIsPro,
+  useGarageSubscription,
+  usePlansEnabled,
+} from '@/lib/garage-plan/queries';
+import { ProUpsell } from '@/components/garages/pro-upsell';
 import { responseSchema, RATING_CATEGORIES } from '@/lib/validation/review';
 import { inputCls } from '@/components/auth/field';
 
-function ReviewCard({ review }: { review: Review }) {
+function ReviewCard({ review, canReply }: { review: Review; canReply: boolean }) {
   const respond = useRespondToReview();
   const [draft, setDraft] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -58,6 +64,8 @@ function ReviewCard({ review }: { review: Review }) {
         <p className="mt-4 border-l-2 border-volt pl-3 text-sm text-paper/70">
           <span className="font-medium text-paper">Your response:</span> {review.garage_response}
         </p>
+      ) : !canReply ? (
+        <p className="mt-4 text-sm text-paper/50">Replying to reviews is a Pro feature.</p>
       ) : (
         <form onSubmit={submit} className="mt-4 space-y-2" noValidate>
           <textarea
@@ -85,6 +93,10 @@ export default function GarageReviewsPage() {
   const { id } = useParams<{ id: string }>();
   const garage = useOwnedGarage(id);
   const reviews = useGarageReviews(garage.data?.id);
+  const plansEnabled = usePlansEnabled();
+  const sub = useGarageSubscription(id);
+  // Replying is a Pro feature once plans are enabled; otherwise everyone can reply.
+  const canReply = !plansEnabled.data || garagePlanIsPro(sub.data);
 
   return (
     <section className="py-8">
@@ -98,8 +110,17 @@ export default function GarageReviewsPage() {
         )}
       </div>
       <p className="mt-1 text-sm text-paper/60">
-        Reviews are written by customers and can&rsquo;t be edited or removed — you can respond publicly.
+        Reviews are written by customers and can&rsquo;t be edited or removed.
+        {canReply ? ' You can respond publicly.' : ''}
       </p>
+
+      {!canReply && (
+        <ProUpsell
+          garageId={id}
+          feature="Replying to reviews"
+          body="Publicly respond to customer reviews (you can never edit or remove them). Included with Pro."
+        />
+      )}
 
       {reviews.data?.length === 0 && (
         <p className="mt-8 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/60">
@@ -107,7 +128,7 @@ export default function GarageReviewsPage() {
         </p>
       )}
       <ul className="mt-6 space-y-4">
-        {reviews.data?.map((r) => <ReviewCard key={r.id} review={r} />)}
+        {reviews.data?.map((r) => <ReviewCard key={r.id} review={r} canReply={canReply} />)}
       </ul>
     </section>
   );
