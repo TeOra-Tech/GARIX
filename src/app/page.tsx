@@ -29,6 +29,7 @@ export default function LandingPage() {
           <div className="hidden items-center gap-7 text-sm font-medium text-charcoal/70 md:flex">
             <Link href="/search" className="transition hover:text-navy">Find a garage</Link>
             <Link href="/requests/new" className="transition hover:text-navy">Get quotes</Link>
+            <Link href="/for-business" className="transition hover:text-navy">For business</Link>
             <Link href="/garages/register" className="transition hover:text-navy">For garages</Link>
           </div>
           <div className="flex items-center gap-3">
@@ -67,6 +68,12 @@ export default function LandingPage() {
             </div>
             <p className="mt-6 text-sm text-charcoal/50">
               Free for vehicle owners &middot; Free garage registration &middot; Pay-as-you-quote credits
+            </p>
+            <p className="mt-3 text-sm text-charcoal/60">
+              Managing more than three vehicles?{' '}
+              <Link href="/for-business" className="font-semibold text-navy underline-offset-2 hover:underline">
+                Garix for business &rarr;
+              </Link>
             </p>
           </div>
           <div className="relative mx-auto w-full max-w-md">
@@ -173,6 +180,7 @@ export default function LandingPage() {
           <Image src="/logo-horizontal.png" alt="Garix" width={130} height={32} className="h-8 w-auto" />
           <nav className="flex flex-wrap gap-6 text-sm text-charcoal/60" aria-label="Footer">
             <Link href="/search" className="transition hover:text-navy">Find a garage</Link>
+            <Link href="/for-business" className="transition hover:text-navy">For business (fleets)</Link>
             <Link href="/garages/register" className="transition hover:text-navy">For garages</Link>
             <Link href="/legal/privacy" className="transition hover:text-navy">Privacy (GDPR)</Link>
             <Link href="/legal/terms" className="transition hover:text-navy">Terms</Link>
