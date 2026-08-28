@@ -71,7 +71,10 @@ export default function AccountPage() {
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-12">
-      <h1 className="font-display text-3xl font-bold">Account details</h1>
+      <Link href="/dashboard" className="text-sm text-paper/60 hover:text-volt-bright">
+        &larr; Dashboard
+      </Link>
+      <h1 className="mt-2 font-display text-3xl font-bold">Account details</h1>
 
       {profile.isPending && <p className="mt-8 text-paper/60">Loading your account…</p>}
       {profile.isError && (

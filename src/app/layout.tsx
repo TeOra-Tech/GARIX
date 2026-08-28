@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Poppins } from 'next/font/google';
 import { Providers } from '@/components/providers';
+import { SiteChrome } from '@/components/site/site-chrome';
 import { Analytics } from '@/components/analytics';
 import { RegisterServiceWorker } from '@/components/register-sw';
 import { HashSessionHandler } from '@/components/auth/hash-session';
@@ -38,7 +39,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en-IE" className={poppins.variable}>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <SiteChrome />
+          {children}
+        </Providers>
         <Analytics />
         <RegisterServiceWorker />
         <HashSessionHandler />

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useUserId } from '@/lib/messages/queries';
 import { useNotificationPreferences, useUpdatePreferences } from '@/lib/notifications/queries';
 
@@ -28,7 +29,10 @@ export default function NotificationPreferencesPage() {
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-12">
-      <h1 className="font-display text-3xl font-bold">Notification preferences</h1>
+      <Link href="/dashboard" className="text-sm text-paper/60 hover:text-volt-bright">
+        &larr; Dashboard
+      </Link>
+      <h1 className="mt-2 font-display text-3xl font-bold">Notification preferences</h1>
       <p className="mt-2 text-paper/60">Choose how Garix reaches you.</p>
 
       {prefs.isPending && <p className="mt-8 text-paper/60">Loading…</p>}

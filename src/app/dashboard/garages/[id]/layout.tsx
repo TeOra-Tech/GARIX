@@ -11,7 +11,7 @@ export default function GarageDashLayout({ children }: { children: React.ReactNo
   const garage = useOwnedGarage(id);
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
+    <div className="mx-auto max-w-6xl px-4 py-8">
       <Link href="/dashboard/garages" className="text-sm text-paper/60 hover:text-volt-bright">
         &larr; My garages
       </Link>
@@ -34,10 +34,11 @@ export default function GarageDashLayout({ children }: { children: React.ReactNo
               </Link>
             )}
           </div>
-          <div className="mt-4">
+
+          <div className="mt-6 gap-8 md:grid md:grid-cols-[200px_1fr]">
             <GarageNav garageId={garage.data.id} />
+            <div className="min-w-0">{children}</div>
           </div>
-          {children}
         </>
       )}
     </div>

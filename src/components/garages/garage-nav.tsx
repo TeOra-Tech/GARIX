@@ -25,8 +25,11 @@ export function GarageNav({ garageId }: { garageId: string }) {
   const pathname = usePathname();
   const base = `/dashboard/garages/${garageId}`;
   return (
-    <nav aria-label="Garage sections" className="overflow-x-auto border-b border-ink-line">
-      <ul className="flex gap-1 text-sm">
+    <nav
+      aria-label="Garage sections"
+      className="mb-4 border-b border-ink-line pb-2 md:sticky md:top-24 md:mb-0 md:border-b-0 md:pb-0"
+    >
+      <ul className="flex gap-1 overflow-x-auto text-sm md:flex-col md:gap-0.5 md:overflow-visible">
         {TABS.map((t) => {
           const href = base + t.path;
           const active =
@@ -39,10 +42,10 @@ export function GarageNav({ garageId }: { garageId: string }) {
                 href={href}
                 aria-current={active ? 'page' : undefined}
                 className={cn(
-                  'block whitespace-nowrap border-b-2 px-3 py-2.5 transition',
+                  'block whitespace-nowrap rounded-lg px-3 py-2 transition md:w-full',
                   active
-                    ? 'border-volt text-volt-bright'
-                    : 'border-transparent text-paper/60 hover:text-paper',
+                    ? 'bg-volt/10 font-medium text-volt-bright'
+                    : 'text-paper/60 hover:bg-ink-soft hover:text-paper',
                 )}
               >
                 {t.label}

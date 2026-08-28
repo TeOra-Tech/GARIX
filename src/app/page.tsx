@@ -20,27 +20,6 @@ const garageSteps = [
 export default function LandingPage() {
   return (
     <main className="bg-white text-charcoal">
-      {/* ---------- Nav ---------- */}
-      <header className="sticky top-0 z-40 border-b border-line bg-white/90 backdrop-blur">
-        <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3" aria-label="Main">
-          <Link href="/" aria-label="Garix home" className="flex items-center">
-            <Image src="/logo-horizontal.png" alt="Garix" width={150} height={37} priority className="h-9 w-auto" />
-          </Link>
-          <div className="hidden items-center gap-7 text-sm font-medium text-charcoal/70 md:flex">
-            <Link href="/search" className="transition hover:text-navy">Find a garage</Link>
-            <Link href="/requests/new" className="transition hover:text-navy">Get quotes</Link>
-            <Link href="/for-business" className="transition hover:text-navy">For business</Link>
-            <Link href="/garages/register" className="transition hover:text-navy">For garages</Link>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link href="/auth/login" className="text-sm font-medium text-navy transition hover:text-navy-soft">
-              Log in
-            </Link>
-            <Link href="/auth/register" className="btn-primary !px-5 !py-2.5 text-sm">Sign up</Link>
-          </div>
-        </nav>
-      </header>
-
       {/* ---------- Hero ---------- */}
       <section className="relative overflow-hidden">
         <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 h-[34rem] w-[34rem] hex-clip bg-navy/[0.04]" />
@@ -90,7 +69,7 @@ export default function LandingPage() {
       </section>
 
       {/* ---------- For drivers ---------- */}
-      <section className="border-t border-line bg-ink-soft">
+      <section id="for-drivers" className="scroll-mt-20 border-t border-line bg-ink-soft">
         <div className="mx-auto max-w-6xl px-4 py-20">
           <p className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-gold-ink">For drivers</p>
           <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-navy md:text-4xl">How it works</h2>
