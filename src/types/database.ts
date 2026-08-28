@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5"
+    PostgrestVersion: "14.17"
   }
   graphql_public: {
     Tables: {
@@ -221,6 +221,89 @@ export type Database = {
             columns: ["garage_id"]
             isOneToOne: true
             referencedRelation: "garages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bookings: {
+        Row: {
+          created_at: string
+          customer_id: string | null
+          customer_name: string | null
+          customer_phone: string | null
+          duration_minutes: number
+          garage_id: string
+          id: string
+          notes: string | null
+          quote_id: string | null
+          request_id: string | null
+          scheduled_at: string
+          status: string
+          title: string
+          updated_at: string
+          vehicle_reg: string | null
+        }
+        Insert: {
+          created_at?: string
+          customer_id?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          duration_minutes?: number
+          garage_id: string
+          id?: string
+          notes?: string | null
+          quote_id?: string | null
+          request_id?: string | null
+          scheduled_at: string
+          status?: string
+          title: string
+          updated_at?: string
+          vehicle_reg?: string | null
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          duration_minutes?: number
+          garage_id?: string
+          id?: string
+          notes?: string | null
+          quote_id?: string | null
+          request_id?: string | null
+          scheduled_at?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          vehicle_reg?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_garage_id_fkey"
+            columns: ["garage_id"]
+            isOneToOne: false
+            referencedRelation: "garages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "service_requests"
             referencedColumns: ["id"]
           },
         ]
@@ -771,6 +854,56 @@ export type Database = {
           },
         ]
       }
+      fleet_subscriptions: {
+        Row: {
+          cancel_at_period_end: boolean
+          created_at: string
+          current_period_end: string | null
+          price_per_vehicle_cents: number
+          quantity: number
+          status: string
+          stripe_customer_id: string | null
+          stripe_item_id: string | null
+          stripe_subscription_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          price_per_vehicle_cents?: number
+          quantity?: number
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_item_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          price_per_vehicle_cents?: number
+          quantity?: number
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_item_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fleet_subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       fleet_vehicles: {
         Row: {
           fleet_id: string
@@ -959,6 +1092,72 @@ export type Database = {
           },
         ]
       }
+      garage_reminders: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          customer_id: string | null
+          customer_name: string | null
+          due_date: string
+          garage_id: string
+          id: string
+          last_notified_at: string | null
+          message: string | null
+          notify_customer: boolean
+          reminder_type: string
+          title: string | null
+          updated_at: string
+          vehicle_reg: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          customer_id?: string | null
+          customer_name?: string | null
+          due_date: string
+          garage_id: string
+          id?: string
+          last_notified_at?: string | null
+          message?: string | null
+          notify_customer?: boolean
+          reminder_type?: string
+          title?: string | null
+          updated_at?: string
+          vehicle_reg?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          customer_id?: string | null
+          customer_name?: string | null
+          due_date?: string
+          garage_id?: string
+          id?: string
+          last_notified_at?: string | null
+          message?: string | null
+          notify_customer?: boolean
+          reminder_type?: string
+          title?: string | null
+          updated_at?: string
+          vehicle_reg?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "garage_reminders_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "garage_reminders_garage_id_fkey"
+            columns: ["garage_id"]
+            isOneToOne: false
+            referencedRelation: "garages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       garage_services: {
         Row: {
           garage_id: string
@@ -993,6 +1192,53 @@ export type Database = {
             foreignKeyName: "garage_services_garage_id_fkey"
             columns: ["garage_id"]
             isOneToOne: false
+            referencedRelation: "garages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      garage_subscriptions: {
+        Row: {
+          cancel_at_period_end: boolean
+          created_at: string
+          current_period_end: string | null
+          garage_id: string
+          price_cents: number
+          status: string
+          stripe_customer_id: string | null
+          stripe_item_id: string | null
+          stripe_subscription_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          garage_id: string
+          price_cents?: number
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_item_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          garage_id?: string
+          price_cents?: number
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_item_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "garage_subscriptions_garage_id_fkey"
+            columns: ["garage_id"]
+            isOneToOne: true
             referencedRelation: "garages"
             referencedColumns: ["id"]
           },
@@ -1049,53 +1295,6 @@ export type Database = {
             columns: ["to_user_id"]
             isOneToOne: false
             referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      garage_subscriptions: {
-        Row: {
-          cancel_at_period_end: boolean
-          created_at: string
-          current_period_end: string | null
-          garage_id: string
-          price_cents: number
-          status: string
-          stripe_customer_id: string | null
-          stripe_item_id: string | null
-          stripe_subscription_id: string | null
-          updated_at: string
-        }
-        Insert: {
-          cancel_at_period_end?: boolean
-          created_at?: string
-          current_period_end?: string | null
-          garage_id: string
-          price_cents?: number
-          status?: string
-          stripe_customer_id?: string | null
-          stripe_item_id?: string | null
-          stripe_subscription_id?: string | null
-          updated_at?: string
-        }
-        Update: {
-          cancel_at_period_end?: boolean
-          created_at?: string
-          current_period_end?: string | null
-          garage_id?: string
-          price_cents?: number
-          status?: string
-          stripe_customer_id?: string | null
-          stripe_item_id?: string | null
-          stripe_subscription_id?: string | null
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "garage_subscriptions_garage_id_fkey"
-            columns: ["garage_id"]
-            isOneToOne: true
-            referencedRelation: "garages"
             referencedColumns: ["id"]
           },
         ]
@@ -2576,56 +2775,6 @@ export type Database = {
         }
         Relationships: []
       }
-      fleet_subscriptions: {
-        Row: {
-          cancel_at_period_end: boolean
-          created_at: string
-          current_period_end: string | null
-          price_per_vehicle_cents: number
-          quantity: number
-          status: string
-          stripe_customer_id: string | null
-          stripe_item_id: string | null
-          stripe_subscription_id: string | null
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          cancel_at_period_end?: boolean
-          created_at?: string
-          current_period_end?: string | null
-          price_per_vehicle_cents?: number
-          quantity?: number
-          status?: string
-          stripe_customer_id?: string | null
-          stripe_item_id?: string | null
-          stripe_subscription_id?: string | null
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          cancel_at_period_end?: boolean
-          created_at?: string
-          current_period_end?: string | null
-          price_per_vehicle_cents?: number
-          quantity?: number
-          status?: string
-          stripe_customer_id?: string | null
-          stripe_item_id?: string | null
-          stripe_subscription_id?: string | null
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "fleet_subscriptions_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       vat_calculations: {
         Row: {
           calculated_at: string
@@ -3228,6 +3377,22 @@ export type Database = {
         }
         Returns: number
       }
+      add_garage_service_record: {
+        Args: {
+          p_cost_eur?: number
+          p_description?: string
+          p_event_date: string
+          p_event_type: string
+          p_garage_id: string
+          p_mileage_km?: number
+          p_next_due_date?: string
+          p_parts_replaced?: string
+          p_title?: string
+          p_vehicle_id: string
+          p_warranty_until?: string
+        }
+        Returns: string
+      }
       addauth: { Args: { "": string }; Returns: boolean }
       addgeometrycolumn:
         | {
@@ -3266,6 +3431,10 @@ export type Database = {
             }
             Returns: string
           }
+      assert_garage_pro_access: {
+        Args: { p_garage_id: string }
+        Returns: undefined
+      }
       cancel_garage_transfer: {
         Args: { p_transfer_id: string }
         Returns: undefined
@@ -3273,6 +3442,14 @@ export type Database = {
       cancel_vehicle_transfer: {
         Args: { p_transfer_id: string }
         Returns: undefined
+      }
+      charge_for_quote: {
+        Args: {
+          p_garage_id: string
+          p_is_priority: boolean
+          p_request_id: string
+        }
+        Returns: number
       }
       complete_job: { Args: { p_request_id: string }; Returns: undefined }
       current_user_role: {
@@ -3313,7 +3490,14 @@ export type Database = {
         | { Args: { table_name: string }; Returns: string }
       enablelongtransactions: { Args: never; Returns: string }
       equals: { Args: { geom1: unknown; geom2: unknown }; Returns: boolean }
+      fleet_can_add: { Args: { p_user: string }; Returns: boolean }
       g_radius: { Args: { p_garage_id: string }; Returns: number }
+      garage_is_pro: { Args: { p_garage_id: string }; Returns: boolean }
+      garage_quotes_today: { Args: { p_garage_id: string }; Returns: number }
+      garage_serviced_vehicle: {
+        Args: { p_garage_id: string; p_vehicle_id: string }
+        Returns: boolean
+      }
       garages_matching_request: {
         Args: { p_request_id: string }
         Returns: {
@@ -3419,6 +3603,7 @@ export type Database = {
         Returns: boolean
       }
       geomfromewkt: { Args: { "": string }; Returns: unknown }
+      get_garage_analytics: { Args: { p_garage_id: string }; Returns: Json }
       get_garage_customers: {
         Args: { p_garage_id: string }
         Returns: {
@@ -3432,8 +3617,46 @@ export type Database = {
           total_value: number
         }[]
       }
-      garage_is_pro: { Args: { p_garage_id: string }; Returns: boolean }
-      garage_quotes_today: { Args: { p_garage_id: string }; Returns: number }
+      get_garage_serviced_vehicles: {
+        Args: { p_garage_id: string }
+        Returns: {
+          jobs: number
+          last_job_at: string
+          make: string
+          model: string
+          record_count: number
+          registration_number: string
+          vehicle_id: string
+          year: number
+        }[]
+      }
+      get_garage_vehicle_history: {
+        Args: { p_garage_id: string; p_vehicle_id: string }
+        Returns: {
+          cost_eur: number | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          event_date: string
+          event_type: string
+          garage_id: string | null
+          garage_name: string | null
+          id: string
+          mileage_km: number | null
+          next_due_date: string | null
+          next_due_mileage_km: number | null
+          parts_replaced: string | null
+          title: string | null
+          vehicle_id: string
+          warranty_until: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "vehicle_history"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       gettransactionid: { Args: never; Returns: unknown }
       in_fleet: { Args: { f: string }; Returns: boolean }
       initiate_garage_transfer: {
@@ -3450,6 +3673,7 @@ export type Database = {
       longtransactionsenabled: { Args: never; Returns: boolean }
       owns_fleet: { Args: { f: string }; Returns: boolean }
       owns_garage: { Args: { g: string }; Returns: boolean }
+      plans_enabled: { Args: never; Returns: boolean }
       populate_geometry_columns:
         | { Args: { tbl_oid: unknown; use_typmod?: boolean }; Returns: number }
         | { Args: { use_typmod?: boolean }; Returns: string }
@@ -3491,6 +3715,7 @@ export type Database = {
       postgis_version: { Args: never; Returns: string }
       postgis_wagyu_version: { Args: never; Returns: string }
       process_due_reminders: { Args: never; Returns: number }
+      process_garage_reminders: { Args: never; Returns: number }
       respond_garage_transfer: {
         Args: { p_accept: boolean; p_transfer_id: string }
         Returns: undefined
