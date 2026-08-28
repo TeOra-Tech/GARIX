@@ -14,12 +14,8 @@ export function usePlansEnabled() {
     queryKey: ['system_settings', 'plans.enabled'],
     staleTime: 5 * 60 * 1000,
     queryFn: async (): Promise<boolean> => {
-      const { data } = await createClient()
-        .from('system_settings')
-        .select('value')
-        .eq('key', 'plans.enabled')
-        .maybeSingle();
-      return Boolean((data?.value as { enabled?: boolean } | null)?.enabled);
+      const { data } = await createClient().rpc('plans_enabled');
+      return Boolean(data);
     },
   });
 }
