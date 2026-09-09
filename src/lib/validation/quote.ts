@@ -22,6 +22,20 @@ export const quoteSchema = z.object({
     .max(999)
     .nullable()
     .or(z.literal('').transform(() => null)),
+  earliestStartDate: z
+    .union([
+      z.literal(''),
+      z
+        .string()
+        .regex(/^\d{4}-\d{2}-\d{2}$/, 'Use a valid date')
+        .refine((d) => {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          return new Date(`${d}T00:00:00`) >= today;
+        }, 'Availability cannot be in the past'),
+    ])
+    .nullish()
+    .transform((v) => (v ? v : null)),
   warrantyInfo: z.string().trim().max(500).optional().or(z.literal('')),
   notes: z.string().trim().max(1000).optional().or(z.literal('')),
 });

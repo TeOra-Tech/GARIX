@@ -167,6 +167,7 @@ export function useSubmitQuote() {
           partsCost: totals.parts,
           isPriority: data.isPriority,
           estimatedDurationHours: data.estimatedDurationHours,
+          earliestStartDate: data.earliestStartDate || null,
           warrantyInfo: data.warrantyInfo || null,
           notes: data.notes || null,
           items: data.items.map((i) => ({
@@ -213,7 +214,14 @@ export function submitErrorMessage(error: unknown, cost: number): string {
 // ---------- customer side ----------
 
 export type QuoteWithGarage = Tables<'quotes'> & {
-  garages: { name: string; slug: string; avg_rating: number; review_count: number } | null;
+  garages: {
+    name: string;
+    slug: string;
+    avg_rating: number;
+    review_count: number;
+    years_in_business: number | null;
+    completed_jobs_count: number;
+  } | null;
   quote_items: Tables<'quote_items'>[];
 };
 
@@ -223,11 +231,35 @@ export function useRequestQuotes(requestId: string) {
     queryFn: async (): Promise<QuoteWithGarage[]> => {
       const { data, error } = await createClient()
         .from('quotes')
-        .select('*, garages(name, slug, avg_rating, review_count), quote_items(*)')
+        .select(
+          '*, garages(name, slug, avg_rating, review_count, years_in_business, completed_jobs_count), quote_items(*)',
+        )
         .eq('request_id', requestId)
         .order('created_at');
       if (error) throw error;
       return data as QuoteWithGarage[];
+    },
+  });
+}
+
+/** Per-garage distance + similar-jobs count for the quotes on a request (owner-only RPC). */
+export type QuoteComparisonStat = {
+  garage_id: string;
+  distance_km: number | null;
+  similar_jobs_count: number;
+};
+
+export function useQuoteComparisonStats(requestId: string) {
+  return useQuery({
+    queryKey: ['quote_comparison_stats', requestId],
+    queryFn: async (): Promise<Record<string, QuoteComparisonStat>> => {
+      const { data, error } = await createClient().rpc('quote_comparison_stats', {
+        p_request_id: requestId,
+      });
+      if (error) throw error;
+      const byGarage: Record<string, QuoteComparisonStat> = {};
+      for (const row of (data ?? []) as QuoteComparisonStat[]) byGarage[row.garage_id] = row;
+      return byGarage;
     },
   });
 }

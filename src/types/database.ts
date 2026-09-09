@@ -1863,6 +1863,7 @@ export type Database = {
         Row: {
           created_at: string
           credits_charged: number
+          earliest_start_date: string | null
           estimated_duration_hours: number | null
           garage_id: string
           grand_total: number | null
@@ -1885,6 +1886,7 @@ export type Database = {
         Insert: {
           created_at?: string
           credits_charged?: number
+          earliest_start_date?: string | null
           estimated_duration_hours?: number | null
           garage_id: string
           grand_total?: number | null
@@ -1907,6 +1909,7 @@ export type Database = {
         Update: {
           created_at?: string
           credits_charged?: number
+          earliest_start_date?: string | null
           estimated_duration_hours?: number | null
           garage_id?: string
           grand_total?: number | null
@@ -3716,6 +3719,14 @@ export type Database = {
       postgis_wagyu_version: { Args: never; Returns: string }
       process_due_reminders: { Args: never; Returns: number }
       process_garage_reminders: { Args: never; Returns: number }
+      quote_comparison_stats: {
+        Args: { p_request_id: string }
+        Returns: {
+          garage_id: string
+          distance_km: number
+          similar_jobs_count: number
+        }[]
+      }
       respond_garage_transfer: {
         Args: { p_accept: boolean; p_transfer_id: string }
         Returns: undefined

@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
 
   const body = await req.json();
   const { requestId, garageId, labourCost, partsCost, isPriority,
-          estimatedDurationHours, warrantyInfo, notes, items } = body;
+          estimatedDurationHours, earliestStartDate, warrantyInfo, notes, items } = body;
 
   // 1. Caller must own the garage, and garage must be active
   const { data: garage } = await admin
@@ -73,6 +73,7 @@ Deno.serve(async (req) => {
       labour_cost: labourCost, parts_cost: partsCost,
       is_priority: !!isPriority, credits_charged: cost,
       estimated_duration_hours: estimatedDurationHours,
+      earliest_start_date: earliestStartDate ?? null,
       warranty_info: warrantyInfo, notes,
     })
     .select().single();

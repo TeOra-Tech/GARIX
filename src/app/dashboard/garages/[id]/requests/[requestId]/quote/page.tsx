@@ -50,6 +50,7 @@ export default function WriteQuotePage() {
   const [rows, setRows] = useState<ItemRow[]>([{ ...EMPTY_ROW }]);
   const [isPriority, setIsPriority] = useState(false);
   const [duration, setDuration] = useState('');
+  const [earliestStart, setEarliestStart] = useState('');
   const [warranty, setWarranty] = useState('');
   const [notes, setNotes] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -71,6 +72,7 @@ export default function WriteQuotePage() {
       items: rows.filter((r) => r.description.trim() || r.unitPrice !== ''),
       isPriority,
       estimatedDurationHours: duration,
+      earliestStartDate: earliestStart,
       warrantyInfo: warranty,
       notes,
     });
@@ -196,6 +198,11 @@ export default function WriteQuotePage() {
               </section>
 
               <div className="grid gap-4 sm:grid-cols-2">
+                <Field label="Earliest you can do the job (optional)" htmlFor="earliest-start">
+                  <input id="earliest-start" type="date" className={inputCls} value={earliestStart}
+                    min={new Date().toISOString().slice(0, 10)}
+                    onChange={(e) => setEarliestStart(e.target.value)} />
+                </Field>
                 <Field label="Estimated duration (hours, optional)" htmlFor="duration">
                   <input id="duration" inputMode="decimal" className={inputCls} value={duration}
                     onChange={(e) => setDuration(e.target.value)} placeholder="2.5" />
