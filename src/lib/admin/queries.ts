@@ -56,6 +56,7 @@ export function usePlatformStats() {
 export type AdminGarage = Tables<'garages'> & {
   user_profiles: { full_name: string; email: string } | null;
   credit_wallets: { balance: number } | null;
+  garage_subscriptions: { status: string; current_period_end: string | null; stripe_subscription_id: string | null } | null;
 };
 
 export function useAdminGarages(statusFilter: string | null) {
@@ -64,7 +65,10 @@ export function useAdminGarages(statusFilter: string | null) {
     queryFn: async (): Promise<AdminGarage[]> => {
       let q = createClient()
         .from('garages')
-        .select('*, user_profiles!garages_owner_id_fkey(full_name, email), credit_wallets(balance)')
+        .select(
+          '*, user_profiles!garages_owner_id_fkey(full_name, email), credit_wallets(balance), ' +
+            'garage_subscriptions(status, current_period_end, stripe_subscription_id)',
+        )
         .order('created_at', { ascending: false })
         .limit(100);
       if (statusFilter) q = q.eq('status', statusFilter as Tables<'garages'>['status']);
@@ -89,6 +93,56 @@ export function useAdjustCredits() {
   return useMutation({
     mutationFn: (input: { garageId: string; amount: number; reason: string }) =>
       adminApi({ action: 'adjust_credits', ...input }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['admin'] }),
+  });
+}
+
+export function useGrantGarageTrial() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: { garageId: string; days: number }) =>
+      adminApi({ action: 'grant_garage_trial', ...input }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['admin'] }),
+  });
+}
+
+// ---------- fleets ----------
+
+export type AdminFleetCandidate = Pick<
+  Tables<'user_profiles'>,
+  'id' | 'full_name' | 'email' | 'account_type' | 'created_at'
+> & {
+  fleet_subscriptions: { status: string; current_period_end: string | null; stripe_subscription_id: string | null } | null;
+  vehicles: { count: number }[];
+};
+
+/** Customers eligible for a fleet grant, with their current fleet standing. */
+export function useAdminFleetCandidates(search: string) {
+  return useQuery({
+    queryKey: ['admin', 'fleet_candidates', search],
+    queryFn: async (): Promise<AdminFleetCandidate[]> => {
+      let q = createClient()
+        .from('user_profiles')
+        .select(
+          'id, full_name, email, account_type, created_at, ' +
+            'fleet_subscriptions(status, current_period_end, stripe_subscription_id), vehicles(count)',
+        )
+        .eq('role', 'customer')
+        .order('created_at', { ascending: false })
+        .limit(100);
+      if (search.trim()) q = q.or(`full_name.ilike.%${search.trim()}%,email.ilike.%${search.trim()}%`);
+      const { data, error } = await q;
+      if (error) throw error;
+      return data as unknown as AdminFleetCandidate[];
+    },
+  });
+}
+
+export function useGrantFleetTrial() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: { userId: string; days: number }) =>
+      adminApi({ action: 'grant_fleet_trial', ...input }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['admin'] }),
   });
 }
