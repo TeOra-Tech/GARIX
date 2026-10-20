@@ -16,3 +16,9 @@ create index if not exists idx_review_photos_review on review_photos (review_id)
 create index if not exists idx_messages_sender on messages (sender_id);
 create index if not exists idx_vehicles_model on vehicles (model_id);
 create index if not exists idx_bookings_quote on bookings (quote_id) where quote_id is not null;
+-- Found unindexed on the live database (2026-10-20 read-only health check).
+create index if not exists idx_vehicles_make on vehicles (make_id);
+create index if not exists idx_vehicles_engine on vehicles (engine_id);
+create index if not exists idx_service_requests_accepted_quote on service_requests (accepted_quote_id);
+create index if not exists idx_service_requests_problem_category on service_requests (problem_category_id);
+create index if not exists idx_garage_services_category on garage_services (repair_category_id);
