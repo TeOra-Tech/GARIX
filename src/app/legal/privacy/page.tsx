@@ -5,8 +5,8 @@ export const metadata = {
   description: 'How Garix collects, uses, and protects your personal data under GDPR.',
 };
 
-const S = ({ title, children }: { title: string; children: React.ReactNode }) => (
-  <section className="mt-10">
+const S = ({ title, id, children }: { title: string; id?: string; children: React.ReactNode }) => (
+  <section id={id} className="mt-10 scroll-mt-20">
     <h2 className="font-display text-2xl font-bold">{title}</h2>
     <div className="mt-3 space-y-3 text-paper/80">{children}</div>
   </section>
@@ -94,10 +94,12 @@ export default function PrivacyPage() {
         </p>
       </S>
 
-      <S title="Cookies">
+      <S title="Cookies" id="cookies">
         <p>
-          We use strictly necessary cookies for sign-in sessions. Analytics (Google Analytics) runs
-          only where configured and is used in aggregate to improve the product.
+          We use strictly necessary cookies for sign-in sessions and to remember your cookie choice.
+          Analytics (Google Analytics) only runs if you accept it in the cookie banner, and is used in
+          aggregate to improve the product. You can change your choice at any time with &ldquo;Cookie
+          settings&rdquo; in the site footer; we ask again after six months.
         </p>
       </S>
 

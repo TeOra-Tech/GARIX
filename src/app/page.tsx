@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { CookieSettingsButton } from '@/components/consent/cookie-consent';
+import { gaEnabled } from '@/lib/analytics-config';
 
 // Brand landing (Brand Guidelines v1.0): white ground, navy #0B1F4D system,
 // gold #D4AF37 as sparing accent (<15%). Poppins throughout.
@@ -164,6 +166,7 @@ export default function LandingPage() {
             <Link href="/garages/register" className="transition hover:text-navy">For garages</Link>
             <Link href="/legal/privacy" className="transition hover:text-navy">Privacy (GDPR)</Link>
             <Link href="/legal/terms" className="transition hover:text-navy">Terms</Link>
+            {gaEnabled && <CookieSettingsButton className="transition hover:text-navy" />}
           </nav>
           <p className="text-xs text-charcoal/70">&copy; {new Date().getFullYear()} Garix. Made in Ireland.</p>
         </div>
