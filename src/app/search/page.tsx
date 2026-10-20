@@ -94,7 +94,7 @@ export default function SearchPage() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-12">
       <h1 className="font-display text-3xl font-bold md:text-4xl">Find a garage</h1>
-      <p className="mt-2 text-paper/60">
+      <p className="mt-2 text-paper/70">
         Showing garages within {radiusKm} km of <span className="text-paper">{centerLabel}</span>.
       </p>
 
@@ -118,7 +118,7 @@ export default function SearchPage() {
           </Field>
           {places && (
             <ul className="divide-y divide-ink-line rounded-lg border border-ink-line bg-ink-soft">
-              {places.length === 0 && <li className="p-3 text-sm text-paper/50">No matches.</li>}
+              {places.length === 0 && <li className="p-3 text-sm text-paper/70">No matches.</li>}
               {places.map((p) => (
                 <li key={`${p.lat},${p.lng}`}>
                   <button type="button" className="w-full p-3 text-left text-sm hover:bg-volt/10" onClick={() => pickPlace(p)}>
@@ -176,11 +176,11 @@ export default function SearchPage() {
         {/* ---------- Results ---------- */}
         <section>
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm text-paper/60" role="status">
+            <p className="text-sm text-paper/70" role="status">
               {search.isPending ? 'Searching…' : `${results.length} garage${results.length === 1 ? '' : 's'} found`}
             </p>
             <div className="flex items-center gap-3">
-              <label className="flex items-center gap-2 text-sm text-paper/60">
+              <label className="flex items-center gap-2 text-sm text-paper/70">
                 Sort
                 <select aria-label="Sort results" className={cn(inputCls, '!w-auto !py-2')} value={sort}
                   onChange={(e) => setSort(e.target.value as SortKey)}>
@@ -196,7 +196,7 @@ export default function SearchPage() {
                       aria-pressed={view === v}
                       className={cn(
                         'px-4 py-2 text-sm font-medium capitalize transition',
-                        view === v ? 'bg-volt text-white' : 'text-paper/60 hover:text-paper',
+                        view === v ? 'bg-volt text-white' : 'text-paper/70 hover:text-paper',
                       )}
                       onClick={() => setView(v)}
                     >
@@ -219,7 +219,7 @@ export default function SearchPage() {
           ) : (
             <>
               {search.isSuccess && results.length === 0 && (
-                <div className="mt-8 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/60">
+                <div className="mt-8 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/70">
                   No garages match those filters yet. Try widening the distance.
                 </div>
               )}
@@ -233,7 +233,7 @@ export default function SearchPage() {
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div>
                           <h2 className="font-display text-lg font-semibold">{r.name}</h2>
-                          <p className="mt-1 text-sm text-paper/60">
+                          <p className="mt-1 text-sm text-paper/70">
                             {r.town}, Co. {r.county} · {r.distance_km} km away
                           </p>
                         </div>
@@ -242,10 +242,10 @@ export default function SearchPage() {
                             <>
                               <span className="text-gold">★</span>{' '}
                               <span className="font-medium">{Number(r.avg_rating).toFixed(1)}</span>{' '}
-                              <span className="text-paper/50">({r.review_count})</span>
+                              <span className="text-paper/70">({r.review_count})</span>
                             </>
                           ) : (
-                            <span className="text-paper/40">No reviews yet</span>
+                            <span className="text-paper/70">No reviews yet</span>
                           )}
                         </div>
                       </div>

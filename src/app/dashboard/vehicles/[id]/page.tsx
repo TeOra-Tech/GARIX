@@ -20,11 +20,11 @@ export default function VehicleDetailPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-12">
-      <Link href="/dashboard/vehicles" className="text-sm text-paper/60 hover:text-volt-bright">
+      <Link href="/dashboard/vehicles" className="text-sm text-paper/70 hover:text-volt-bright">
         &larr; My vehicles
       </Link>
 
-      {vehicle.isPending && <p className="mt-8 text-paper/60">Loading…</p>}
+      {vehicle.isPending && <p className="mt-8 text-paper/70">Loading…</p>}
       {vehicle.isError && (
         <p role="alert" className="mt-8 text-danger">
           Could not load this vehicle — it may have been deleted or transferred.
@@ -42,7 +42,7 @@ export default function VehicleDetailPage() {
             <div>
               <h1 className="font-display text-2xl font-bold md:text-3xl">{vehicleName(vehicle.data)}</h1>
               <p className="mt-1 font-mono text-volt-bright">{vehicle.data.registration_number}</p>
-              <p className="mt-2 text-sm text-paper/60">
+              <p className="mt-2 text-sm text-paper/70">
                 {[
                   vehicle.data.vehicle_engines?.label === 'custom'
                     ? vehicle.data.engine_size_custom

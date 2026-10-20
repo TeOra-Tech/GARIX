@@ -25,7 +25,7 @@ function dueInfo(due: string): { text: string; cls: string } {
   if (days < 0) return { text: `Overdue — ${s}`, cls: 'text-danger' };
   if (days === 0) return { text: 'Due today', cls: 'text-danger' };
   if (days <= 7) return { text: `Due ${s} (in ${days}d)`, cls: 'text-warning' };
-  return { text: `Due ${s}`, cls: 'text-paper/60' };
+  return { text: `Due ${s}`, cls: 'text-paper/70' };
 }
 
 function ReminderRow({ garageId, r }: { garageId: string; r: GarageReminder }) {
@@ -38,13 +38,13 @@ function ReminderRow({ garageId, r }: { garageId: string; r: GarageReminder }) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h3 className="font-display font-semibold">{r.title || reminderTypeLabel(r.reminder_type)}</h3>
-          <p className={cn('mt-1 text-sm font-medium', done ? 'text-paper/50' : due.cls)}>
+          <p className={cn('mt-1 text-sm font-medium', done ? 'text-paper/70' : due.cls)}>
             {done ? 'Done' : due.text}
             {r.customer_name && ` · ${r.customer_name}`}
             {r.vehicle_reg && ` · ${r.vehicle_reg}`}
           </p>
-          {r.message && <p className="mt-1 text-sm text-paper/60">{r.message}</p>}
-          <p className="mt-1 text-xs text-paper/40">
+          {r.message && <p className="mt-1 text-sm text-paper/70">{r.message}</p>}
+          <p className="mt-1 text-xs text-paper/70">
             {r.notify_customer ? 'Customer will be notified when due' : 'Internal reminder only'}
           </p>
         </div>
@@ -54,7 +54,7 @@ function ReminderRow({ garageId, r }: { garageId: string; r: GarageReminder }) {
               Mark done
             </button>
           )}
-          <button type="button" className="text-paper/40 hover:text-danger" onClick={() => del.mutate(r.id)}>Delete</button>
+          <button type="button" className="text-paper/70 hover:text-danger" onClick={() => del.mutate(r.id)}>Delete</button>
         </div>
       </div>
     </li>
@@ -88,7 +88,7 @@ function RemindersBody({ garageId }: { garageId: string }) {
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-paper/60">
+        <p className="text-sm text-paper/70">
           Automatic reminders notify the customer (and you) when due.
         </p>
         <button type="button" className="btn-primary !px-4 !py-2 text-sm" onClick={() => setOpen((o) => !o)}>
@@ -138,16 +138,16 @@ function RemindersBody({ garageId }: { garageId: string }) {
         </form>
       )}
 
-      {reminders.isPending && <p className="mt-6 text-paper/60">Loading reminders…</p>}
+      {reminders.isPending && <p className="mt-6 text-paper/70">Loading reminders…</p>}
       {reminders.data?.length === 0 && !open && (
-        <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/60">
+        <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/70">
           No reminders yet — set service or NCT reminders and Garix will notify customers automatically.
         </p>
       )}
       {active.length > 0 && <ul className="mt-6 space-y-4">{active.map((r) => <ReminderRow key={r.id} garageId={garageId} r={r} />)}</ul>}
       {done.length > 0 && (
         <details className="mt-4">
-          <summary className="cursor-pointer text-sm text-paper/50 hover:text-paper/80">Completed ({done.length})</summary>
+          <summary className="cursor-pointer text-sm text-paper/70 hover:text-paper/80">Completed ({done.length})</summary>
           <ul className="mt-3 space-y-3">{done.map((r) => <ReminderRow key={r.id} garageId={garageId} r={r} />)}</ul>
         </details>
       )}
@@ -160,7 +160,7 @@ export default function GarageRemindersPage() {
   return (
     <section className="py-8">
       <h2 className="font-display text-2xl font-bold">Automated reminders</h2>
-      <p className="mt-1 text-sm text-paper/60">Bring customers back for their next service, NCT and more.</p>
+      <p className="mt-1 text-sm text-paper/70">Bring customers back for their next service, NCT and more.</p>
       <ProGate garageId={id} feature="Automated reminders" body="Set service, NCT and other reminders that automatically notify your customers when due.">
         <RemindersBody garageId={id} />
       </ProGate>

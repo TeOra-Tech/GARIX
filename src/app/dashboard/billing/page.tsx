@@ -20,7 +20,7 @@ const STATUS_COPY: Record<string, { label: string; cls: string }> = {
   trialing: { label: 'Trial', cls: 'border-info/50 bg-info/10 text-info' },
   past_due: { label: 'Payment failed', cls: 'border-danger/50 bg-danger/10 text-danger' },
   unpaid: { label: 'Unpaid', cls: 'border-danger/50 bg-danger/10 text-danger' },
-  canceled: { label: 'Canceled', cls: 'border-ink-line text-paper/60' },
+  canceled: { label: 'Canceled', cls: 'border-ink-line text-paper/70' },
   incomplete: { label: 'Setup incomplete', cls: 'border-warning/50 bg-warning/10 text-warning' },
 };
 
@@ -76,7 +76,7 @@ function BillingContent() {
         </p>
       )}
       {setup === 'cancelled' && (
-        <p role="status" className="mt-6 rounded-lg border border-ink-line bg-ink-soft p-4 text-sm text-paper/60">
+        <p role="status" className="mt-6 rounded-lg border border-ink-line bg-ink-soft p-4 text-sm text-paper/70">
           Billing setup cancelled — no payment was taken.
         </p>
       )}
@@ -89,16 +89,16 @@ function BillingContent() {
 
       <section className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-6">
         <div className="flex items-center justify-between">
-          <p className="text-sm text-paper/60">Subscription</p>
+          <p className="text-sm text-paper/70">Subscription</p>
           <span className={cn('rounded-full border px-2.5 py-0.5 text-xs font-semibold', badge.cls)}>
             {badge.label}
           </span>
         </div>
         <p className="mt-2 font-display text-4xl font-extrabold">
           €{monthly}
-          <span className="text-lg font-semibold text-paper/50"> /month</span>
+          <span className="text-lg font-semibold text-paper/70"> /month</span>
         </p>
-        <p className="mt-1 text-sm text-paper/60">
+        <p className="mt-1 text-sm text-paper/70">
           {count} vehicle{count === 1 ? '' : 's'} × €{FLEET_PRICE_EUR}/month
           {sub.data?.current_period_end &&
             active &&

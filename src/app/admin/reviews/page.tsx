@@ -10,8 +10,8 @@ export default function AdminReviewsPage() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">
       <h1 className="font-display text-3xl font-bold">Review moderation</h1>
-      {reviews.isPending && <p className="mt-8 text-paper/60">Loading…</p>}
-      {reviews.data?.length === 0 && <p className="mt-8 text-paper/60">No reviews yet.</p>}
+      {reviews.isPending && <p className="mt-8 text-paper/70">Loading…</p>}
+      {reviews.data?.length === 0 && <p className="mt-8 text-paper/70">No reviews yet.</p>}
 
       <ul className="mt-6 space-y-4">
         {reviews.data?.map((r) => (
@@ -19,7 +19,7 @@ export default function AdminReviewsPage() {
             <div className="flex flex-wrap items-center justify-between gap-2">
               <p className="text-sm">
                 <span className="font-medium">{r.user_profiles?.full_name ?? 'Customer'}</span>
-                <span className="text-paper/50"> on </span>
+                <span className="text-paper/70"> on </span>
                 <span className="font-medium">{r.garages?.name ?? 'garage'}</span>
                 <span className="ml-2 text-gold">{'★'.repeat(r.rating_overall)}</span>
               </p>
@@ -30,14 +30,14 @@ export default function AdminReviewsPage() {
                   </span>
                 )}
                 {r.is_hidden && <span className="text-signal-soft">Hidden from public</span>}
-                <span className="text-paper/40">
+                <span className="text-paper/70">
                   {new Date(r.created_at).toLocaleDateString('en-IE', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </span>
               </div>
             </div>
             {r.body && <p className="mt-3 text-sm text-paper/80">{r.body}</p>}
             {r.garage_response && (
-              <p className="mt-2 border-l-2 border-volt pl-3 text-sm text-paper/60">Response: {r.garage_response}</p>
+              <p className="mt-2 border-l-2 border-volt pl-3 text-sm text-paper/70">Response: {r.garage_response}</p>
             )}
             <button
               type="button"

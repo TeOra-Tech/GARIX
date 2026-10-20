@@ -16,18 +16,18 @@ function DisputeCard({ dispute }: { dispute: AdminDispute }) {
         <p className="font-display font-semibold">{dispute.service_requests?.title ?? 'Request removed'}</p>
         <span className={cn(
           'rounded-full border px-3 py-1 text-xs',
-          open ? 'border-signal/50 text-signal-soft' : 'border-ink-line text-paper/40',
+          open ? 'border-signal/50 text-signal-soft' : 'border-ink-line text-paper/70',
         )}>
           {dispute.status}
         </span>
       </div>
-      <p className="mt-1 text-xs text-paper/40">
+      <p className="mt-1 text-xs text-paper/70">
         Opened by {dispute.opener?.full_name ?? 'user'} ·{' '}
         {new Date(dispute.created_at).toLocaleDateString('en-IE', { day: 'numeric', month: 'short', year: 'numeric' })}
       </p>
       <p className="mt-3 text-sm text-paper/80">{dispute.reason}</p>
       {dispute.resolution && (
-        <p className="mt-2 border-l-2 border-volt pl-3 text-sm text-paper/60">Resolution: {dispute.resolution}</p>
+        <p className="mt-2 border-l-2 border-volt pl-3 text-sm text-paper/70">Resolution: {dispute.resolution}</p>
       )}
 
       {open && (
@@ -64,8 +64,8 @@ export default function AdminDisputesPage() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">
       <h1 className="font-display text-3xl font-bold">Disputes</h1>
-      {disputes.isPending && <p className="mt-8 text-paper/60">Loading…</p>}
-      {disputes.data?.length === 0 && <p className="mt-8 text-paper/60">No disputes — long may it last.</p>}
+      {disputes.isPending && <p className="mt-8 text-paper/70">Loading…</p>}
+      {disputes.data?.length === 0 && <p className="mt-8 text-paper/70">No disputes — long may it last.</p>}
       <ul className="mt-6 space-y-4">
         {disputes.data?.map((d) => <DisputeCard key={d.id} dispute={d} />)}
       </ul>

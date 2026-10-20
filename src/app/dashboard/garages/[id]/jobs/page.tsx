@@ -12,7 +12,7 @@ function JobCard({ quote }: { quote: GarageQuote }) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h3 className="font-display font-semibold">{quote.service_requests?.title ?? 'Request removed'}</h3>
-          <p className="mt-1 text-sm text-paper/60">
+          <p className="mt-1 text-sm text-paper/70">
             {[
               quote.service_requests?.location_town &&
                 `${quote.service_requests.location_town}, Co. ${quote.service_requests.location_county}`,
@@ -34,9 +34,9 @@ function JobCard({ quote }: { quote: GarageQuote }) {
         </span>
       </div>
       <p className="mt-3 font-mono text-sm">
-        <span className="text-paper/50">Value </span>
+        <span className="text-paper/70">Value </span>
         <span className="font-semibold">{formatEur(Number(quote.grand_total))}</span>
-        <span className="text-paper/50"> incl. VAT</span>
+        <span className="text-paper/70"> incl. VAT</span>
       </p>
     </li>
   );
@@ -54,14 +54,14 @@ export default function GarageJobsPage() {
   return (
     <section className="py-8">
       <h2 className="font-display text-2xl font-bold">Jobs</h2>
-      <p className="mt-1 text-sm text-paper/60">Accepted quotes and completed work.</p>
+      <p className="mt-1 text-sm text-paper/70">Accepted quotes and completed work.</p>
 
-      {quotes.isPending && <p className="mt-6 text-paper/60">Loading jobs…</p>}
+      {quotes.isPending && <p className="mt-6 text-paper/70">Loading jobs…</p>}
       {quotes.isError && (
         <p role="alert" className="mt-6 text-danger">Could not load jobs. Refresh to try again.</p>
       )}
       {quotes.isSuccess && won.length === 0 && (
-        <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/60">
+        <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/70">
           No jobs yet — they appear here when a customer accepts one of your quotes.
         </p>
       )}
@@ -81,7 +81,7 @@ export default function GarageJobsPage() {
         <>
           <div className="mt-8 flex flex-wrap items-baseline justify-between gap-2">
             <h3 className="font-display text-lg font-semibold">Completed</h3>
-            <p className="text-sm text-paper/60">
+            <p className="text-sm text-paper/70">
               {done.length} job{done.length > 1 ? 's' : ''} · {formatEur(totalValue)} total value
             </p>
           </div>

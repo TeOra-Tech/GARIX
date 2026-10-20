@@ -13,12 +13,12 @@ export default function EditVehiclePage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-12">
-      <Link href="/dashboard/vehicles" className="text-sm text-paper/60 hover:text-volt-bright">
+      <Link href="/dashboard/vehicles" className="text-sm text-paper/70 hover:text-volt-bright">
         &larr; My vehicles
       </Link>
       <h1 className="mt-2 font-display text-3xl font-bold">Edit vehicle</h1>
 
-      {vehicle.isPending && <p className="mt-8 text-paper/60">Loading…</p>}
+      {vehicle.isPending && <p className="mt-8 text-paper/70">Loading…</p>}
       {vehicle.isError && (
         <p role="alert" className="mt-8 text-danger">
           Could not load this vehicle — it may have been deleted.

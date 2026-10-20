@@ -160,7 +160,7 @@ function RegisterForm() {
 
       {step === 'details' ? (
         <>
-          <p className="mt-2 text-paper/60">
+          <p className="mt-2 text-paper/70">
             {isFleet
               ? `Manage unlimited vehicles, service history and reminders for your whole fleet — €${5}/vehicle per month. Set up billing after you verify your email.`
               : 'Post repair requests, compare VAT-itemised quotes, and book trusted garages.'}
@@ -224,7 +224,7 @@ function RegisterForm() {
               {errors['termsAccepted'] && (
                 <p role="alert" className="text-sm text-danger">{errors['termsAccepted']}</p>
               )}
-              <label className="flex items-start gap-3 text-sm text-paper/60">
+              <label className="flex items-start gap-3 text-sm text-paper/70">
                 <input type="checkbox" className="mt-0.5 h-4 w-4 accent-volt"
                   checked={form.marketingOptIn} onChange={(e) => set('marketingOptIn', e.target.checked)} />
                 <span>Send me occasional offers and product updates (optional)</span>
@@ -238,21 +238,21 @@ function RegisterForm() {
             </button>
           </form>
 
-          <div className="my-8 flex items-center gap-4 text-xs uppercase tracking-widest text-paper/40">
+          <div className="my-8 flex items-center gap-4 text-xs uppercase tracking-widest text-paper/70">
             <span className="h-px flex-1 bg-ink-line" aria-hidden />
             or
             <span className="h-px flex-1 bg-ink-line" aria-hidden />
           </div>
           <OAuthButtons />
-          <p className="mt-8 text-sm text-paper/60">
+          <p className="mt-8 text-sm text-paper/70">
             Already have an account?{' '}
             <Link href="/auth/login" className="text-volt-bright hover:underline">Log in</Link>
           </p>
-          <p className="mt-2 text-sm text-paper/60">
+          <p className="mt-2 text-sm text-paper/70">
             Run a garage?{' '}
             <Link href="/garages/register" className="text-volt-bright hover:underline">Register it here</Link>
           </p>
-          <p className="mt-2 text-sm text-paper/60">
+          <p className="mt-2 text-sm text-paper/70">
             {isFleet ? (
               <>
                 Just one or two cars?{' '}
@@ -272,7 +272,7 @@ function RegisterForm() {
         </>
       ) : (
         <form onSubmit={verifyAndSave} className="mt-8 space-y-4" noValidate>
-          <p className="text-sm text-paper/60">
+          <p className="text-sm text-paper/70">
             Check <span className="font-medium text-paper">{validated?.email}</span> — click the
             verification link in the email, or enter the code below if your email includes one.{' '}
             <button type="button" className="underline hover:text-volt-bright"
@@ -295,7 +295,7 @@ function RegisterForm() {
 
 export default function Page() {
   return (
-    <Suspense fallback={<main className="mx-auto max-w-md px-4 py-20 text-paper/60">Loading…</main>}>
+    <Suspense fallback={<main className="mx-auto max-w-md px-4 py-20 text-paper/70">Loading…</main>}>
       <RegisterForm />
     </Suspense>
   );

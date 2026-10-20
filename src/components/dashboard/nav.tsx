@@ -47,7 +47,7 @@ export function DashboardNav({ role, accountType }: { role: string; accountType?
                   'block whitespace-nowrap border-b-2 px-3 py-2.5 transition',
                   active
                     ? 'border-volt text-volt-bright'
-                    : 'border-transparent text-paper/60 hover:text-paper',
+                    : 'border-transparent text-paper/70 hover:text-paper',
                 )}
               >
                 {t.label}

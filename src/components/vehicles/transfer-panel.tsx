@@ -33,7 +33,7 @@ export function TransferPanel({ vehicleId }: { vehicleId: string }) {
       <h2 id="transfer-heading" className="font-display text-xl font-bold">
         Transfer to a new owner
       </h2>
-      <p className="mt-1 text-sm text-paper/60">
+      <p className="mt-1 text-sm text-paper/70">
         Selling the car? Transfer it to the new owner&rsquo;s Garix account and the full digital
         service history goes with it. They must accept before anything changes.
       </p>

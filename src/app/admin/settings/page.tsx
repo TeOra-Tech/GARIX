@@ -28,7 +28,7 @@ function SettingRow({ setting }: { setting: { key: string; value: unknown; descr
     <li className="rounded-hex border border-ink-line bg-ink-soft p-5">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <p className="font-mono text-sm font-semibold text-volt-bright">{setting.key}</p>
-        {setting.description && <p className="text-xs text-paper/50">{setting.description}</p>}
+        {setting.description && <p className="text-xs text-paper/70">{setting.description}</p>}
       </div>
       <form onSubmit={submit} className="mt-3">
         <textarea
@@ -57,10 +57,10 @@ export default function AdminSettingsPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
       <h1 className="font-display text-3xl font-bold">System settings</h1>
-      <p className="mt-2 text-sm text-paper/60">
+      <p className="mt-2 text-sm text-paper/70">
         Live configuration — credit pricing takes effect on the next quote, no deploy needed.
       </p>
-      {settings.isPending && <p className="mt-8 text-paper/60">Loading…</p>}
+      {settings.isPending && <p className="mt-8 text-paper/70">Loading…</p>}
       <ul className="mt-6 space-y-4">
         {settings.data?.map((s) => <SettingRow key={s.key} setting={s} />)}
       </ul>

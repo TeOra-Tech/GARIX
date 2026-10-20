@@ -92,13 +92,13 @@ function CertificationsSection({
         {certifications.map((c) => (
           <li key={c.id} className="flex items-center gap-3 rounded-lg border border-ink-line bg-ink-soft p-4 text-sm">
             <span className="font-medium">{c.name}</span>
-            {c.issuing_body && <span className="text-paper/50">— {c.issuing_body}</span>}
+            {c.issuing_body && <span className="text-paper/70">— {c.issuing_body}</span>}
             {c.verified ? (
               <span className="rounded-full border border-volt/50 px-2 py-0.5 text-xs text-volt-bright">Verified</span>
             ) : (
-              <span className="rounded-full border border-ink-line px-2 py-0.5 text-xs text-paper/40">Pending review</span>
+              <span className="rounded-full border border-ink-line px-2 py-0.5 text-xs text-paper/70">Pending review</span>
             )}
-            <button type="button" className="ml-auto text-xs text-paper/50 underline hover:text-danger"
+            <button type="button" className="ml-auto text-xs text-paper/70 underline hover:text-danger"
               onClick={() => remove.mutate(c)}>
               Remove
             </button>
@@ -149,7 +149,7 @@ export default function GarageProfilePage() {
           </Link>
         )}
       </div>
-      <p className="mt-1 text-sm text-paper/60">
+      <p className="mt-1 text-sm text-paper/70">
         Name, address, contacts, services, hours, gallery and certifications are yours to edit.
         Reviews and ratings are written by customers and can&rsquo;t be changed —{' '}
         <Link href={`/dashboard/garages/${id}/reviews`} className="text-volt-bright hover:underline">

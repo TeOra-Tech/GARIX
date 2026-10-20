@@ -95,7 +95,7 @@ export default function WriteQuotePage() {
 
   return (
     <section className="py-8">
-      <Link href={`/dashboard/garages/${garageId}`} className="text-sm text-paper/60 hover:text-volt-bright">
+      <Link href={`/dashboard/garages/${garageId}`} className="text-sm text-paper/70 hover:text-volt-bright">
         &larr; Request feed
       </Link>
       <h2 className="mt-2 font-display text-2xl font-bold">Write a quote</h2>
@@ -115,7 +115,7 @@ export default function WriteQuotePage() {
           <section className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-6">
             <h3 className="font-display text-lg font-semibold">{request.data.title}</h3>
             <p className="mt-2 text-sm text-paper/70">{request.data.description}</p>
-            <p className="mt-3 text-xs text-paper/40">
+            <p className="mt-3 text-xs text-paper/70">
               {[
                 request.data.service_category?.name,
                 URGENCY_LABELS[request.data.urgency],
@@ -172,13 +172,13 @@ export default function WriteQuotePage() {
                           value={row.unitPrice}
                           onChange={(e) => setRow(i, { unitPrice: e.target.value })}
                         />
-                        <span className="text-right text-sm text-paper/60">
+                        <span className="text-right text-sm text-paper/70">
                           {lineTotal != null ? formatEur(lineTotal) : '—'}
                         </span>
                         <button
                           type="button"
                           aria-label={`Remove item ${i + 1}`}
-                          className="text-paper/40 hover:text-danger disabled:opacity-30"
+                          className="text-paper/70 hover:text-danger disabled:opacity-30"
                           disabled={rows.length === 1}
                           onClick={() => setRows((rs) => rs.filter((_, j) => j !== i))}
                         >
@@ -222,7 +222,7 @@ export default function WriteQuotePage() {
                   onChange={(e) => setIsPriority(e.target.checked)} />
                 <span>
                   <span className="font-medium">Priority quote</span>
-                  <span className="text-paper/60">
+                  <span className="text-paper/70">
                     {' '}— shown first to the customer ({costs.data?.priority ?? 5} credits instead of {costs.data?.standard ?? 2})
                   </span>
                 </span>
@@ -249,7 +249,7 @@ export default function WriteQuotePage() {
                   <dd>{formatEur(vat.grandTotal)}</dd>
                 </div>
               </dl>
-              <p className="mt-4 text-xs text-paper/50">
+              <p className="mt-4 text-xs text-paper/70">
                 Submitting costs <span className="text-paper">{cost} credits</span> — balance {balance}.
               </p>
               {error && <p role="alert" className="mt-3 text-xs text-danger">{error}</p>}

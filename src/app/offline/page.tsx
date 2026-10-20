@@ -7,7 +7,7 @@ export default function OfflinePage() {
         !
       </div>
       <h1 className="mt-6 font-display text-3xl font-bold">You&rsquo;re offline</h1>
-      <p className="mt-3 text-paper/60">
+      <p className="mt-3 text-paper/70">
         Garix needs a connection to load quotes and messages. Check your signal and try again —
         anything you already opened may still be available.
       </p>

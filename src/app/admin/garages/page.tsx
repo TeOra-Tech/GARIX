@@ -69,7 +69,7 @@ function GaragesAdmin() {
           <button key={f.label} type="button" aria-pressed={filter === f.value}
             className={cn(
               'rounded-full border px-4 py-1.5 text-sm transition',
-              filter === f.value ? 'border-volt bg-volt/15 text-volt-bright' : 'border-ink-line text-paper/60 hover:text-paper',
+              filter === f.value ? 'border-volt bg-volt/15 text-volt-bright' : 'border-ink-line text-paper/70 hover:text-paper',
             )}
             onClick={() => setFilter(f.value)}>
             {f.label}
@@ -77,8 +77,8 @@ function GaragesAdmin() {
         ))}
       </div>
 
-      {garages.isPending && <p className="mt-8 text-paper/60">Loading…</p>}
-      {garages.data?.length === 0 && <p className="mt-8 text-paper/60">No garages match.</p>}
+      {garages.isPending && <p className="mt-8 text-paper/70">Loading…</p>}
+      {garages.data?.length === 0 && <p className="mt-8 text-paper/70">No garages match.</p>}
 
       <ul className="mt-6 space-y-4">
         {garages.data?.map((g) => (
@@ -92,10 +92,10 @@ function GaragesAdmin() {
                     g.name
                   )}
                 </p>
-                <p className="mt-1 text-sm text-paper/60">
+                <p className="mt-1 text-sm text-paper/70">
                   {g.user_profiles?.full_name} · {g.user_profiles?.email} · {g.phone}
                 </p>
-                <p className="mt-1 text-xs text-paper/40">
+                <p className="mt-1 text-xs text-paper/70">
                   Registered {new Date(g.created_at).toLocaleDateString('en-IE', { day: 'numeric', month: 'short', year: 'numeric' })}
                   {' · '}wallet {g.credit_wallets?.balance ?? 0} credits
                   {g.review_count > 0 && ` · ★ ${Number(g.avg_rating).toFixed(1)} (${g.review_count})`}
@@ -105,7 +105,7 @@ function GaragesAdmin() {
                 'rounded-full border px-3 py-1 text-xs',
                 g.status === 'active' ? 'border-volt/50 text-volt-bright'
                   : g.status === 'pending_verification' || g.status === 'pending_approval' ? 'border-signal/50 text-signal-soft'
-                  : 'border-ink-line text-paper/40',
+                  : 'border-ink-line text-paper/70',
               )}>
                 {g.status.replace(/_/g, ' ')}
               </span>

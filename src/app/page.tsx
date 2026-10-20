@@ -45,10 +45,10 @@ export default function LandingPage() {
               <Link href="/requests/new" className="btn-primary">Get free quotes</Link>
               <Link href="/garages/register" className="btn-ghost">Register your garage</Link>
             </div>
-            <p className="mt-6 text-sm text-charcoal/50">
+            <p className="mt-6 text-sm text-charcoal/70">
               Free for vehicle owners &middot; Free garage registration &middot; Pay-as-you-quote credits
             </p>
-            <p className="mt-3 text-sm text-charcoal/60">
+            <p className="mt-3 text-sm text-charcoal/70">
               Managing more than three vehicles?{' '}
               <Link href="/for-business" className="font-semibold text-navy underline-offset-2 hover:underline">
                 Garix for business &rarr;
@@ -61,6 +61,7 @@ export default function LandingPage() {
               alt="Garix — orange car inside a blue hexagon"
               width={520}
               height={330}
+              sizes="(min-width: 768px) 448px, 100vw"
               className="w-full"
               priority
             />
@@ -83,7 +84,7 @@ export default function LandingPage() {
                   {i + 1}
                 </div>
                 <h3 className="font-display text-lg font-semibold text-navy">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-charcoal/65">{s.body}</p>
+                <p className="mt-2 text-sm leading-relaxed text-charcoal/70">{s.body}</p>
               </div>
             ))}
           </div>
@@ -143,7 +144,7 @@ export default function LandingPage() {
                 className="rounded-hex border border-line bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
               >
                 <h3 className="font-display text-lg font-semibold text-navy">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-charcoal/65">{s.body}</p>
+                <p className="mt-2 text-sm leading-relaxed text-charcoal/70">{s.body}</p>
               </div>
             ))}
           </div>
@@ -156,15 +157,15 @@ export default function LandingPage() {
       {/* ---------- Footer ---------- */}
       <footer className="border-t border-line bg-white">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-12 md:flex-row md:items-center md:justify-between">
-          <Image src="/logo-horizontal.png" alt="Garix" width={130} height={32} className="h-8 w-auto" />
-          <nav className="flex flex-wrap gap-6 text-sm text-charcoal/60" aria-label="Footer">
+          <Image src="/logo-horizontal.png" alt="Garix" width={129} height={32} className="h-8 w-auto self-start" />
+          <nav className="flex flex-wrap gap-6 text-sm text-charcoal/70" aria-label="Footer">
             <Link href="/search" className="transition hover:text-navy">Find a garage</Link>
             <Link href="/for-business" className="transition hover:text-navy">For business (fleets)</Link>
             <Link href="/garages/register" className="transition hover:text-navy">For garages</Link>
             <Link href="/legal/privacy" className="transition hover:text-navy">Privacy (GDPR)</Link>
             <Link href="/legal/terms" className="transition hover:text-navy">Terms</Link>
           </nav>
-          <p className="text-xs text-charcoal/40">&copy; {new Date().getFullYear()} Garix. Made in Ireland.</p>
+          <p className="text-xs text-charcoal/70">&copy; {new Date().getFullYear()} Garix. Made in Ireland.</p>
         </div>
       </footer>
     </main>

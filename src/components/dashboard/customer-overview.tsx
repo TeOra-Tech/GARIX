@@ -64,9 +64,9 @@ function UpcomingReminders() {
   return (
     <section className="rounded-hex border border-ink-line bg-ink-soft p-6">
       <h2 className="font-display text-lg font-semibold">Upcoming maintenance</h2>
-      {reminders.isPending && <p className="mt-3 text-sm text-paper/60">Checking your reminders…</p>}
+      {reminders.isPending && <p className="mt-3 text-sm text-paper/70">Checking your reminders…</p>}
       {reminders.data?.length === 0 && (
-        <p className="mt-3 text-sm text-paper/60">
+        <p className="mt-3 text-sm text-paper/70">
           No reminders yet. Open a vehicle under My vehicles to set up NCT, oil service, insurance
           and road tax reminders.
         </p>
@@ -79,7 +79,7 @@ function UpcomingReminders() {
               <li key={r.id} className="flex items-center justify-between gap-3 text-sm">
                 <span>
                   <span className="font-medium">{r.title || reminderTypeLabel(r.reminder_type)}</span>
-                  <span className="text-paper/60"> · {r.vehicles?.registration_number}</span>
+                  <span className="text-paper/70"> · {r.vehicles?.registration_number}</span>
                 </span>
                 <span className={cn('rounded-full border px-2.5 py-0.5 text-xs font-semibold', badge.cls)}>
                   {badge.text}
@@ -103,9 +103,9 @@ function VehiclesSnapshot() {
           Add a vehicle
         </Link>
       </div>
-      {vehicles.isPending && <p className="mt-3 text-sm text-paper/60">Loading your vehicles…</p>}
+      {vehicles.isPending && <p className="mt-3 text-sm text-paper/70">Loading your vehicles…</p>}
       {vehicles.data?.length === 0 && (
-        <p className="mt-3 text-sm text-paper/60">
+        <p className="mt-3 text-sm text-paper/70">
           Add your car to keep its service history and post repair requests.
         </p>
       )}

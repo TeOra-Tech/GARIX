@@ -19,9 +19,9 @@ export function GarageOverview() {
             View all
           </Link>
         </div>
-        {garages.isPending && <p className="mt-3 text-sm text-paper/60">Loading your garages…</p>}
+        {garages.isPending && <p className="mt-3 text-sm text-paper/70">Loading your garages…</p>}
         {garages.data?.length === 0 && (
-          <p className="mt-3 text-sm text-paper/60">
+          <p className="mt-3 text-sm text-paper/70">
             You don&rsquo;t own a garage yet.{' '}
             <Link href="/garages/register" className="text-volt-bright hover:underline">
               Register one — free
@@ -39,7 +39,7 @@ export function GarageOverview() {
                 >
                   <span>
                     <span className="block font-medium">{g.name}</span>
-                    <span className="block text-sm text-paper/60">
+                    <span className="block text-sm text-paper/70">
                       {g.garage_locations.find((l) => l.is_primary)?.town ?? g.garage_locations[0]?.town}
                       {g.review_count > 0 && (
                         <>
@@ -59,7 +59,7 @@ export function GarageOverview() {
 
       <section className="rounded-hex border border-ink-line bg-ink-soft p-6">
         <h2 className="font-display text-lg font-semibold">Account details</h2>
-        <p className="mt-2 text-sm text-paper/60">
+        <p className="mt-2 text-sm text-paper/70">
           Your name, contact details and notification preferences.
         </p>
         <Link href="/dashboard/account" className="btn-ghost mt-4 inline-flex !px-4 !py-2 text-sm">

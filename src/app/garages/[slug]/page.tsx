@@ -70,7 +70,7 @@ export default async function GarageProfilePage({
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="font-display text-4xl font-bold">{garage.name}</h1>
-          <p className="mt-2 text-paper/60">
+          <p className="mt-2 text-paper/70">
             {location && `${location.town}, Co. ${location.county}`}
             {garage.years_in_business != null && ` · ${garage.years_in_business} years in business`}
           </p>
@@ -84,7 +84,7 @@ export default async function GarageProfilePage({
                 </span>
               </>
             ) : (
-              <span className="text-paper/40">No reviews yet</span>
+              <span className="text-paper/70">No reviews yet</span>
             )}
           </p>
         </div>
@@ -95,7 +95,7 @@ export default async function GarageProfilePage({
           {garage.offers_collection && (
             <span className="rounded-full border border-volt/50 px-3 py-1 text-xs text-volt-bright">Collects vehicles</span>
           )}
-          <span className="rounded-full border border-ink-line px-3 py-1 text-xs text-paper/60">
+          <span className="rounded-full border border-ink-line px-3 py-1 text-xs text-paper/70">
             {garage.completed_jobs_count} jobs completed
           </span>
         </div>
@@ -122,8 +122,8 @@ export default async function GarageProfilePage({
           <dl className="mt-4 space-y-1 text-sm">
             {WEEK_DAYS.map((d) => (
               <div key={d} className="flex justify-between border-b border-ink-line py-2">
-                <dt className="text-paper/60">{DAY_LABELS[d]}</dt>
-                <dd className={cn(!hours[d] && 'text-paper/40')}>
+                <dt className="text-paper/70">{DAY_LABELS[d]}</dt>
+                <dd className={cn(!hours[d] && 'text-paper/70')}>
                   {hours[d] ? `${hours[d].open} – ${hours[d].close}` : 'Closed'}
                 </dd>
               </div>
@@ -142,7 +142,7 @@ export default async function GarageProfilePage({
               {location.eircode && <><br />{location.eircode}</>}
             </address>
           )}
-          <p className="mt-3 text-sm text-paper/60">
+          <p className="mt-3 text-sm text-paper/70">
             Service radius: {garage.service_radius_km} km
             {garage.phone && <><br />Phone: {garage.phone}</>}
             {garage.website && (
@@ -183,7 +183,7 @@ export default async function GarageProfilePage({
             {garage.garage_certifications.map((c) => (
               <li key={c.id} className="flex items-center gap-3 rounded-lg border border-ink-line bg-ink-soft p-4 text-sm">
                 <span className="font-medium">{c.name}</span>
-                {c.issuing_body && <span className="text-paper/50">— {c.issuing_body}</span>}
+                {c.issuing_body && <span className="text-paper/70">— {c.issuing_body}</span>}
                 {c.verified && (
                   <span className="ml-auto rounded-full border border-volt/50 px-2 py-0.5 text-xs text-volt-bright">
                     Verified
@@ -198,7 +198,7 @@ export default async function GarageProfilePage({
       <section className="mt-10">
         <h2 className="font-display text-2xl font-bold">Reviews</h2>
         {!reviews?.length && (
-          <p className="mt-4 text-sm text-paper/50">
+          <p className="mt-4 text-sm text-paper/70">
             No reviews yet — reviews come from completed Garix jobs only.
           </p>
         )}
@@ -226,12 +226,12 @@ export default async function GarageProfilePage({
                 </ul>
               )}
               {r.garage_response && (
-                <p className="mt-3 border-l-2 border-volt pl-3 text-sm text-paper/60">
+                <p className="mt-3 border-l-2 border-volt pl-3 text-sm text-paper/70">
                   <span className="font-medium text-paper/80">Response from {garage.name}:</span>{' '}
                   {r.garage_response}
                 </p>
               )}
-              <p className="mt-3 text-xs text-paper/40">
+              <p className="mt-3 text-xs text-paper/70">
                 {new Date(r.created_at).toLocaleDateString('en-IE', { month: 'long', year: 'numeric' })}
               </p>
             </li>

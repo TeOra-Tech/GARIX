@@ -12,11 +12,11 @@ export default function GarageDashLayout({ children }: { children: React.ReactNo
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <Link href="/dashboard/garages" className="text-sm text-paper/60 hover:text-volt-bright">
+      <Link href="/dashboard/garages" className="text-sm text-paper/70 hover:text-volt-bright">
         &larr; My garages
       </Link>
 
-      {garage.isPending && <p className="mt-6 text-paper/60">Loading garage…</p>}
+      {garage.isPending && <p className="mt-6 text-paper/70">Loading garage…</p>}
       {garage.isError && (
         <p role="alert" className="mt-6 text-danger">
           Garage not found — it may have been transferred to a new owner.

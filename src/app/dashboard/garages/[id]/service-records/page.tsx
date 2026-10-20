@@ -81,24 +81,24 @@ function VehiclePanel({ garageId, vehicle }: { garageId: string; vehicle: Servic
         </form>
       )}
 
-      {history.isPending && <p className="mt-4 text-sm text-paper/60">Loading history…</p>}
-      {history.data?.length === 0 && <p className="mt-4 text-sm text-paper/50">No records yet for this vehicle.</p>}
+      {history.isPending && <p className="mt-4 text-sm text-paper/70">Loading history…</p>}
+      {history.data?.length === 0 && <p className="mt-4 text-sm text-paper/70">No records yet for this vehicle.</p>}
       {!!history.data?.length && (
         <ul className="mt-4 space-y-3">
           {history.data.map((h) => (
             <li key={h.id} className="border-l-2 border-ink-line pl-3 text-sm">
               <div className="flex items-baseline justify-between gap-2">
                 <span className="font-medium">{h.title || recordTypeLabel(h.event_type)}</span>
-                <span className="text-xs text-paper/50">{fmtDate(h.event_date)}</span>
+                <span className="text-xs text-paper/70">{fmtDate(h.event_date)}</span>
               </div>
-              <p className="text-paper/60">
+              <p className="text-paper/70">
                 {[
                   h.mileage_km != null ? `${h.mileage_km.toLocaleString('en-IE')} km` : null,
                   h.cost_eur != null ? formatEur(Number(h.cost_eur)) : null,
                   h.garage_name,
                 ].filter(Boolean).join(' · ')}
               </p>
-              {h.parts_replaced && <p className="text-paper/60">Parts: {h.parts_replaced}</p>}
+              {h.parts_replaced && <p className="text-paper/70">Parts: {h.parts_replaced}</p>}
             </li>
           ))}
         </ul>
@@ -111,11 +111,11 @@ function ServiceRecordsBody({ garageId }: { garageId: string }) {
   const vehicles = useServicedVehicles(garageId);
   const [openId, setOpenId] = useState<string | null>(null);
 
-  if (vehicles.isPending) return <p className="mt-6 text-paper/60">Loading vehicles…</p>;
+  if (vehicles.isPending) return <p className="mt-6 text-paper/70">Loading vehicles…</p>;
   if (vehicles.isError) return <p role="alert" className="mt-6 text-danger">Could not load vehicles. Refresh to try again.</p>;
   if (vehicles.data?.length === 0)
     return (
-      <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/60">
+      <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/70">
         Vehicles you&rsquo;ve serviced (accepted jobs) appear here — add and view their service history.
       </p>
     );
@@ -132,11 +132,11 @@ function ServiceRecordsBody({ garageId }: { garageId: string }) {
             <span>
               <span className="font-display font-semibold">{vehLabel(v)}</span>
               <span className="ml-2 font-mono text-sm text-volt-bright">{v.registration_number}</span>
-              <span className="ml-2 text-sm text-paper/50">
+              <span className="ml-2 text-sm text-paper/70">
                 {v.jobs} job{v.jobs === 1 ? '' : 's'} · {v.record_count} record{v.record_count === 1 ? '' : 's'}
               </span>
             </span>
-            <span className={cn('text-paper/40 transition', openId === v.vehicle_id && 'rotate-180')}>▾</span>
+            <span className={cn('text-paper/70 transition', openId === v.vehicle_id && 'rotate-180')}>▾</span>
           </button>
           {openId === v.vehicle_id && <VehiclePanel garageId={garageId} vehicle={v} />}
         </div>
@@ -150,7 +150,7 @@ export default function GarageServiceRecordsPage() {
   return (
     <section className="py-8">
       <h2 className="font-display text-2xl font-bold">Vehicle service history</h2>
-      <p className="mt-1 text-sm text-paper/60">
+      <p className="mt-1 text-sm text-paper/70">
         Record and review service history for vehicles you&rsquo;ve worked on — it becomes part of the
         car&rsquo;s digital history for its owner.
       </p>

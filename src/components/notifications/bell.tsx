@@ -80,14 +80,14 @@ export function NotificationBell() {
                   Mark all read
                 </button>
               )}
-              <Link href="/dashboard/notifications" className="text-paper/50 hover:text-paper" onClick={() => setOpen(false)}>
+              <Link href="/dashboard/notifications" className="text-paper/70 hover:text-paper" onClick={() => setOpen(false)}>
                 Settings
               </Link>
             </div>
           </div>
           <ul className="max-h-96 overflow-y-auto">
             {notifications.data?.length === 0 && (
-              <li className="p-6 text-center text-sm text-paper/40">Nothing yet.</li>
+              <li className="p-6 text-center text-sm text-paper/70">Nothing yet.</li>
             )}
             {notifications.data?.map((n) => (
               <li key={n.id} className="border-b border-ink-line/50 last:border-0">
@@ -97,8 +97,8 @@ export function NotificationBell() {
                   onClick={() => setOpen(false)}
                 >
                   <p className={cn('text-sm', !n.read_at && 'font-semibold')}>{n.title}</p>
-                  {n.body && <p className="mt-0.5 line-clamp-2 text-xs text-paper/60">{n.body}</p>}
-                  <p className="mt-1 text-[11px] text-paper/40">{relativeTime(n.created_at)}</p>
+                  {n.body && <p className="mt-0.5 line-clamp-2 text-xs text-paper/70">{n.body}</p>}
+                  <p className="mt-1 text-[11px] text-paper/70">{relativeTime(n.created_at)}</p>
                 </Link>
               </li>
             ))}

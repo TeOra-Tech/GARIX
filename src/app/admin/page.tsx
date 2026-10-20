@@ -21,7 +21,7 @@ export default function AdminOverviewPage() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">
       <h1 className="font-display text-3xl font-bold">Operations overview</h1>
-      {stats.isPending && <p className="mt-8 text-paper/60">Loading platform stats…</p>}
+      {stats.isPending && <p className="mt-8 text-paper/70">Loading platform stats…</p>}
       {stats.isError && <p role="alert" className="mt-8 text-danger">Could not load stats.</p>}
       <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3">
         {cards.map((c) => (
@@ -34,7 +34,7 @@ export default function AdminOverviewPage() {
             }
           >
             <p className="font-display text-3xl font-extrabold">{c.value}</p>
-            <p className="mt-1 text-sm text-paper/60">{c.label}</p>
+            <p className="mt-1 text-sm text-paper/70">{c.label}</p>
           </Link>
         ))}
       </div>

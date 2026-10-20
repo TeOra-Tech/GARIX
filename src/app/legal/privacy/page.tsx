@@ -16,7 +16,7 @@ export default function PrivacyPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-20">
       <h1 className="font-display text-4xl font-bold">Privacy policy</h1>
-      <p className="mt-3 text-sm text-paper/50">Last updated: July 2026 · Applies to garix.ie</p>
+      <p className="mt-3 text-sm text-paper/70">Last updated: July 2026 · Applies to garix.ie</p>
 
       <p className="mt-6 text-paper/80">
         Garix connects vehicle owners with mechanic garages across Ireland. This policy explains
@@ -101,7 +101,7 @@ export default function PrivacyPage() {
         </p>
       </S>
 
-      <p className="mt-10 text-sm text-paper/50">
+      <p className="mt-10 text-sm text-paper/70">
         Questions? Contact{' '}
         <a href="mailto:privacy@garix.ie" className="text-volt-bright hover:underline">privacy@garix.ie</a>.
       </p>

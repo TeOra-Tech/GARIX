@@ -169,7 +169,7 @@ export default function NewRequestPage() {
                 ? 'border-volt bg-volt/15 text-volt-bright'
                 : i < step
                   ? 'border-ink-line text-paper/70'
-                  : 'border-ink-line text-paper/40',
+                  : 'border-ink-line text-paper/70',
             )}
           >
             {i + 1}. {s}
@@ -181,7 +181,7 @@ export default function NewRequestPage() {
         {step === 0 && (
           <fieldset>
             <legend className="font-display text-xl font-semibold">Which vehicle is it?</legend>
-            {vehicles.isPending && <p className="mt-4 text-paper/60">Loading your vehicles…</p>}
+            {vehicles.isPending && <p className="mt-4 text-paper/70">Loading your vehicles…</p>}
             {vehicles.data?.length === 0 && (
               <div className="mt-4 rounded-hex border border-ink-line bg-ink-soft p-6">
                 <p className="text-paper/70">You haven&rsquo;t added a vehicle yet.</p>
@@ -364,7 +364,7 @@ export default function NewRequestPage() {
             </Field>
             {places && (
               <ul className="divide-y divide-ink-line rounded-lg border border-ink-line bg-ink-soft">
-                {places.length === 0 && <li className="p-3 text-sm text-paper/50">No matches — fill the fields below.</li>}
+                {places.length === 0 && <li className="p-3 text-sm text-paper/70">No matches — fill the fields below.</li>}
                 {places.map((p) => (
                   <li key={`${p.lat},${p.lng}`}>
                     <button
@@ -429,12 +429,12 @@ export default function NewRequestPage() {
                 ['Budget', form.budgetAmount ? formatEur(Number(form.budgetAmount)) : 'Not set'],
               ].map(([k, v]) => (
                 <div key={k as string} className="grid grid-cols-3 gap-4 py-3 text-sm">
-                  <dt className="text-paper/50">{k}</dt>
+                  <dt className="text-paper/70">{k}</dt>
                   <dd className="col-span-2 whitespace-pre-wrap">{v}</dd>
                 </div>
               ))}
             </dl>
-            <p className="text-sm text-paper/50">
+            <p className="text-sm text-paper/70">
               Your request stays open for 14 days. Verified garages nearby will be able to see it and send quotes.
             </p>
             {create.isError && (

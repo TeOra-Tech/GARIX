@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import { createClient } from '@/lib/supabase/client';
 
 /**
  * Consumes implicit-flow sessions delivered in the URL hash.
@@ -9,6 +8,7 @@ import { createClient } from '@/lib/supabase/client';
  * verification LINK; after GoTrue verifies it, the browser lands on the site
  * root with #access_token=…&refresh_token=…. Our PKCE client ignores hashes,
  * so this handler stores the session and forwards to the dashboard.
+ * The Supabase client is imported lazily so public pages don't ship it.
  */
 export function HashSessionHandler() {
   useEffect(() => {
@@ -24,8 +24,8 @@ export function HashSessionHandler() {
     const refresh_token = params.get('refresh_token');
     if (!access_token || !refresh_token) return;
 
-    createClient()
-      .auth.setSession({ access_token, refresh_token })
+    import('@/lib/supabase/client')
+      .then(({ createClient }) => createClient().auth.setSession({ access_token, refresh_token }))
       .then(({ error }) => {
         history.replaceState(null, '', window.location.pathname);
         window.location.replace(error ? '/auth/login?error=callback' : '/dashboard');

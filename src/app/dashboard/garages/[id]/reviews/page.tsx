@@ -36,11 +36,11 @@ function ReviewCard({ review, canReply }: { review: Review; canReply: boolean })
           {'★'.repeat(review.rating_overall)}
           <span className="text-paper/20">{'★'.repeat(5 - review.rating_overall)}</span>
         </span>
-        <span className="text-xs text-paper/40">
+        <span className="text-xs text-paper/70">
           {new Date(review.created_at).toLocaleDateString('en-IE', { day: 'numeric', month: 'short', year: 'numeric' })}
         </span>
       </div>
-      <dl className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-paper/50">
+      <dl className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-paper/70">
         {RATING_CATEGORIES.filter((c) => c.key !== 'overall').map((c) => (
           <div key={c.key}>
             <dt className="inline">{c.label}: </dt>
@@ -65,7 +65,7 @@ function ReviewCard({ review, canReply }: { review: Review; canReply: boolean })
           <span className="font-medium text-paper">Your response:</span> {review.garage_response}
         </p>
       ) : !canReply ? (
-        <p className="mt-4 text-sm text-paper/50">Replying to reviews is a Pro feature.</p>
+        <p className="mt-4 text-sm text-paper/70">Replying to reviews is a Pro feature.</p>
       ) : (
         <form onSubmit={submit} className="mt-4 space-y-2" noValidate>
           <textarea
@@ -103,13 +103,13 @@ export default function GarageReviewsPage() {
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="font-display text-2xl font-bold">Reviews</h2>
         {garage.data && garage.data.review_count > 0 && (
-          <p className="text-sm text-paper/60">
+          <p className="text-sm text-paper/70">
             <span className="text-gold">★</span> {Number(garage.data.avg_rating).toFixed(1)} average ·{' '}
             {garage.data.review_count} review{garage.data.review_count > 1 ? 's' : ''}
           </p>
         )}
       </div>
-      <p className="mt-1 text-sm text-paper/60">
+      <p className="mt-1 text-sm text-paper/70">
         Reviews are written by customers and can&rsquo;t be edited or removed.
         {canReply ? ' You can respond publicly.' : ''}
       </p>
@@ -123,7 +123,7 @@ export default function GarageReviewsPage() {
       )}
 
       {reviews.data?.length === 0 && (
-        <p className="mt-8 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/60">
+        <p className="mt-8 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/70">
           No reviews yet — they arrive after customers complete jobs with you.
         </p>
       )}

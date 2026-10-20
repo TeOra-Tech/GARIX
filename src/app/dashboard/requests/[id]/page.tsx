@@ -141,9 +141,9 @@ function MessageGarageButton({ requestId, garageId }: { requestId: string; garag
 function Signal({ label, value, hint }: { label: string; value: React.ReactNode; hint?: string }) {
   return (
     <div className="rounded-lg border border-ink-line/60 bg-ink px-3 py-2">
-      <dt className="text-[0.7rem] uppercase tracking-wide text-paper/40">{label}</dt>
+      <dt className="text-[0.7rem] uppercase tracking-wide text-paper/70">{label}</dt>
       <dd className="mt-0.5 text-sm font-medium text-paper">{value}</dd>
-      {hint && <dd className="text-[0.7rem] text-paper/40">{hint}</dd>}
+      {hint && <dd className="text-[0.7rem] text-paper/70">{hint}</dd>}
     </div>
   );
 }
@@ -194,16 +194,16 @@ function QuoteCard({
               </span>
             ))}
             {quote.is_priority && (
-              <span className="rounded-full border border-ink-line px-2 py-0.5 text-xs text-paper/50">Priority</span>
+              <span className="rounded-full border border-ink-line px-2 py-0.5 text-xs text-paper/70">Priority</span>
             )}
             {accepted && (
               <span className="rounded-full border border-volt px-2 py-0.5 text-xs text-volt-bright">Accepted</span>
             )}
             {quote.status === 'rejected' && (
-              <span className="rounded-full border border-ink-line px-2 py-0.5 text-xs text-paper/40">Not chosen</span>
+              <span className="rounded-full border border-ink-line px-2 py-0.5 text-xs text-paper/70">Not chosen</span>
             )}
           </div>
-          <p className="mt-1 text-sm text-paper/60">
+          <p className="mt-1 text-sm text-paper/70">
             valid until {formatDate(quote.valid_until.slice(0, 10))}
             {expired && <span className="text-signal-soft"> (expired)</span>}
           </p>
@@ -264,7 +264,7 @@ function QuoteCard({
       {expanded && (
         <table className="mt-3 w-full text-sm">
           <thead>
-            <tr className="border-b border-ink-line text-left text-xs uppercase tracking-wide text-paper/40">
+            <tr className="border-b border-ink-line text-left text-xs uppercase tracking-wide text-paper/70">
               <th className="py-2 font-medium">Item</th>
               <th className="py-2 font-medium">Type</th>
               <th className="py-2 text-right font-medium">Qty</th>
@@ -276,7 +276,7 @@ function QuoteCard({
             {quote.quote_items.map((i) => (
               <tr key={i.id} className="border-b border-ink-line/50">
                 <td className="py-2">{i.description}</td>
-                <td className="py-2 capitalize text-paper/60">{i.item_type}</td>
+                <td className="py-2 capitalize text-paper/70">{i.item_type}</td>
                 <td className="py-2 text-right">{Number(i.quantity)}</td>
                 <td className="py-2 text-right">{formatEur(Number(i.unit_price))}</td>
                 <td className="py-2 text-right">{formatEur(Number(i.line_total))}</td>
@@ -287,7 +287,7 @@ function QuoteCard({
       )}
 
       {(quote.warranty_info || quote.notes) && (
-        <p className="mt-3 text-sm text-paper/60">
+        <p className="mt-3 text-sm text-paper/70">
           {quote.warranty_info && <>Warranty: {quote.warranty_info}<br /></>}
           {quote.notes}
         </p>
@@ -335,7 +335,7 @@ function PickCard({ label, quote, stat }: { label: string; quote: QuoteWithGarag
       <span className="text-xs font-semibold uppercase tracking-wide">{label}</span>
       <p className="mt-1 truncate font-display text-base font-semibold text-paper">{quote.garages?.name ?? 'Garage'}</p>
       <p className="font-display text-xl font-bold text-paper">{formatEur(Number(quote.grand_total))}</p>
-      <p className="mt-1 text-xs text-paper/60">{detail}{stat?.distance_km != null ? ` · ${stat.distance_km} km` : ''}</p>
+      <p className="mt-1 text-xs text-paper/70">{detail}{stat?.distance_km != null ? ` · ${stat.distance_km} km` : ''}</p>
     </button>
   );
 }
@@ -377,7 +377,7 @@ export default function RequestDetailPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-12">
-      <Link href="/dashboard/requests" className="text-sm text-paper/60 hover:text-volt-bright">
+      <Link href="/dashboard/requests" className="text-sm text-paper/70 hover:text-volt-bright">
         &larr; My requests
       </Link>
 
@@ -386,7 +386,7 @@ export default function RequestDetailPage() {
       {request.data && (
         <>
           <h1 className="mt-2 font-display text-3xl font-bold">{request.data.title}</h1>
-          <p className="mt-2 text-sm text-paper/60">
+          <p className="mt-2 text-sm text-paper/70">
             {[
               [request.data.vehicles?.vehicle_makes?.name ?? request.data.vehicles?.make_text,
                request.data.vehicles?.vehicle_models?.name ?? request.data.vehicles?.model_text]
@@ -413,7 +413,7 @@ export default function RequestDetailPage() {
           {pickList.length > 0 && (
             <section className="mt-8">
               <h2 className="font-display text-lg font-semibold">Top picks</h2>
-              <p className="text-sm text-paper/50">Our shortlist across price and availability — compare the full details below.</p>
+              <p className="text-sm text-paper/70">Our shortlist across price and availability — compare the full details below.</p>
               <div className="mt-3 grid gap-3 sm:grid-cols-3">
                 {pickList.map(([label, qid]) => {
                   const q = quotes.data!.find((x) => x.id === qid)!;
@@ -427,7 +427,7 @@ export default function RequestDetailPage() {
             <h2 className="font-display text-xl font-semibold">
               {quotes.data ? `${quotes.data.length} quote${quotes.data.length === 1 ? '' : 's'}` : 'Quotes'}
             </h2>
-            <label className="flex items-center gap-2 text-sm text-paper/60">
+            <label className="flex items-center gap-2 text-sm text-paper/70">
               Sort by
               <select
                 aria-label="Sort quotes"
@@ -442,9 +442,9 @@ export default function RequestDetailPage() {
             </label>
           </div>
 
-          {quotes.isPending && <p className="mt-6 text-paper/60">Loading quotes…</p>}
+          {quotes.isPending && <p className="mt-6 text-paper/70">Loading quotes…</p>}
           {quotes.data?.length === 0 && (
-            <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/60">
+            <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/70">
               No quotes yet — garages in your area have been notified. Most quotes arrive within a day.
             </p>
           )}

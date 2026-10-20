@@ -6,7 +6,25 @@ import { roleHome } from '@/lib/auth/roles';
 const PROTECTED_PREFIXES = ['/dashboard', '/admin', '/requests'];
 const AUTH_PAGES = ['/auth/login', '/auth/register'];
 
+function redirectToLogin(request: NextRequest, path: string) {
+  const url = request.nextUrl.clone();
+  url.pathname = '/auth/login';
+  url.search = '';
+  url.searchParams.set('next', path);
+  return NextResponse.redirect(url);
+}
+
 export async function middleware(request: NextRequest) {
+  const path = request.nextUrl.pathname;
+  const isProtected = PROTECTED_PREFIXES.some((p) => path === p || path.startsWith(`${p}/`));
+
+  // Anonymous visitors (no Supabase auth cookie) have no session to refresh —
+  // skip the Supabase client entirely so public pages stay fast.
+  const hasAuthCookie = request.cookies.getAll().some((c) => c.name.startsWith('sb-') && c.name.includes('-auth-token'));
+  if (!hasAuthCookie) {
+    return isProtected ? redirectToLogin(request, path) : NextResponse.next();
+  }
+
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient<Database>(
@@ -29,17 +47,9 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const path = request.nextUrl.pathname;
-  const isProtected = PROTECTED_PREFIXES.some((p) => path === p || path.startsWith(`${p}/`));
   const isAuthPage = AUTH_PAGES.includes(path);
 
-  if (!user && isProtected) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/auth/login';
-    url.search = '';
-    url.searchParams.set('next', path);
-    return NextResponse.redirect(url);
-  }
+  if (!user && isProtected) return redirectToLogin(request, path);
 
   if (user && (isAuthPage || path.startsWith('/admin'))) {
     const { data: profile } = await supabase

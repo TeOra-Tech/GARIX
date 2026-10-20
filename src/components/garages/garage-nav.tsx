@@ -45,7 +45,7 @@ export function GarageNav({ garageId }: { garageId: string }) {
                   'block whitespace-nowrap rounded-lg px-3 py-2 transition md:w-full',
                   active
                     ? 'bg-volt/10 font-medium text-volt-bright'
-                    : 'text-paper/60 hover:bg-ink-soft hover:text-paper',
+                    : 'text-paper/70 hover:bg-ink-soft hover:text-paper',
                 )}
               >
                 {t.label}

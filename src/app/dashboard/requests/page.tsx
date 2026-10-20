@@ -13,9 +13,9 @@ const STATUS_STYLES: Record<string, string> = {
   quoted: 'border-signal/50 text-signal-soft',
   accepted: 'border-volt/50 text-volt-bright',
   in_progress: 'border-signal/50 text-signal-soft',
-  completed: 'border-ink-line text-paper/60',
-  cancelled: 'border-ink-line text-paper/40',
-  expired: 'border-ink-line text-paper/40',
+  completed: 'border-ink-line text-paper/70',
+  cancelled: 'border-ink-line text-paper/70',
+  expired: 'border-ink-line text-paper/70',
 };
 
 function RequestsList() {
@@ -45,7 +45,7 @@ function RequestsList() {
         </p>
       )}
 
-      {requests.isPending && <p className="mt-8 text-paper/60">Loading your requests…</p>}
+      {requests.isPending && <p className="mt-8 text-paper/70">Loading your requests…</p>}
       {requests.isError && (
         <p role="alert" className="mt-8 text-danger">Could not load your requests. Refresh to try again.</p>
       )}
@@ -77,13 +77,13 @@ function RequestsList() {
                   <span
                     className={cn(
                       'shrink-0 rounded-full border px-3 py-1 text-xs',
-                      STATUS_STYLES[r.status] ?? 'border-ink-line text-paper/60',
+                      STATUS_STYLES[r.status] ?? 'border-ink-line text-paper/70',
                     )}
                   >
                     {r.status.replace('_', ' ')}
                   </span>
                 </div>
-                <p className="mt-2 text-sm text-paper/60">
+                <p className="mt-2 text-sm text-paper/70">
                   {[
                     vehicleName && `${vehicleName} (${r.vehicles?.registration_number})`,
                     URGENCY_LABELS[r.urgency],
@@ -95,7 +95,7 @@ function RequestsList() {
                     .filter(Boolean)
                     .join(' · ')}
                 </p>
-                <p className="mt-2 text-xs text-paper/40">
+                <p className="mt-2 text-xs text-paper/70">
                   Posted {new Date(r.created_at).toLocaleDateString('en-IE', { day: 'numeric', month: 'short', year: 'numeric' })}
                   {' · '}expires {new Date(r.expires_at).toLocaleDateString('en-IE', { day: 'numeric', month: 'short' })}
                 </p>

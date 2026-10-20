@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 
 export const inputCls =
   'w-full rounded-lg border border-ink-line bg-ink-soft px-4 py-3 text-paper ' +
-  'placeholder:text-paper/40 transition focus:border-volt';
+  'placeholder:text-paper/70 transition focus:border-volt';
 
 export function Field({
   label,
