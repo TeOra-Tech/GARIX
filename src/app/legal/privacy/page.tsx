@@ -78,7 +78,12 @@ export default function PrivacyPage() {
         <p>
           For as long as your account is active. Financial records (credit transactions, payments)
           are retained as required by Irish tax law. When you request deletion, your account and
-          personal data are erased; anonymised records required by law are kept.
+          personal data are erased; anonymised records required by law are kept. You can delete your
+          account yourself at any time —{' '}
+          <Link href="/legal/delete-account" className="text-volt-bright hover:underline">
+            here&rsquo;s how
+          </Link>
+          .
         </p>
       </S>
 

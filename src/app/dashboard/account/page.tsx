@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/client';
 import { Field, inputCls } from '@/components/auth/field';
+import { DeleteAccountSection } from '@/components/account/delete-account';
 
 const accountSchema = z.object({
   fullName: z.string().trim().min(2, 'Your full name is required').max(120),
@@ -121,6 +122,8 @@ export default function AccountPage() {
               Notification preferences
             </Link>
           </section>
+
+          <DeleteAccountSection email={profile.data.email} />
         </>
       )}
     </main>

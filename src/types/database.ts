@@ -687,7 +687,7 @@ export type Database = {
         Row: {
           created_at: string
           id: string
-          opened_by: string
+          opened_by: string | null
           reason: string
           request_id: string
           resolution: string | null
@@ -698,7 +698,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
-          opened_by: string
+          opened_by?: string | null
           reason: string
           request_id: string
           resolution?: string | null
@@ -709,7 +709,7 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
-          opened_by?: string
+          opened_by?: string | null
           reason?: string
           request_id?: string
           resolution?: string | null
@@ -2132,7 +2132,7 @@ export type Database = {
           handled_by: string | null
           id: string
           reason: string
-          reporter_id: string
+          reporter_id: string | null
           status: string
         }
         Insert: {
@@ -2142,7 +2142,7 @@ export type Database = {
           handled_by?: string | null
           id?: string
           reason: string
-          reporter_id: string
+          reporter_id?: string | null
           status?: string
         }
         Update: {
@@ -2152,7 +2152,7 @@ export type Database = {
           handled_by?: string | null
           id?: string
           reason?: string
-          reporter_id?: string
+          reporter_id?: string | null
           status?: string
         }
         Relationships: [
@@ -3370,6 +3370,7 @@ export type Database = {
       }
       _st_within: { Args: { geom1: unknown; geom2: unknown }; Returns: boolean }
       accept_quote: { Args: { p_quote_id: string }; Returns: undefined }
+      account_deletion_blockers: { Args: never; Returns: string[] }
       add_credits: {
         Args: {
           p_amount: number
@@ -3459,6 +3460,7 @@ export type Database = {
         Args: never
         Returns: Database["public"]["Enums"]["user_role"]
       }
+      delete_my_account_data: { Args: never; Returns: undefined }
       disablelongtransactions: { Args: never; Returns: string }
       dispatched_to_my_garage: { Args: { b: string }; Returns: boolean }
       dropgeometrycolumn:
