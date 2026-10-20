@@ -143,7 +143,7 @@ export function VehicleForm({
           {looking ? 'Checking…' : 'Look up'}
         </button>
       </div>
-      {lookupNote && <p className="text-sm text-paper/60">{lookupNote}</p>}
+      {lookupNote && <p className="text-sm text-paper/70">{lookupNote}</p>}
 
       {!detailsOpen && (
         <button type="button" className="text-sm text-volt-bright underline" onClick={() => setDetailsOpen(true)}>
@@ -184,7 +184,7 @@ export function VehicleForm({
               </>
             )}
           </div>
-          <label className="flex items-center gap-2 text-sm text-paper/60">
+          <label className="flex items-center gap-2 text-sm text-paper/70">
             <input type="checkbox" className="h-4 w-4 accent-volt" checked={manualMake}
               onChange={(e) => setManualMake(e.target.checked)} />
             My make isn&rsquo;t listed

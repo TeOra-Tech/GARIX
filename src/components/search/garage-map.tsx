@@ -73,7 +73,7 @@ export function GarageMap({
 
   if (failed) {
     return (
-      <div className="flex h-[28rem] items-center justify-center rounded-hex border border-ink-line bg-ink-soft text-sm text-paper/50">
+      <div className="flex h-[28rem] items-center justify-center rounded-hex border border-ink-line bg-ink-soft text-sm text-paper/70">
         The map could not load — use the list view.
       </div>
     );

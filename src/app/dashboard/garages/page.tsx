@@ -28,14 +28,14 @@ export default function MyGaragesPage() {
         <GarageTransferInbox />
       </div>
 
-      {garages.isPending && <p className="mt-8 text-paper/60">Loading your garages…</p>}
+      {garages.isPending && <p className="mt-8 text-paper/70">Loading your garages…</p>}
       {garages.isError && (
         <p role="alert" className="mt-8 text-danger">Could not load your garages. Refresh to try again.</p>
       )}
       {garages.data?.length === 0 && (
         <div className="mt-8 rounded-hex border border-ink-line bg-ink-soft p-8 text-center">
           <p className="text-paper/70">No garages yet.</p>
-          <p className="mt-2 text-sm text-paper/50">
+          <p className="mt-2 text-sm text-paper/70">
             Register your garage to receive matching repair requests and quote for jobs.
           </p>
           <Link href="/garages/register" className="btn-primary mt-6 inline-flex">
@@ -53,7 +53,7 @@ export default function MyGaragesPage() {
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <h2 className="font-display text-lg font-semibold">{g.name}</h2>
-                    <p className="mt-1 text-sm text-paper/60">
+                    <p className="mt-1 text-sm text-paper/70">
                       {[
                         town && `${town}`,
                         g.phone,

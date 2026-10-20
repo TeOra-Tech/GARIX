@@ -38,7 +38,7 @@ export function GarageTransferPanel({ garageId }: { garageId: string }) {
       <h2 id="garage-transfer-heading" className="font-display text-xl font-bold">
         Transfer ownership
       </h2>
-      <p className="mt-1 text-sm text-paper/60">
+      <p className="mt-1 text-sm text-paper/70">
         Selling the business? Transfer this garage to the new owner&rsquo;s Garix account. The
         credit wallet, reviews, quotes and job history all stay with the garage. The new owner
         must accept before anything changes.

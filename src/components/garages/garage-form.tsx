@@ -279,15 +279,15 @@ export function GarageForm({
           </div>
         </Field>
         {form.lat != null ? (
-          <p className="text-sm text-paper/50">
+          <p className="text-sm text-paper/70">
             Pinned at {form.lat.toFixed(4)}, {form.lng?.toFixed(4)}
           </p>
         ) : (
-          initial && <p className="text-sm text-paper/50">Keeping your current pin — search to move it.</p>
+          initial && <p className="text-sm text-paper/70">Keeping your current pin — search to move it.</p>
         )}
         {places && (
           <ul className="divide-y divide-ink-line rounded-lg border border-ink-line bg-ink-soft">
-            {places.length === 0 && <li className="p-3 text-sm text-paper/50">No matches — try a simpler search.</li>}
+            {places.length === 0 && <li className="p-3 text-sm text-paper/70">No matches — try a simpler search.</li>}
             {places.map((p) => (
               <li key={`${p.lat},${p.lng}`}>
                 <button type="button" className="w-full p-3 text-left text-sm hover:bg-volt/10" onClick={() => pickPlace(p)}>
@@ -337,13 +337,13 @@ export function GarageForm({
                 <input type="time" aria-label={`${DAY_LABELS[d]} opening time`}
                   className={cn(inputCls, 'w-32')} value={hours[d].open}
                   onChange={(e) => setHours((h) => ({ ...h, [d]: { ...h[d], open: e.target.value } }))} />
-                <span className="text-paper/40">to</span>
+                <span className="text-paper/70">to</span>
                 <input type="time" aria-label={`${DAY_LABELS[d]} closing time`}
                   className={cn(inputCls, 'w-32')} value={hours[d].close}
                   onChange={(e) => setHours((h) => ({ ...h, [d]: { ...h[d], close: e.target.value } }))} />
               </>
             ) : (
-              <span className="text-sm text-paper/40">Closed</span>
+              <span className="text-sm text-paper/70">Closed</span>
             )}
             {errors[`openingHours.${d}`] && (
               <span role="alert" className="text-sm text-danger">{errors[`openingHours.${d}`]}</span>

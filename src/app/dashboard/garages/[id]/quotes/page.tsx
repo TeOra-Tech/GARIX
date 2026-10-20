@@ -10,8 +10,8 @@ const STATUS_STYLES: Record<string, string> = {
   submitted: 'border-info/50 bg-info/10 text-info',
   accepted: 'border-success/50 bg-success/10 text-success',
   rejected: 'border-danger/50 bg-danger/10 text-danger',
-  withdrawn: 'border-ink-line text-paper/50',
-  expired: 'border-ink-line text-paper/50',
+  withdrawn: 'border-ink-line text-paper/70',
+  expired: 'border-ink-line text-paper/70',
 };
 
 const FILTERS = ['all', 'submitted', 'accepted', 'rejected', 'expired'] as const;
@@ -22,7 +22,7 @@ function QuoteCard({ quote }: { quote: GarageQuote }) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h3 className="font-display font-semibold">{quote.service_requests?.title ?? 'Request removed'}</h3>
-          <p className="mt-1 text-sm text-paper/60">
+          <p className="mt-1 text-sm text-paper/70">
             {[
               quote.service_requests?.location_town &&
                 `${quote.service_requests.location_town}, Co. ${quote.service_requests.location_county}`,
@@ -36,7 +36,7 @@ function QuoteCard({ quote }: { quote: GarageQuote }) {
         <span
           className={cn(
             'rounded-full border px-2.5 py-0.5 text-xs font-semibold',
-            STATUS_STYLES[quote.status] ?? 'border-ink-line text-paper/60',
+            STATUS_STYLES[quote.status] ?? 'border-ink-line text-paper/70',
           )}
         >
           {quote.status}
@@ -44,23 +44,23 @@ function QuoteCard({ quote }: { quote: GarageQuote }) {
       </div>
       <dl className="mt-3 flex flex-wrap gap-x-6 gap-y-1 font-mono text-sm text-paper/70">
         <div>
-          <dt className="inline text-paper/50">Labour </dt>
+          <dt className="inline text-paper/70">Labour </dt>
           <dd className="inline">{formatEur(Number(quote.labour_cost))}</dd>
         </div>
         <div>
-          <dt className="inline text-paper/50">Parts </dt>
+          <dt className="inline text-paper/70">Parts </dt>
           <dd className="inline">{formatEur(Number(quote.parts_cost))}</dd>
         </div>
         <div>
-          <dt className="inline text-paper/50">VAT </dt>
+          <dt className="inline text-paper/70">VAT </dt>
           <dd className="inline">{formatEur(Number(quote.total_vat))}</dd>
         </div>
         <div className="font-semibold text-paper">
-          <dt className="inline text-paper/50">Total </dt>
+          <dt className="inline text-paper/70">Total </dt>
           <dd className="inline">{formatEur(Number(quote.grand_total))}</dd>
         </div>
       </dl>
-      <p className="mt-2 text-xs text-paper/40">{quote.credits_charged} credits charged</p>
+      <p className="mt-2 text-xs text-paper/70">{quote.credits_charged} credits charged</p>
     </li>
   );
 }
@@ -83,7 +83,7 @@ export default function GarageQuotesPage() {
               type="button"
               className={cn(
                 'rounded-full border px-3 py-1 capitalize transition',
-                filter === f ? 'border-volt bg-volt/10 text-volt-bright' : 'border-ink-line text-paper/60 hover:text-paper',
+                filter === f ? 'border-volt bg-volt/10 text-volt-bright' : 'border-ink-line text-paper/70 hover:text-paper',
               )}
               onClick={() => setFilter(f)}
             >
@@ -93,17 +93,17 @@ export default function GarageQuotesPage() {
         </div>
       </div>
 
-      {quotes.isPending && <p className="mt-6 text-paper/60">Loading quotes…</p>}
+      {quotes.isPending && <p className="mt-6 text-paper/70">Loading quotes…</p>}
       {quotes.isError && (
         <p role="alert" className="mt-6 text-danger">Could not load quotes. Refresh to try again.</p>
       )}
       {quotes.data?.length === 0 && (
-        <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/60">
+        <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/70">
           No quotes yet — pick a job from the request feed and send your first one.
         </p>
       )}
       {!!quotes.data?.length && filtered.length === 0 && (
-        <p className="mt-6 text-sm text-paper/60">No {filter} quotes.</p>
+        <p className="mt-6 text-sm text-paper/70">No {filter} quotes.</p>
       )}
       <ul className="mt-6 space-y-4">
         {filtered.map((q) => (

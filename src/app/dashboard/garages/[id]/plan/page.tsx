@@ -29,7 +29,7 @@ const STATUS_COPY: Record<string, { label: string; cls: string }> = {
   trialing: { label: 'Trial', cls: 'border-info/50 bg-info/10 text-info' },
   past_due: { label: 'Payment failed', cls: 'border-danger/50 bg-danger/10 text-danger' },
   unpaid: { label: 'Unpaid', cls: 'border-danger/50 bg-danger/10 text-danger' },
-  canceled: { label: 'Canceled', cls: 'border-ink-line text-paper/60' },
+  canceled: { label: 'Canceled', cls: 'border-ink-line text-paper/70' },
   incomplete: { label: 'Setup incomplete', cls: 'border-warning/50 bg-warning/10 text-warning' },
 };
 
@@ -65,7 +65,7 @@ function PlanContent() {
         <span
           className={cn(
             'rounded-full border px-3 py-1 text-xs font-semibold',
-            isPro ? 'border-gold/50 bg-gold/10 text-gold-ink' : 'border-ink-line text-paper/60',
+            isPro ? 'border-gold/50 bg-gold/10 text-gold-ink' : 'border-ink-line text-paper/70',
           )}
         >
           {isPro ? 'PRO' : 'BASIC'}
@@ -79,7 +79,7 @@ function PlanContent() {
         </p>
       )}
       {setup === 'cancelled' && (
-        <p role="status" className="mt-6 rounded-lg border border-ink-line bg-ink-soft p-4 text-sm text-paper/60">
+        <p role="status" className="mt-6 rounded-lg border border-ink-line bg-ink-soft p-4 text-sm text-paper/70">
           Upgrade cancelled — no payment was taken. You&rsquo;re still on the free Basic plan.
         </p>
       )}
@@ -110,14 +110,14 @@ function PlanContent() {
           <div className="flex items-baseline justify-between">
             <h3 className="font-display text-lg font-bold">Pro</h3>
             <span className="font-display text-2xl font-extrabold">
-              €{PRO_PRICE_EUR}<span className="text-base font-semibold text-paper/50">/mo</span>
+              €{PRO_PRICE_EUR}<span className="text-base font-semibold text-paper/70">/mo</span>
             </span>
           </div>
           <ul className="mt-4 space-y-2 text-sm text-paper/70">
             {PRO_FEATURES.map((f) => (
               <li key={f.label}>
                 <Check on /> {f.label}
-                {f.soon && <span className="ml-1 text-xs text-paper/40">(coming soon)</span>}
+                {f.soon && <span className="ml-1 text-xs text-paper/70">(coming soon)</span>}
               </li>
             ))}
           </ul>
@@ -139,7 +139,7 @@ function PlanContent() {
             )}
           </div>
           {isPro && badge && (
-            <p className="mt-3 text-xs text-paper/50">
+            <p className="mt-3 text-xs text-paper/70">
               Subscription: <span className="font-semibold">{badge.label}</span>
               {sub.data?.current_period_end &&
                 ` · renews ${new Date(sub.data.current_period_end).toLocaleDateString('en-IE', { day: 'numeric', month: 'short', year: 'numeric' })}`}
@@ -151,7 +151,7 @@ function PlanContent() {
         </div>
       </div>
 
-      <p className="mt-6 text-xs text-paper/50">
+      <p className="mt-6 text-xs text-paper/70">
         Reviews always stay owned by customers — Pro adds the ability to reply publicly, never to edit
         or remove them. {garage.data ? `Plan applies to ${garage.data.name}.` : ''}
       </p>

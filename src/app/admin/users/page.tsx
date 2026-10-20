@@ -28,13 +28,13 @@ export default function AdminUsersPage() {
         <button type="submit" className="btn-ghost shrink-0 !px-4">Search</button>
       </form>
 
-      {users.isPending && <p className="mt-8 text-paper/60">Loading…</p>}
+      {users.isPending && <p className="mt-8 text-paper/70">Loading…</p>}
       {setRole.isError && <p role="alert" className="mt-4 text-sm text-danger">Role change failed.</p>}
 
       <div className="mt-6 overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-ink-line text-left text-xs uppercase tracking-wide text-paper/40">
+            <tr className="border-b border-ink-line text-left text-xs uppercase tracking-wide text-paper/70">
               <th className="py-2 pr-4 font-medium">Name</th>
               <th className="py-2 pr-4 font-medium">Email</th>
               <th className="py-2 pr-4 font-medium">Mobile</th>
@@ -49,7 +49,7 @@ export default function AdminUsersPage() {
                 <td className="py-2.5 pr-4 font-medium">{u.full_name || '—'}</td>
                 <td className="py-2.5 pr-4 text-paper/70">{u.email}</td>
                 <td className="py-2.5 pr-4 text-paper/70">{u.mobile_number ?? '—'}</td>
-                <td className="py-2.5 pr-4 text-paper/50">
+                <td className="py-2.5 pr-4 text-paper/70">
                   {new Date(u.created_at).toLocaleDateString('en-IE', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </td>
                 <td className="py-2.5 pr-4">

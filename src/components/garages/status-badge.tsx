@@ -13,7 +13,7 @@ export function STATUS_BADGE(status: string) {
     <span
       className={cn(
         'shrink-0 rounded-full border px-2.5 py-0.5 text-xs font-semibold',
-        STYLES[status] ?? 'border-ink-line text-paper/60',
+        STYLES[status] ?? 'border-ink-line text-paper/70',
       )}
     >
       {status.replace(/_/g, ' ')}

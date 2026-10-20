@@ -26,7 +26,7 @@ function Attachment({ message }: { message: Message }) {
   }, [message.attachment_path]);
 
   if (failed) return <p className="text-xs text-signal-soft">Attachment unavailable</p>;
-  if (!url) return <p className="text-xs text-paper/40">Loading attachment…</p>;
+  if (!url) return <p className="text-xs text-paper/70">Loading attachment…</p>;
   if (message.attachment_type === 'image') {
     return (
       <a href={url} target="_blank" rel="noopener noreferrer">
@@ -87,7 +87,7 @@ export default function ThreadPage() {
   return (
     <main className="mx-auto flex h-[calc(100vh-4.25rem)] max-w-3xl flex-col px-4 py-6">
       <header className="border-b border-ink-line pb-4">
-        <Link href="/dashboard/messages" className="text-sm text-paper/60 hover:text-volt-bright">
+        <Link href="/dashboard/messages" className="text-sm text-paper/70 hover:text-volt-bright">
           &larr; Messages
         </Link>
         <div className="mt-1 flex flex-wrap items-baseline justify-between gap-2">
@@ -101,15 +101,15 @@ export default function ThreadPage() {
             )}
           </h1>
           {conversation.data?.service_requests?.title && (
-            <p className="text-sm text-paper/50">Re: {conversation.data.service_requests.title}</p>
+            <p className="text-sm text-paper/70">Re: {conversation.data.service_requests.title}</p>
           )}
         </div>
       </header>
 
       <div className="flex-1 space-y-3 overflow-y-auto py-6">
-        {messages.isPending && <p className="text-paper/60">Loading…</p>}
+        {messages.isPending && <p className="text-paper/70">Loading…</p>}
         {messages.data?.length === 0 && (
-          <p className="text-center text-sm text-paper/40">No messages yet — say hello.</p>
+          <p className="text-center text-sm text-paper/70">No messages yet — say hello.</p>
         )}
         {messages.data?.map((m) => {
           const own = m.sender_id === me;
@@ -123,7 +123,7 @@ export default function ThreadPage() {
               >
                 {m.body && <p className="whitespace-pre-wrap text-sm">{m.body}</p>}
                 {m.attachment_path && <Attachment message={m} />}
-                <p className={cn('mt-1 text-right text-[11px]', own ? 'text-white/70' : 'text-paper/40')}>
+                <p className={cn('mt-1 text-right text-[11px]', own ? 'text-white/70' : 'text-paper/70')}>
                   {new Date(m.created_at).toLocaleTimeString('en-IE', { hour: '2-digit', minute: '2-digit' })}
                   {own && (
                     <span className={cn('ml-1', m.read_at ? 'text-white' : 'text-white/50')} title={m.read_at ? 'Read' : 'Sent'}>
@@ -140,9 +140,9 @@ export default function ThreadPage() {
 
       <form onSubmit={submit} className="border-t border-ink-line pt-4">
         {file && (
-          <p className="mb-2 flex items-center gap-2 text-sm text-paper/60">
+          <p className="mb-2 flex items-center gap-2 text-sm text-paper/70">
             &#128206; {file.name}
-            <button type="button" className="text-paper/40 hover:text-danger" aria-label="Remove attachment"
+            <button type="button" className="text-paper/70 hover:text-danger" aria-label="Remove attachment"
               onClick={() => setFile(null)}>
               &#10005;
             </button>

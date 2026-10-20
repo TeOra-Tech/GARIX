@@ -34,7 +34,7 @@ function VehicleCard({ vehicle, onDeleted }: { vehicle: VehicleRow; onDeleted: (
             {vehicleName(vehicle)}
           </h2>
           <p className="mt-1 font-mono text-sm text-volt-bright">{vehicle.registration_number}</p>
-          <p className="mt-2 text-sm text-paper/60">
+          <p className="mt-2 text-sm text-paper/70">
             {[
               vehicle.vehicle_engines?.label === 'custom'
                 ? vehicle.engine_size_custom
@@ -104,11 +104,11 @@ export default function VehiclesPage() {
         <div>
           <h1 className="font-display text-3xl font-bold">My vehicles</h1>
           {isFleet ? (
-            <p className="mt-1 text-sm text-paper/60">
+            <p className="mt-1 text-sm text-paper/70">
               Fleet account · {count} vehicle{count === 1 ? '' : 's'} · €{FLEET_PRICE_EUR}/vehicle per month
             </p>
           ) : (
-            <p className="mt-1 text-sm text-paper/60">
+            <p className="mt-1 text-sm text-paper/70">
               {count} of {INDIVIDUAL_LIMIT} vehicles used
             </p>
           )}
@@ -119,7 +119,7 @@ export default function VehiclesPage() {
           </Link>
         ) : (
           <span
-            className="cursor-not-allowed rounded-lg border border-ink-line px-4 py-2 text-sm text-paper/40"
+            className="cursor-not-allowed rounded-lg border border-ink-line px-4 py-2 text-sm text-paper/70"
             title={isFleet ? 'Set up billing to add vehicles' : 'Vehicle limit reached'}
           >
             Add a vehicle
@@ -157,7 +157,7 @@ export default function VehiclesPage() {
         <TransferInbox />
       </div>
 
-      {vehicles.isPending && <p className="mt-8 text-paper/60">Loading your vehicles…</p>}
+      {vehicles.isPending && <p className="mt-8 text-paper/70">Loading your vehicles…</p>}
       {vehicles.isError && (
         <p role="alert" className="mt-8 text-danger">
           Could not load your vehicles. Refresh to try again.
@@ -166,7 +166,7 @@ export default function VehiclesPage() {
       {vehicles.data?.length === 0 && (
         <div className="mt-8 rounded-hex border border-ink-line bg-ink-soft p-8 text-center">
           <p className="text-paper/70">No vehicles yet.</p>
-          <p className="mt-2 text-sm text-paper/50">
+          <p className="mt-2 text-sm text-paper/70">
             Add your car to post repair requests and get quotes from local garages.
           </p>
           {canAdd && (

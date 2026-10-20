@@ -48,16 +48,16 @@ function GarageGrantCard({ garage }: { garage: AdminGarage }) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="font-display text-lg font-semibold">{garage.name}</p>
-          <p className="mt-1 text-sm text-paper/60">
+          <p className="mt-1 text-sm text-paper/70">
             {garage.user_profiles?.full_name} · {garage.user_profiles?.email}
           </p>
-          <p className="mt-1 text-xs text-paper/40">
+          <p className="mt-1 text-xs text-paper/70">
             wallet {garage.credit_wallets?.balance ?? 0} credits · status {garage.status.replace(/_/g, ' ')}
           </p>
         </div>
         <span className={cn(
           'rounded-full border px-3 py-1 text-xs',
-          garage.plan === 'pro' ? 'border-volt/50 text-volt-bright' : 'border-ink-line text-paper/50',
+          garage.plan === 'pro' ? 'border-volt/50 text-volt-bright' : 'border-ink-line text-paper/70',
         )}>
           {planLabel}
         </span>
@@ -78,7 +78,7 @@ function GarageGrantCard({ garage }: { garage: AdminGarage }) {
           }}
         >
           <p className="text-sm font-medium">Grant free credits</p>
-          <p className="text-xs text-paper/40">1 credit = €1. Use a negative amount to deduct.</p>
+          <p className="text-xs text-paper/70">1 credit = €1. Use a negative amount to deduct.</p>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <input aria-label={`Credit amount for ${garage.name}`} inputMode="numeric" placeholder="+ credits"
               className={cn(inputCls, '!w-24 !px-3 !py-2 text-sm')} value={amount} onChange={(e) => setAmount(e.target.value)} />
@@ -107,11 +107,11 @@ function GarageGrantCard({ garage }: { garage: AdminGarage }) {
           }}
         >
           <p className="text-sm font-medium">Grant Pro trial</p>
-          <p className="text-xs text-paper/40">Free Pro (unlimited quotes + all Pro tools). No card, auto-expires.</p>
+          <p className="text-xs text-paper/70">Free Pro (unlimited quotes + all Pro tools). No card, auto-expires.</p>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <input aria-label={`Trial length in days for ${garage.name}`} inputMode="numeric"
               className={cn(inputCls, '!w-20 !px-3 !py-2 text-sm')} value={days} onChange={(e) => setDays(e.target.value)} />
-            <span className="text-sm text-paper/50">days</span>
+            <span className="text-sm text-paper/70">days</span>
             <button type="submit" className="btn-primary !px-3 !py-2 text-sm" disabled={trial.isPending}>
               {trial.isPending ? '…' : compTrial ? 'Extend trial' : 'Grant trial'}
             </button>
@@ -141,7 +141,7 @@ function GaragesPanel() {
   return (
     <section>
       <h2 className="font-display text-2xl font-semibold">Garages</h2>
-      <p className="mt-1 text-sm text-paper/50">Grant free credits or a free Pro trial.</p>
+      <p className="mt-1 text-sm text-paper/70">Grant free credits or a free Pro trial.</p>
       <input
         aria-label="Search garages"
         placeholder="Search by garage name, owner or email…"
@@ -149,8 +149,8 @@ function GaragesPanel() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      {garages.isPending && <p className="mt-6 text-paper/60">Loading garages…</p>}
-      {garages.data && filtered.length === 0 && <p className="mt-6 text-paper/60">No garages match.</p>}
+      {garages.isPending && <p className="mt-6 text-paper/70">Loading garages…</p>}
+      {garages.data && filtered.length === 0 && <p className="mt-6 text-paper/70">No garages match.</p>}
       <ul className="mt-4 space-y-4">
         {filtered.map((g) => <GarageGrantCard key={g.id} garage={g} />)}
       </ul>
@@ -180,12 +180,12 @@ function FleetGrantCard({ candidate }: { candidate: AdminFleetCandidate }) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="font-display text-lg font-semibold">{candidate.full_name || 'Unnamed'}</p>
-          <p className="mt-1 text-sm text-paper/60">{candidate.email}</p>
-          <p className="mt-1 text-xs text-paper/40">{vehicles} vehicle{vehicles === 1 ? '' : 's'}</p>
+          <p className="mt-1 text-sm text-paper/70">{candidate.email}</p>
+          <p className="mt-1 text-xs text-paper/70">{vehicles} vehicle{vehicles === 1 ? '' : 's'}</p>
         </div>
         <span className={cn(
           'rounded-full border px-3 py-1 text-xs',
-          candidate.account_type === 'fleet' ? 'border-volt/50 text-volt-bright' : 'border-ink-line text-paper/50',
+          candidate.account_type === 'fleet' ? 'border-volt/50 text-volt-bright' : 'border-ink-line text-paper/70',
         )}>
           {standingLabel}
         </span>
@@ -201,11 +201,11 @@ function FleetGrantCard({ candidate }: { candidate: AdminFleetCandidate }) {
         }}
       >
         <p className="text-sm font-medium">Grant fleet trial</p>
-        <p className="text-xs text-paper/40">Makes this a fleet account (unlimited vehicles) free for the trial period. No card, auto-expires.</p>
+        <p className="text-xs text-paper/70">Makes this a fleet account (unlimited vehicles) free for the trial period. No card, auto-expires.</p>
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <input aria-label={`Fleet trial length in days for ${candidate.email}`} inputMode="numeric"
             className={cn(inputCls, '!w-20 !px-3 !py-2 text-sm')} value={days} onChange={(e) => setDays(e.target.value)} />
-          <span className="text-sm text-paper/50">days</span>
+          <span className="text-sm text-paper/70">days</span>
           <button type="submit" className="btn-primary !px-3 !py-2 text-sm" disabled={trial.isPending}>
             {trial.isPending ? '…' : compTrial ? 'Extend trial' : 'Grant trial'}
           </button>
@@ -224,7 +224,7 @@ function FleetsPanel() {
   return (
     <section className="mt-12">
       <h2 className="font-display text-2xl font-semibold">Fleets</h2>
-      <p className="mt-1 text-sm text-paper/50">Grant a customer a free fleet trial (unlimited vehicles, per-vehicle billing waived).</p>
+      <p className="mt-1 text-sm text-paper/70">Grant a customer a free fleet trial (unlimited vehicles, per-vehicle billing waived).</p>
       <input
         aria-label="Search customers"
         placeholder="Search customers by name or email…"
@@ -232,8 +232,8 @@ function FleetsPanel() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      {candidates.isPending && <p className="mt-6 text-paper/60">Loading customers…</p>}
-      {candidates.data?.length === 0 && <p className="mt-6 text-paper/60">No customers match.</p>}
+      {candidates.isPending && <p className="mt-6 text-paper/70">Loading customers…</p>}
+      {candidates.data?.length === 0 && <p className="mt-6 text-paper/70">No customers match.</p>}
       <ul className="mt-4 space-y-4">
         {candidates.data?.map((c) => <FleetGrantCard key={c.id} candidate={c} />)}
       </ul>
@@ -245,7 +245,7 @@ export default function GrantsAdminPage() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">
       <h1 className="font-display text-3xl font-bold">Grants &amp; trials</h1>
-      <p className="mt-2 text-sm text-paper/60">
+      <p className="mt-2 text-sm text-paper/70">
         Comp free credits and trials. Every grant is written server-side and recorded in the audit log; trials carry no
         card and expire automatically.
       </p>

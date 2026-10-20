@@ -27,7 +27,7 @@ function SubmittedReview({ review }: { review: Review }) {
           const v = review[`rating_${c.key}` as keyof Review] as number;
           return (
             <div key={c.key} className="flex justify-between">
-              <dt className="text-paper/60">{c.label}</dt>
+              <dt className="text-paper/70">{c.label}</dt>
               <dd aria-label={`${v} out of 5`} className="text-gold">
                 {'★'.repeat(v)}
                 <span className="text-paper/20">{'★'.repeat(5 - v)}</span>
@@ -85,7 +85,7 @@ export function ReviewSection({
     return (
       <section className="mt-8 rounded-hex border border-ink-line bg-ink-soft p-6">
         <h2 className="font-display text-xl font-semibold">Job done?</h2>
-        <p className="mt-2 text-sm text-paper/60">
+        <p className="mt-2 text-sm text-paper/70">
           Once the garage has finished, mark the job complete — then you can leave a review.
         </p>
         {complete.isError && (
@@ -131,7 +131,7 @@ export function ReviewSection({
   return (
     <section className="mt-8 rounded-hex border border-ink-line bg-ink-soft p-6">
       <h2 className="font-display text-xl font-semibold">How did it go?</h2>
-      <p className="mt-2 text-sm text-paper/60">
+      <p className="mt-2 text-sm text-paper/70">
         Your review is public and verified — it can only come from a completed Garix job.
       </p>
       <form onSubmit={submit} className="mt-5 space-y-4" noValidate>
@@ -157,7 +157,7 @@ export function ReviewSection({
           maxLength={2000}
         />
         <div>
-          <label className="text-sm text-paper/60" htmlFor="review-photos">
+          <label className="text-sm text-paper/70" htmlFor="review-photos">
             Photos (optional, up to {MAX_REVIEW_PHOTOS})
           </label>
           <input
@@ -172,7 +172,7 @@ export function ReviewSection({
             }}
           />
           {photos.length > 0 && (
-            <p className="mt-1 text-xs text-paper/50">
+            <p className="mt-1 text-xs text-paper/70">
               {photos.map((p) => p.name).join(', ')}{' '}
               <button type="button" className="underline hover:text-danger" onClick={() => setPhotos([])}>
                 clear

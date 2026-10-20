@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/client';
 import { Field, inputCls } from '@/components/auth/field';
+import { DeleteAccountSection } from '@/components/account/delete-account';
 
 const accountSchema = z.object({
   fullName: z.string().trim().min(2, 'Your full name is required').max(120),
@@ -71,12 +72,12 @@ export default function AccountPage() {
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-12">
-      <Link href="/dashboard" className="text-sm text-paper/60 hover:text-volt-bright">
+      <Link href="/dashboard" className="text-sm text-paper/70 hover:text-volt-bright">
         &larr; Dashboard
       </Link>
       <h1 className="mt-2 font-display text-3xl font-bold">Account details</h1>
 
-      {profile.isPending && <p className="mt-8 text-paper/60">Loading your account…</p>}
+      {profile.isPending && <p className="mt-8 text-paper/70">Loading your account…</p>}
       {profile.isError && (
         <p role="alert" className="mt-8 text-danger">Could not load your account. Refresh to try again.</p>
       )}
@@ -100,7 +101,7 @@ export default function AccountPage() {
             <Field label="Email" htmlFor="acc-email">
               <input id="acc-email" className={inputCls} value={profile.data.email} disabled aria-readonly />
             </Field>
-            <p className="text-xs text-paper/50">
+            <p className="text-xs text-paper/70">
               Your email is your sign-in and can&rsquo;t be changed here — contact support if it needs updating.
             </p>
             {save.isError && (
@@ -114,13 +115,15 @@ export default function AccountPage() {
 
           <section className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-6">
             <h2 className="font-display text-lg font-semibold">Notifications</h2>
-            <p className="mt-2 text-sm text-paper/60">
+            <p className="mt-2 text-sm text-paper/70">
               Choose how Garix reaches you — in-app, email or SMS.
             </p>
             <Link href="/dashboard/notifications" className="btn-ghost mt-4 inline-flex !px-4 !py-2 text-sm">
               Notification preferences
             </Link>
           </section>
+
+          <DeleteAccountSection email={profile.data.email} />
         </>
       )}
     </main>

@@ -29,13 +29,13 @@ export default function NotificationPreferencesPage() {
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-12">
-      <Link href="/dashboard" className="text-sm text-paper/60 hover:text-volt-bright">
+      <Link href="/dashboard" className="text-sm text-paper/70 hover:text-volt-bright">
         &larr; Dashboard
       </Link>
       <h1 className="mt-2 font-display text-3xl font-bold">Notification preferences</h1>
-      <p className="mt-2 text-paper/60">Choose how Garix reaches you.</p>
+      <p className="mt-2 text-paper/70">Choose how Garix reaches you.</p>
 
-      {prefs.isPending && <p className="mt-8 text-paper/60">Loading…</p>}
+      {prefs.isPending && <p className="mt-8 text-paper/70">Loading…</p>}
 
       {prefs.isSuccess && (
         <div className="mt-8 divide-y divide-ink-line rounded-hex border border-ink-line bg-ink-soft">
@@ -45,7 +45,7 @@ export default function NotificationPreferencesPage() {
               <label key={c.key} className="flex cursor-pointer items-start justify-between gap-4 p-5">
                 <span>
                   <span className="block font-medium">{c.label}</span>
-                  <span className="mt-0.5 block text-sm text-paper/60">{c.description}</span>
+                  <span className="mt-0.5 block text-sm text-paper/70">{c.description}</span>
                 </span>
                 <input
                   type="checkbox"

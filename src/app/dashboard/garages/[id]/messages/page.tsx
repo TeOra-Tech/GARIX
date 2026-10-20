@@ -23,14 +23,14 @@ export default function GarageMessagesPage() {
   return (
     <section className="py-8">
       <h2 className="font-display text-2xl font-bold">Messages</h2>
-      <p className="mt-1 text-sm text-paper/60">Conversations with this garage&rsquo;s customers.</p>
+      <p className="mt-1 text-sm text-paper/70">Conversations with this garage&rsquo;s customers.</p>
 
-      {conversations.isPending && <p className="mt-6 text-paper/60">Loading conversations…</p>}
+      {conversations.isPending && <p className="mt-6 text-paper/70">Loading conversations…</p>}
       {conversations.isError && (
         <p role="alert" className="mt-6 text-danger">Could not load messages. Refresh to try again.</p>
       )}
       {conversations.data?.length === 0 && (
-        <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/60">
+        <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/70">
           No conversations yet — customers can message you from their quotes.
         </p>
       )}
@@ -54,12 +54,12 @@ export default function GarageMessagesPage() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className={cn('truncate', unreadCount > 0 ? 'font-semibold' : 'font-medium')}>{name}</p>
-                    <p className="truncate text-sm text-paper/50">
+                    <p className="truncate text-sm text-paper/70">
                       {c.service_requests?.title ?? 'General enquiry'}
                     </p>
                   </div>
                   <div className="flex shrink-0 flex-col items-end gap-1">
-                    <span className="text-xs text-paper/40">{relativeTime(c.last_message_at)}</span>
+                    <span className="text-xs text-paper/70">{relativeTime(c.last_message_at)}</span>
                     {unreadCount > 0 && (
                       <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-volt px-1.5 text-xs font-semibold text-white">
                         {unreadCount}

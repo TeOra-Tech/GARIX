@@ -5,8 +5,8 @@ export const metadata = {
   description: 'How Garix collects, uses, and protects your personal data under GDPR.',
 };
 
-const S = ({ title, children }: { title: string; children: React.ReactNode }) => (
-  <section className="mt-10">
+const S = ({ title, id, children }: { title: string; id?: string; children: React.ReactNode }) => (
+  <section id={id} className="mt-10 scroll-mt-20">
     <h2 className="font-display text-2xl font-bold">{title}</h2>
     <div className="mt-3 space-y-3 text-paper/80">{children}</div>
   </section>
@@ -16,7 +16,7 @@ export default function PrivacyPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-20">
       <h1 className="font-display text-4xl font-bold">Privacy policy</h1>
-      <p className="mt-3 text-sm text-paper/50">Last updated: July 2026 · Applies to garix.ie</p>
+      <p className="mt-3 text-sm text-paper/70">Last updated: July 2026 · Applies to garix.ie</p>
 
       <p className="mt-6 text-paper/80">
         Garix connects vehicle owners with mechanic garages across Ireland. This policy explains
@@ -78,7 +78,12 @@ export default function PrivacyPage() {
         <p>
           For as long as your account is active. Financial records (credit transactions, payments)
           are retained as required by Irish tax law. When you request deletion, your account and
-          personal data are erased; anonymised records required by law are kept.
+          personal data are erased; anonymised records required by law are kept. You can delete your
+          account yourself at any time —{' '}
+          <Link href="/legal/delete-account" className="text-volt-bright hover:underline">
+            here&rsquo;s how
+          </Link>
+          .
         </p>
       </S>
 
@@ -94,14 +99,16 @@ export default function PrivacyPage() {
         </p>
       </S>
 
-      <S title="Cookies">
+      <S title="Cookies" id="cookies">
         <p>
-          We use strictly necessary cookies for sign-in sessions. Analytics (Google Analytics) runs
-          only where configured and is used in aggregate to improve the product.
+          We use strictly necessary cookies for sign-in sessions and to remember your cookie choice.
+          Analytics (Google Analytics) only runs if you accept it in the cookie banner, and is used in
+          aggregate to improve the product. You can change your choice at any time with &ldquo;Cookie
+          settings&rdquo; in the site footer; we ask again after six months.
         </p>
       </S>
 
-      <p className="mt-10 text-sm text-paper/50">
+      <p className="mt-10 text-sm text-paper/70">
         Questions? Contact{' '}
         <a href="mailto:privacy@garix.ie" className="text-volt-bright hover:underline">privacy@garix.ie</a>.
       </p>

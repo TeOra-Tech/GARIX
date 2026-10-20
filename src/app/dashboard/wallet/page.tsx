@@ -32,7 +32,7 @@ function WalletRedirect() {
           <Link href="/garages/register" className="btn-primary mt-6 inline-flex">Register your garage</Link>
         </div>
       ) : (
-        <p className="text-paper/60">Taking you to your garage wallet…</p>
+        <p className="text-paper/70">Taking you to your garage wallet…</p>
       )}
     </main>
   );

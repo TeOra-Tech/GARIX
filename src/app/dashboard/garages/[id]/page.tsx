@@ -86,7 +86,7 @@ export default function GarageRequestFeedPage() {
                 )}
                 Balance: <span className="font-display font-semibold">{balance} credits</span>
                 {costs.data && (
-                  <span className="text-paper/50">
+                  <span className="text-paper/70">
                     {' '}· quote costs {costs.data.standard} credits ({costs.data.priority} priority)
                   </span>
                 )}
@@ -105,12 +105,12 @@ export default function GarageRequestFeedPage() {
             </div>
           )}
 
-          {feed.isPending && <p className="mt-8 text-paper/60">Loading open requests…</p>}
+          {feed.isPending && <p className="mt-8 text-paper/70">Loading open requests…</p>}
           {feed.isError && (
             <p role="alert" className="mt-8 text-danger">Could not load the feed. Refresh to try again.</p>
           )}
           {feed.data?.length === 0 && (
-            <p className="mt-8 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/60">
+            <p className="mt-8 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/70">
               No open requests right now — new ones appear here as customers post them.
             </p>
           )}
@@ -123,7 +123,7 @@ export default function GarageRequestFeedPage() {
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <h3 className="font-display text-lg font-semibold">{r.title}</h3>
-                      <p className="mt-1 text-sm text-paper/60">
+                      <p className="mt-1 text-sm text-paper/70">
                         {[
                           r.service_category?.name,
                           vehicleSummary(r),
@@ -138,14 +138,14 @@ export default function GarageRequestFeedPage() {
                         'shrink-0 rounded-full border px-3 py-1 text-xs',
                         r.urgency === 'emergency' || r.urgency === 'within_24h'
                           ? 'border-signal/50 text-signal-soft'
-                          : 'border-ink-line text-paper/60',
+                          : 'border-ink-line text-paper/70',
                       )}
                     >
                       {URGENCY_LABELS[r.urgency]}
                     </span>
                   </div>
                   <p className="mt-3 line-clamp-2 text-sm text-paper/70">{r.description}</p>
-                  <p className="mt-3 text-xs text-paper/40">
+                  <p className="mt-3 text-xs text-paper/70">
                     {[
                       r.budget_amount != null && `Budget ${formatEur(Number(r.budget_amount))}`,
                       r.collection_required && 'Collection required',

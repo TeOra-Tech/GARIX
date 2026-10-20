@@ -26,13 +26,13 @@ export default function RegisterGaragePage() {
         For garages
       </p>
       <h1 className="mt-2 font-display text-3xl font-bold md:text-4xl">Register your garage</h1>
-      <p className="mt-3 text-paper/60">
+      <p className="mt-3 text-paper/70">
         Free to register. Once our team verifies your details, matching repair requests
         in your radius land in your feed and you quote for the jobs you want —
         2 credits per quote, 1 credit is &euro;1.
       </p>
 
-      {authState === 'checking' && <p className="mt-10 text-paper/60">Checking your account…</p>}
+      {authState === 'checking' && <p className="mt-10 text-paper/70">Checking your account…</p>}
 
       {authState === 'anonymous' && (
         <div className="mt-10 rounded-hex border border-ink-line bg-ink-soft p-8">

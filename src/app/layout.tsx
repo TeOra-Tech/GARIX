@@ -10,7 +10,7 @@ import './globals.css';
 // Poppins is the brand's sole typeface (Brand Guidelines §15).
 const poppins = Poppins({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-sans',
   display: 'swap',
 });

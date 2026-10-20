@@ -6,8 +6,8 @@
  * Roadmap events: request_created, quote_submitted, quote_accepted,
  * credits_purchased.
  *
- * NOTE: the enable/disable gate lives in components/analytics.tsx (a server
- * component) — it must NOT be imported from here. Values exported from a
+ * NOTE: the enable/disable gate lives in lib/analytics-config.ts (a server-safe
+ * module) — it must NOT be re-exported from here. Values exported from a
  * 'use client' module become client-reference proxies when read on the
  * server, which silently renders a broken <Script> tag.
  */

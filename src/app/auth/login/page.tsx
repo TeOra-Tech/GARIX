@@ -83,7 +83,7 @@ function LoginForm() {
   return (
     <main className="mx-auto max-w-md px-4 py-20">
       <h1 className="font-display text-4xl font-bold">Log in</h1>
-      <p className="mt-2 text-paper/60">
+      <p className="mt-2 text-paper/70">
         We&rsquo;ll email you a one-time code — no password needed.
       </p>
 
@@ -113,7 +113,7 @@ function LoginForm() {
         </form>
       ) : (
         <form onSubmit={verifyCode} className="mt-8 space-y-4" noValidate>
-          <p className="text-sm text-paper/60">
+          <p className="text-sm text-paper/70">
             Check <span className="font-medium text-paper">{email}</span> — click the sign-in link
             in the email, or enter the code below if your email includes one.{' '}
             <button type="button" className="underline hover:text-volt-bright" onClick={() => { setStep('email'); setCode(''); setError(null); }}>
@@ -139,7 +139,7 @@ function LoginForm() {
         </form>
       )}
 
-      <div className="my-8 flex items-center gap-4 text-xs uppercase tracking-widest text-paper/40">
+      <div className="my-8 flex items-center gap-4 text-xs uppercase tracking-widest text-paper/70">
         <span className="h-px flex-1 bg-ink-line" aria-hidden />
         or
         <span className="h-px flex-1 bg-ink-line" aria-hidden />
@@ -147,7 +147,7 @@ function LoginForm() {
 
       <OAuthButtons next={next} />
 
-      <p className="mt-8 text-sm text-paper/60">
+      <p className="mt-8 text-sm text-paper/70">
         New to Garix?{' '}
         <Link href="/auth/register" className="text-volt-bright hover:underline">
           Create an account

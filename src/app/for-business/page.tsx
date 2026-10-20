@@ -48,7 +48,7 @@ export default function ForBusinessPage() {
         <h2 className="font-display text-2xl font-bold">Simple, per-vehicle pricing</h2>
         <p className="mt-3 text-paper/70">
           <span className="font-display text-4xl font-extrabold">€5</span>
-          <span className="text-paper/60"> per vehicle, per month.</span>
+          <span className="text-paper/70"> per vehicle, per month.</span>
         </p>
         <ul className="mt-4 space-y-2 text-sm text-paper/70">
           <li>• Only pay for the vehicles you manage — changes are prorated.</li>

@@ -30,7 +30,7 @@ function dueInfo(dueDate: string): { text: string; cls: string } {
   if (days < 0) return { text: `Overdue — was due ${dateStr}`, cls: 'text-danger' };
   if (days === 0) return { text: 'Due today', cls: 'text-danger' };
   if (days <= 14) return { text: `Due ${dateStr} (in ${days} day${days === 1 ? '' : 's'})`, cls: 'text-warning' };
-  return { text: `Due ${dateStr}`, cls: 'text-paper/60' };
+  return { text: `Due ${dateStr}`, cls: 'text-paper/70' };
 }
 
 function ReminderCard({ reminder }: { reminder: ReminderRow }) {
@@ -46,16 +46,16 @@ function ReminderCard({ reminder }: { reminder: ReminderRow }) {
           <h3 className="font-display font-semibold">
             {reminder.title || reminderTypeLabel(reminder.reminder_type)}
             {reminder.interval_months && !isDone && (
-              <span className="ml-2 rounded-full border border-ink-line px-2 py-0.5 text-xs font-medium text-paper/60">
+              <span className="ml-2 rounded-full border border-ink-line px-2 py-0.5 text-xs font-medium text-paper/70">
                 every {reminder.interval_months} mo
               </span>
             )}
           </h3>
-          <p className={cn('mt-1 text-sm font-medium', isDone ? 'text-paper/50' : due.cls)}>
+          <p className={cn('mt-1 text-sm font-medium', isDone ? 'text-paper/70' : due.cls)}>
             {isDone ? 'Done' : due.text}
             {reminder.due_mileage_km != null && ` · at ${reminder.due_mileage_km.toLocaleString('en-IE')} km`}
           </p>
-          {reminder.notes && <p className="mt-1 text-sm text-paper/60">{reminder.notes}</p>}
+          {reminder.notes && <p className="mt-1 text-sm text-paper/70">{reminder.notes}</p>}
         </div>
         <div className="flex gap-3 text-sm">
           {!isDone && (
@@ -70,7 +70,7 @@ function ReminderCard({ reminder }: { reminder: ReminderRow }) {
           )}
           <button
             type="button"
-            className="text-paper/50 hover:text-danger"
+            className="text-paper/70 hover:text-danger"
             disabled={del.isPending}
             onClick={() => del.mutate(reminder.id)}
           >
@@ -127,7 +127,7 @@ export function Reminders({ vehicleId }: { vehicleId: string }) {
           {open ? 'Close' : 'Add a reminder'}
         </button>
       </div>
-      <p className="mt-1 text-sm text-paper/60">
+      <p className="mt-1 text-sm text-paper/70">
         We&rsquo;ll notify you 14 days before each one is due — NCT, oil service, tyres, insurance,
         road tax and more.
       </p>
@@ -171,12 +171,12 @@ export function Reminders({ vehicleId }: { vehicleId: string }) {
         </form>
       )}
 
-      {reminders.isPending && <p className="mt-6 text-paper/60">Loading reminders…</p>}
+      {reminders.isPending && <p className="mt-6 text-paper/70">Loading reminders…</p>}
       {reminders.isError && (
         <p role="alert" className="mt-6 text-danger">Could not load reminders. Refresh to try again.</p>
       )}
       {reminders.data?.length === 0 && !open && (
-        <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-6 text-sm text-paper/60">
+        <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-6 text-sm text-paper/70">
           No reminders yet. Set up NCT, oil service, insurance and road tax so nothing slips.
         </p>
       )}
@@ -189,7 +189,7 @@ export function Reminders({ vehicleId }: { vehicleId: string }) {
       )}
       {done.length > 0 && (
         <details className="mt-4">
-          <summary className="cursor-pointer text-sm text-paper/50 hover:text-paper/80">
+          <summary className="cursor-pointer text-sm text-paper/70 hover:text-paper/80">
             Completed ({done.length})
           </summary>
           <ul className="mt-3 space-y-3">

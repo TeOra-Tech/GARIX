@@ -59,7 +59,7 @@ function RecordCard({ record, vehicleId }: { record: ServiceRecordRow; vehicleId
             {record.title || recordTypeLabel(record.event_type)}
           </h3>
         </div>
-        <p className="text-sm text-paper/60">{formatDate(record.event_date)}</p>
+        <p className="text-sm text-paper/70">{formatDate(record.event_date)}</p>
       </div>
       {facts.length > 0 && <p className="mt-2 text-sm text-paper/70">{facts.join(' · ')}</p>}
       {record.description && (
@@ -70,7 +70,7 @@ function RecordCard({ record, vehicleId }: { record: ServiceRecordRow; vehicleId
           <span className="font-medium text-paper/90">Parts replaced:</span> {record.parts_replaced}
         </p>
       )}
-      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-paper/60">
+      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-paper/70">
         {record.warranty_until && <span>Warranty until {formatDate(record.warranty_until)}</span>}
         {record.next_due_date && <span>Next due {formatDate(record.next_due_date)}</span>}
         {record.next_due_mileage_km != null && (
@@ -89,12 +89,12 @@ function RecordCard({ record, vehicleId }: { record: ServiceRecordRow; vehicleId
               >
                 {del.isPending ? 'Deleting…' : 'Confirm delete'}
               </button>
-              <button type="button" className="text-paper/60 hover:text-paper" onClick={() => setConfirming(false)}>
+              <button type="button" className="text-paper/70 hover:text-paper" onClick={() => setConfirming(false)}>
                 Cancel
               </button>
             </>
           ) : (
-            <button type="button" className="text-paper/50 hover:text-danger" onClick={() => setConfirming(true)}>
+            <button type="button" className="text-paper/70 hover:text-danger" onClick={() => setConfirming(true)}>
               Delete record
             </button>
           )}
@@ -146,7 +146,7 @@ export function ServiceHistory({ vehicleId }: { vehicleId: string }) {
           {open ? 'Close' : 'Add a record'}
         </button>
       </div>
-      <p className="mt-1 text-sm text-paper/60">
+      <p className="mt-1 text-sm text-paper/70">
         The digital service book for this car — it travels with the vehicle if you transfer it.
       </p>
 
@@ -206,12 +206,12 @@ export function ServiceHistory({ vehicleId }: { vehicleId: string }) {
         </form>
       )}
 
-      {records.isPending && <p className="mt-6 text-paper/60">Loading service history…</p>}
+      {records.isPending && <p className="mt-6 text-paper/70">Loading service history…</p>}
       {records.isError && (
         <p role="alert" className="mt-6 text-danger">Could not load the service history. Refresh to try again.</p>
       )}
       {records.data?.length === 0 && !open && (
-        <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-6 text-sm text-paper/60">
+        <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-6 text-sm text-paper/70">
           No records yet. Add past services, repairs, NCTs and parts so the car&rsquo;s history stays with it.
         </p>
       )}

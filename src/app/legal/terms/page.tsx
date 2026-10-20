@@ -14,7 +14,7 @@ export default function TermsPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-20">
       <h1 className="font-display text-4xl font-bold">Terms of service</h1>
-      <p className="mt-3 text-sm text-paper/50">Last updated: July 2026 · Applies to garix.ie</p>
+      <p className="mt-3 text-sm text-paper/70">Last updated: July 2026 · Applies to garix.ie</p>
 
       <p className="mt-6 text-paper/80">
         Garix is a marketplace that connects vehicle owners (&ldquo;customers&rdquo;) with
@@ -87,7 +87,7 @@ export default function TermsPage() {
         <p>These terms are governed by the laws of Ireland, and Irish courts have jurisdiction.</p>
       </S>
 
-      <p className="mt-10 text-sm text-paper/50">
+      <p className="mt-10 text-sm text-paper/70">
         Questions? Contact <a href="mailto:support@garix.ie" className="text-volt-bright hover:underline">support@garix.ie</a>.
       </p>
     </main>

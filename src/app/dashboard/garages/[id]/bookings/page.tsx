@@ -18,7 +18,7 @@ const STATUS_STYLE: Record<string, string> = {
   scheduled: 'border-info/50 bg-info/10 text-info',
   confirmed: 'border-volt/50 bg-volt/10 text-volt-bright',
   completed: 'border-success/50 bg-success/10 text-success',
-  cancelled: 'border-ink-line text-paper/50',
+  cancelled: 'border-ink-line text-paper/70',
   no_show: 'border-danger/50 bg-danger/10 text-danger',
 };
 
@@ -38,20 +38,20 @@ function BookingRow({ garageId, b }: { garageId: string; b: Booking }) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h3 className="font-display font-semibold">{b.title}</h3>
-          <p className="mt-1 text-sm text-paper/60">
+          <p className="mt-1 text-sm text-paper/70">
             {fmt(b.scheduled_at)} · {b.duration_minutes} min
             {b.customer_name && ` · ${b.customer_name}`}
             {b.vehicle_reg && ` · ${b.vehicle_reg}`}
           </p>
-          {b.customer_phone && <p className="text-sm text-paper/50">{b.customer_phone}</p>}
-          {b.notes && <p className="mt-1 text-sm text-paper/60">{b.notes}</p>}
+          {b.customer_phone && <p className="text-sm text-paper/70">{b.customer_phone}</p>}
+          {b.notes && <p className="mt-1 text-sm text-paper/70">{b.notes}</p>}
         </div>
         <span className={cn('rounded-full border px-2.5 py-0.5 text-xs font-semibold capitalize', STATUS_STYLE[b.status])}>
           {b.status.replace('_', ' ')}
         </span>
       </div>
       <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
-        <label className="text-paper/50" htmlFor={`st-${b.id}`}>Status</label>
+        <label className="text-paper/70" htmlFor={`st-${b.id}`}>Status</label>
         <select
           id={`st-${b.id}`}
           className={cn(inputCls, '!w-auto !px-2 !py-1 text-sm')}
@@ -61,7 +61,7 @@ function BookingRow({ garageId, b }: { garageId: string; b: Booking }) {
           {STATUSES.map((s) => <option key={s} value={s}>{s.replace('_', ' ')}</option>)}
         </select>
         {past && b.status === 'scheduled' && <span className="text-xs text-warning">past — update status</span>}
-        <button type="button" className="ml-auto text-paper/40 hover:text-danger" onClick={() => del.mutate(b.id)}>
+        <button type="button" className="ml-auto text-paper/70 hover:text-danger" onClick={() => del.mutate(b.id)}>
           Delete
         </button>
       </div>
@@ -100,7 +100,7 @@ function BookingsBody({ garageId }: { garageId: string }) {
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-paper/60">{upcoming.length} upcoming</p>
+        <p className="text-sm text-paper/70">{upcoming.length} upcoming</p>
         <button type="button" className="btn-primary !px-4 !py-2 text-sm" onClick={() => setOpen((o) => !o)}>
           {open ? 'Close' : 'New booking'}
         </button>
@@ -124,9 +124,9 @@ function BookingsBody({ garageId }: { garageId: string }) {
         </form>
       )}
 
-      {bookings.isPending && <p className="mt-6 text-paper/60">Loading bookings…</p>}
+      {bookings.isPending && <p className="mt-6 text-paper/70">Loading bookings…</p>}
       {bookings.data?.length === 0 && !open && (
-        <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/60">
+        <p className="mt-6 rounded-hex border border-ink-line bg-ink-soft p-8 text-center text-paper/70">
           No bookings yet — schedule your first appointment.
         </p>
       )}
@@ -152,7 +152,7 @@ export default function GarageBookingsPage() {
   return (
     <section className="py-8">
       <h2 className="font-display text-2xl font-bold">Bookings</h2>
-      <p className="mt-1 text-sm text-paper/60">Schedule and track appointments.</p>
+      <p className="mt-1 text-sm text-paper/70">Schedule and track appointments.</p>
       <ProGate garageId={id} feature="Booking management" body="Schedule appointments, track their status, and keep your day organised.">
         <BookingsBody garageId={id} />
       </ProGate>
