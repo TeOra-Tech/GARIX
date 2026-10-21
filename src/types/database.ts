@@ -3461,6 +3461,7 @@ export type Database = {
         Returns: Database["public"]["Enums"]["user_role"]
       }
       delete_my_account_data: { Args: never; Returns: undefined }
+      delete_my_request: { Args: { p_request_id: string }; Returns: string }
       disablelongtransactions: { Args: never; Returns: string }
       dispatched_to_my_garage: { Args: { b: string }; Returns: boolean }
       dropgeometrycolumn:
@@ -4361,6 +4362,25 @@ export type Database = {
         Returns: unknown
       }
       unlockrows: { Args: { "": string }; Returns: number }
+      update_my_request: {
+        Args: {
+          p_budget_amount: number
+          p_collection_required: boolean
+          p_description: string
+          p_expected_completion_date: string
+          p_lat: number
+          p_lng: number
+          p_location_county: string
+          p_location_town: string
+          p_problem_category_id: string
+          p_request_id: string
+          p_service_category_id: string
+          p_title: string
+          p_urgency: Database["public"]["Enums"]["urgency_level"]
+          p_vehicle_id: string
+        }
+        Returns: undefined
+      }
       updategeometrysrid: {
         Args: {
           catalogn_name: string

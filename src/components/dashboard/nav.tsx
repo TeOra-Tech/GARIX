@@ -10,6 +10,7 @@ const CUSTOMER_TABS = [
   { href: '/requests/new', label: 'New request' },
   { href: '/dashboard/requests', label: 'My requests' },
   { href: '/dashboard/messages', label: 'Messages' },
+  { href: '/dashboard/account', label: 'Account details' },
 ];
 
 const FLEET_TAB = { href: '/dashboard/billing', label: 'Billing' };
@@ -26,7 +27,7 @@ export function DashboardNav({ role, accountType }: { role: string; accountType?
     role === 'garage_owner'
       ? GARAGE_TABS
       : accountType === 'fleet'
-        ? [...CUSTOMER_TABS, FLEET_TAB]
+        ? [...CUSTOMER_TABS.slice(0, -1), FLEET_TAB, CUSTOMER_TABS[CUSTOMER_TABS.length - 1]]
         : CUSTOMER_TABS;
   return (
     <nav aria-label="Dashboard sections" className="mx-auto max-w-6xl overflow-x-auto px-4">

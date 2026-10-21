@@ -33,6 +33,11 @@ function RequestsList() {
         </Link>
       </div>
 
+      {params.get('deleted') === '1' && (
+        <p role="status" className="mt-6 rounded-lg border border-success/40 bg-success/10 p-4 text-sm">
+          Your request has been deleted.
+        </p>
+      )}
       {posted && (
         <p className="mt-6 rounded-lg border border-volt/40 bg-volt/10 p-4 text-sm">
           Your request is live. Garages in your area can now see it and send quotes —
