@@ -28,7 +28,7 @@ function RequestsList() {
     <main className="mx-auto max-w-3xl px-4 py-12">
       <div className="flex items-center justify-between">
         <h1 className="font-display text-3xl font-bold">My requests</h1>
-        <Link href="/requests/new" className="btn-primary !px-4 !py-2 text-sm">
+        <Link href="/dashboard/requests/new" className="btn-primary !px-4 !py-2 text-sm">
           New request
         </Link>
       </div>
@@ -57,7 +57,7 @@ function RequestsList() {
       {requests.data?.length === 0 && (
         <div className="mt-8 rounded-hex border border-ink-line bg-ink-soft p-8 text-center">
           <p className="text-paper/70">No repair requests yet.</p>
-          <Link href="/requests/new" className="btn-primary mt-6 inline-flex">
+          <Link href="/dashboard/requests/new" className="btn-primary mt-6 inline-flex">
             Post your first request
           </Link>
         </div>

@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 const CUSTOMER_TABS = [
   { href: '/dashboard', label: 'Overview' },
   { href: '/dashboard/vehicles', label: 'My vehicles' },
-  { href: '/requests/new', label: 'New request' },
+  { href: '/dashboard/requests/new', label: 'New request' },
   { href: '/dashboard/requests', label: 'My requests' },
   { href: '/dashboard/messages', label: 'Messages' },
   { href: '/dashboard/account', label: 'Account details' },

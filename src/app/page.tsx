@@ -44,7 +44,7 @@ export default function LandingPage() {
               itemised, VAT-transparent quotes. You compare, you choose.
             </p>
             <div className="mt-9 flex flex-wrap gap-4">
-              <Link href="/requests/new" prefetch={false} className="btn-primary">Get free quotes</Link>
+              <Link href="/dashboard/requests/new" prefetch={false} className="btn-primary">Get free quotes</Link>
               <Link href="/garages/register" className="btn-ghost">Register your garage</Link>
             </div>
             <p className="mt-6 text-sm text-charcoal/70">
