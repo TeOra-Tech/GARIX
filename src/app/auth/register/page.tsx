@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { registerSchema, otpSchema, IRISH_COUNTIES, type RegisterData } from '@/lib/validation/auth';
 import { OAuthButtons } from '@/components/auth/oauth-buttons';
@@ -27,7 +27,6 @@ const EMPTY: FormState = {
 };
 
 function RegisterForm() {
-  const router = useRouter();
   const params = useSearchParams();
   const isFleet = params.get('type') === 'fleet';
   const [form, setForm] = useState<FormState>(EMPTY);
@@ -141,10 +140,10 @@ function RegisterForm() {
       setFormError(
         'Your account was created but we could not save all your details. You can finish them from your dashboard.',
       );
-      setTimeout(() => router.replace(isFleet ? '/dashboard/billing' : '/dashboard'), 2500);
+      setTimeout(() => window.location.assign(isFleet ? '/dashboard/billing' : '/dashboard'), 2500);
       return;
     }
-    router.replace(isFleet ? '/dashboard/billing' : '/dashboard');
+    window.location.assign(isFleet ? '/dashboard/billing' : '/dashboard');
   }
 
   return (

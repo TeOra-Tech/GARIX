@@ -241,7 +241,7 @@ export default async function GarageProfilePage({
 
       <div className="mt-12 rounded-hex border border-ink-line bg-ink-soft p-8 text-center">
         <p className="font-display text-lg font-semibold">Need work done on your car?</p>
-        <Link href="/requests/new" className="btn-primary mt-4 inline-flex">
+        <Link href="/dashboard/requests/new" prefetch={false} className="btn-primary mt-4 inline-flex">
           Post a repair request
         </Link>
       </div>

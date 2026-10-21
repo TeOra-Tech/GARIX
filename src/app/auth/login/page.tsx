@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { emailSchema, otpSchema } from '@/lib/validation/auth';
 import { roleHome, safeNext } from '@/lib/auth/roles';
@@ -10,7 +10,6 @@ import { OAuthButtons } from '@/components/auth/oauth-buttons';
 import { Field, inputCls } from '@/components/auth/field';
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const next = safeNext(searchParams.get('next'));
   const callbackFailed = searchParams.get('error') === 'callback';
@@ -68,8 +67,10 @@ function LoginForm() {
       setError('That code is wrong or has expired. Request a new one.');
       return;
     }
+    // Full page loads after sign-in: the client router may still hold
+    // redirects-to-login it prefetched while the visitor was signed out.
     if (next) {
-      router.replace(next);
+      window.location.assign(next);
       return;
     }
     const { data: profile } = await supabase
@@ -77,7 +78,7 @@ function LoginForm() {
       .select('role')
       .eq('id', data.user.id)
       .single();
-    router.replace(roleHome(profile?.role));
+    window.location.assign(roleHome(profile?.role));
   }
 
   return (

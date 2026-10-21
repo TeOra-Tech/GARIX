@@ -63,7 +63,7 @@ test('flow 2: customer adds a vehicle', async ({ browser }) => {
 
 test('flow 3: customer posts a request through the wizard', async ({ browser }) => {
   const page = await customerPage(browser);
-  await page.goto('/requests/new');
+  await page.goto('/dashboard/requests/new');
 
   // step 1: vehicle
   await page.getByRole('radio').first().check();

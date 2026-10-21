@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { RequestActions } from '@/components/requests/request-actions';
 import { useOpenConversation } from '@/lib/messages/queries';
 import { ReviewSection } from '@/components/reviews/review-section';
 import { track } from '@/lib/analytics';
@@ -342,6 +343,7 @@ function PickCard({ label, quote, stat }: { label: string; quote: QuoteWithGarag
 
 export default function RequestDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const searchParams = useSearchParams();
   const request = useMyRequest(id);
   const quotes = useRequestQuotes(id);
   const stats = useQuoteComparisonStats(id);
@@ -397,6 +399,11 @@ export default function RequestDetailPage() {
               .filter(Boolean)
               .join(' · ')}
           </p>
+
+          {searchParams.get('updated') && (
+            <p role="status" className="mt-4 rounded-lg border border-success/40 bg-success/10 p-3 text-sm">Your request has been updated.</p>
+          )}
+          <RequestActions requestId={id} status={request.data.status} quoteCount={quotes.data?.length ?? 0} />
 
           {request.data.status === 'accepted' && (
             <p className="mt-6 rounded-lg border border-volt/40 bg-volt/10 p-4 text-sm">
