@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { USER_KEYED_BUCKETS, type DeletionBlocker } from '@/lib/account/deletion';
 import { listFiles } from '@/lib/account/storage';
+import type { Database } from '@/types/database';
 
 const bodySchema = z.object({ confirmEmail: z.string().trim().email() });
 
@@ -13,15 +15,24 @@ const bodySchema = z.object({ confirmEmail: z.string().trim().email() });
  * data goes via delete_my_account_data(), then storage files under
  * {user_id}/, then the auth user, which cascades the profile. Every step is
  * safe to repeat, so a failed attempt can simply be retried.
+ *
+ * The website authenticates with its session cookie; the mobile app sends its
+ * access token as `Authorization: Bearer …` instead. Either way RLS applies.
  */
 export async function POST(request: Request) {
   const parsed = bodySchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: 'INVALID_INPUT' }, { status: 400 });
 
-  const supabase = await createClient();
+  const bearer = request.headers.get('authorization')?.match(/^Bearer (.+)$/)?.[1];
+  const supabase = bearer
+    ? createSupabaseClient<Database>(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
+        global: { headers: { Authorization: `Bearer ${bearer}` } },
+        auth: { persistSession: false, autoRefreshToken: false },
+      })
+    : await createClient();
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = bearer ? await supabase.auth.getUser(bearer) : await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: 'UNAUTHENTICATED' }, { status: 401 });
   if (parsed.data.confirmEmail.toLowerCase() !== (user.email ?? '').toLowerCase()) {
     return NextResponse.json({ error: 'EMAIL_MISMATCH' }, { status: 400 });
@@ -53,6 +64,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'DELETE_FAILED' }, { status: 500 });
   }
 
-  await supabase.auth.signOut().catch(() => undefined);
+  // The app clears its own stored session; only the cookie session needs signing out here.
+  if (!bearer) await supabase.auth.signOut().catch(() => undefined);
   return NextResponse.json({ ok: true });
 }
