@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "Garix",
+    "slug": "garix",
+    "scheme": "garix",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "bundleIdentifier": "ie.garix.app",
+      "supportsTablet": false,
+      "config": { "usesNonExemptEncryption": false }
+    },
+    "android": {
+      "package": "ie.garix.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/brand-mark.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar",
+      "expo-sqlite",
+      "expo-font",
+      ["expo-splash-screen", { "image": "./assets/brand-mark.png", "imageWidth": 160, "backgroundColor": "#FFFFFF" }],
+      ["expo-image-picker", { "photosPermission": "Garix uses your photos so you can show garages the problem with your vehicle." , "cameraPermission": "Garix uses the camera so you can photograph the problem with your vehicle." }]
+    ],
+    "experiments": { "typedRoutes": true }
+  }
+}
