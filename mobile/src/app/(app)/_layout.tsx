@@ -1,7 +1,13 @@
 import { Stack } from 'expo-router';
+import { useAuth } from '@/lib/auth';
+import { useRealtimeInbox } from '@/lib/inbox';
 import { colors, fonts } from '@/lib/theme';
 
 export default function AppLayout() {
+  const { session } = useAuth();
+  // Live badges for new notifications and messages anywhere in the signed-in app.
+  useRealtimeInbox(session?.user.id);
+
   return (
     <Stack
       screenOptions={{
@@ -17,6 +23,8 @@ export default function AppLayout() {
       <Stack.Screen name="requests/new" options={{ title: 'New request' }} />
       <Stack.Screen name="requests/[id]/index" options={{ title: 'Request' }} />
       <Stack.Screen name="requests/[id]/edit" options={{ title: 'Edit request' }} />
+      <Stack.Screen name="messages/[id]" options={{ title: 'Messages' }} />
+      <Stack.Screen name="notifications" options={{ title: 'Notifications' }} />
     </Stack>
   );
 }

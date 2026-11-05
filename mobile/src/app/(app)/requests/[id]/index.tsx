@@ -14,13 +14,15 @@ import {
 } from '@/lib/queries';
 import { URGENCY_LABELS } from '@/shared/validation/request';
 import { formatEur } from '@/shared/vat';
+import { useOpenConversation } from '@/lib/inbox';
 import { Body, Button, Card, ErrorText, H1, H2, Loading, Muted, Pill, Screen } from '@/components/ui';
 import { colors, fonts } from '@/lib/theme';
 
 const fmtDate = (d: string) => new Date(d).toLocaleDateString('en-IE', { day: 'numeric', month: 'short' });
 
-function QuoteCard({ q, now, canAccept, accepted, onAccept, accepting }: {
+function QuoteCard({ q, now, canAccept, accepted, onAccept, accepting, onMessage, messaging }: {
   q: QuoteWithGarage; now: number; canAccept: boolean; accepted: boolean; onAccept: () => void; accepting: boolean;
+  onMessage: () => void; messaging: boolean;
 }) {
   const expired = new Date(q.valid_until).getTime() < now;
   const rating = q.garages?.avg_rating ? `${Number(q.garages.avg_rating).toFixed(1)} ★ (${q.garages.review_count ?? 0})` : 'No reviews yet';
@@ -68,6 +70,9 @@ function QuoteCard({ q, now, canAccept, accepted, onAccept, accepting }: {
       {q.notes ? <Body>{q.notes}</Body> : null}
       {accepted && <Pill text="Accepted" tone="success" />}
       {canAccept && q.status === 'submitted' && !expired && <Button title="Accept this quote" onPress={onAccept} loading={accepting} />}
+      {(q.status === 'submitted' || accepted) && (
+        <Button title={`Message ${q.garages?.name ?? 'garage'}`} variant="secondary" onPress={onMessage} loading={messaging} />
+      )}
     </Card>
   );
 }
@@ -78,6 +83,7 @@ export default function RequestDetail() {
   const quotes = useRequestQuotes(id);
   const accept = useAcceptQuote(id);
   const remove = useDeleteRequest(id);
+  const openConversation = useOpenConversation();
   const [now] = useState(() => Date.now());
   const r = request.data;
 
@@ -133,7 +139,7 @@ export default function RequestDetail() {
 
       {r.status === 'accepted' && (
         <Card style={{ backgroundColor: '#EEF2FA', borderColor: colors.navy }}>
-          <Body>Quote accepted — the garage will be in touch. You can message them on garix.ie for now.</Body>
+          <Body>Quote accepted — the garage will be in touch. You can message them from their quote below.</Body>
         </Card>
       )}
 
@@ -162,6 +168,13 @@ export default function RequestDetail() {
           accepted={r.accepted_quote_id === q.id || q.status === 'accepted'}
           accepting={accept.isPending && accept.variables === q.id}
           onAccept={() => confirmAccept(q)}
+          messaging={openConversation.isPending && openConversation.variables?.garageId === q.garage_id}
+          onMessage={() =>
+            openConversation.mutate(
+              { requestId: id, garageId: q.garage_id },
+              { onSuccess: (conversationId) => router.push(`/messages/${conversationId}`) },
+            )
+          }
         />
       ))}
     </Screen>

@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
 import type { ColorValue } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useUnreadCounts } from '@/lib/inbox';
 import { colors, fonts } from '@/lib/theme';
 
 type IconName = React.ComponentProps<typeof Ionicons>['name'];
@@ -10,6 +11,9 @@ const icon = (name: IconName) =>
   };
 
 export default function TabsLayout() {
+  const unread = useUnreadCounts();
+  const unreadMessages = [...(unread.data?.values() ?? [])].reduce((a, b) => a + b, 0);
+
   return (
     <Tabs
       screenOptions={{
@@ -23,6 +27,16 @@ export default function TabsLayout() {
       <Tabs.Screen name="index" options={{ title: 'Home', headerShown: false, tabBarIcon: icon('home-outline') }} />
       <Tabs.Screen name="vehicles" options={{ title: 'Vehicles', tabBarIcon: icon('car-outline') }} />
       <Tabs.Screen name="requests" options={{ title: 'Requests', tabBarIcon: icon('construct-outline') }} />
+      <Tabs.Screen
+        name="messages"
+        options={{
+          title: 'Messages',
+          tabBarIcon: icon('chatbubbles-outline'),
+          tabBarBadge: unreadMessages > 0 ? unreadMessages : undefined,
+          tabBarBadgeStyle: { backgroundColor: colors.navy, fontFamily: fonts.semibold, fontSize: 11 },
+          tabBarAccessibilityLabel: unreadMessages > 0 ? `Messages, ${unreadMessages} unread` : 'Messages',
+        }}
+      />
       <Tabs.Screen name="account" options={{ title: 'Account', tabBarIcon: icon('person-circle-outline') }} />
     </Tabs>
   );

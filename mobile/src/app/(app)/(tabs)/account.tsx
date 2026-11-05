@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Alert, Linking, Text, View } from 'react-native';
+import { Alert, Linking, Platform, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { z } from 'zod';
 import { useAuth } from '@/lib/auth';
@@ -8,6 +8,11 @@ import { useDeleteAccount, useDeletionBlockers, useUpdateProfile } from '@/lib/q
 import { BLOCKER_COPY, isDeletionBlocker } from '@/shared/deletion';
 import { Body, Button, Card, ErrorText, H2, Loading, Muted, Screen, TextField } from '@/components/ui';
 import { colors, fonts } from '@/lib/theme';
+import { NotificationSettings } from '@/components/notification-settings';
+
+// Apple restricts linking out to pay on the web, so on iOS the app never links to or mentions
+// web billing; fleets manage billing on garix.ie. Android keeps the link.
+const SHOW_WEB_BILLING = Platform.OS !== 'ios';
 
 const profileSchema = z.object({
   fullName: z.string().trim().min(2, 'Your full name is required').max(120),
@@ -66,10 +71,18 @@ export default function Account() {
       {profile?.account_type === 'fleet' && (
         <Card>
           <H2>Garix for business</H2>
-          <Muted>Manage your business billing on garix.ie.</Muted>
-          <Button title="Open billing" variant="secondary" onPress={() => Linking.openURL('https://garix.ie/dashboard/billing')} />
+          {SHOW_WEB_BILLING ? (
+            <>
+              <Muted>Manage your business billing on garix.ie.</Muted>
+              <Button title="Open billing" variant="secondary" onPress={() => Linking.openURL('https://garix.ie/dashboard/billing')} />
+            </>
+          ) : (
+            <Muted>Your account has no vehicle limit.</Muted>
+          )}
         </Card>
       )}
+
+      <NotificationSettings />
 
       <Card>
         <H2>Help and legal</H2>
@@ -105,7 +118,7 @@ export default function Account() {
                   <View key={b} style={{ gap: 4 }}>
                     <Body>{BLOCKER_COPY[b].text}</Body>
                     {b === 'active_job' && <Button title="Go to your requests" variant="secondary" onPress={() => router.navigate('/requests')} />}
-                    {b === 'active_billing' && <Button title="Open billing" variant="secondary" onPress={() => Linking.openURL('https://garix.ie/dashboard/billing')} />}
+                    {b === 'active_billing' && SHOW_WEB_BILLING && <Button title="Open billing" variant="secondary" onPress={() => Linking.openURL('https://garix.ie/dashboard/billing')} />}
                   </View>
                 ))}
               </View>

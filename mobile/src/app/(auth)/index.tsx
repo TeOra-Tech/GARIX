@@ -6,9 +6,14 @@ import { supabase } from '@/lib/supabase';
 import { Body, Button, ErrorText, H1, Muted, Screen, TextField } from '@/components/ui';
 import { colors, fonts } from '@/lib/theme';
 
+// App Store / Google Play reviewers cannot receive our emailed codes, so one designated review
+// account signs in with a password instead. Every other account keeps one-time codes.
+const REVIEW_EMAIL = process.env.EXPO_PUBLIC_REVIEW_EMAIL?.trim().toLowerCase() || null;
+
 /** Email one-time-code sign-in — the same flow as garix.ie/auth/login. */
 export default function SignIn() {
-  const [step, setStep] = useState<'email' | 'code'>('email');
+  const [step, setStep] = useState<'email' | 'code' | 'password'>('email');
+  const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -18,6 +23,10 @@ export default function SignIn() {
     setError(null);
     const parsed = emailSchema.safeParse(email);
     if (!parsed.success) return setError(parsed.error.issues[0].message);
+    if (REVIEW_EMAIL && parsed.data === REVIEW_EMAIL) {
+      setEmail(parsed.data);
+      return setStep('password');
+    }
     setPending(true);
     const { error: err } = await supabase.auth.signInWithOtp({ email: parsed.data, options: { shouldCreateUser: false } });
     setPending(false);
@@ -35,6 +44,14 @@ export default function SignIn() {
     setPending(false);
     // On success the auth listener swaps the navigator to the signed-in screens.
     if (err) setError('That code is wrong or has expired. Request a new one.');
+  }
+
+  async function signInWithPassword() {
+    setError(null);
+    setPending(true);
+    const { error: err } = await supabase.auth.signInWithPassword({ email, password });
+    setPending(false);
+    if (err) setError('That password is not right.');
   }
 
   return (
@@ -65,6 +82,15 @@ export default function SignIn() {
               Create an account
             </Link>
           </View>
+        </>
+      ) : step === 'password' ? (
+        <>
+          <Body>Enter the password for {email}.</Body>
+          <TextField label="Password" value={password} onChangeText={setPassword} secureTextEntry autoCapitalize="none"
+            textContentType="password" returnKeyType="done" onSubmitEditing={signInWithPassword} />
+          <ErrorText>{error}</ErrorText>
+          <Button title="Log in" onPress={signInWithPassword} loading={pending} />
+          <Button title="Use a different email" variant="secondary" onPress={() => { setStep('email'); setPassword(''); setError(null); }} />
         </>
       ) : (
         <>

@@ -1,7 +1,9 @@
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useAuth } from '@/lib/auth';
 import { useMyRequests, useVehicles, vehicleName } from '@/lib/queries';
+import { useUnreadNotificationCount } from '@/lib/inbox';
 import { Body, Button, Card, H1, H2, Loading, Muted, Pill, Screen } from '@/components/ui';
 import { colors, fonts } from '@/lib/theme';
 
@@ -9,16 +11,32 @@ export default function Home() {
   const { profile } = useAuth();
   const vehicles = useVehicles();
   const requests = useMyRequests();
+  const unread = useUnreadNotificationCount().data ?? 0;
   const firstName = profile?.full_name?.split(' ')[0];
   const active = requests.data?.filter((r) => ['open', 'quoted', 'accepted', 'in_progress'].includes(r.status)) ?? [];
 
   return (
     <Screen>
-      <View style={{ gap: 4 }}>
-        <Text style={{ fontFamily: fonts.semibold, fontSize: 12, letterSpacing: 2, color: colors.goldText }}>
-          {profile?.account_type === 'fleet' ? 'GARIX FOR BUSINESS' : 'YOUR DASHBOARD'}
-        </Text>
-        <H1>{firstName ? `Hi ${firstName}` : 'Welcome'}</H1>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <View style={{ gap: 4, flex: 1 }}>
+          <Text style={{ fontFamily: fonts.semibold, fontSize: 12, letterSpacing: 2, color: colors.goldText }}>
+            {profile?.account_type === 'fleet' ? 'GARIX FOR BUSINESS' : 'YOUR DASHBOARD'}
+          </Text>
+          <H1>{firstName ? `Hi ${firstName}` : 'Welcome'}</H1>
+        </View>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={unread ? `Notifications, ${unread} unread` : 'Notifications'}
+          onPress={() => router.push('/notifications')}
+          style={{ minWidth: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' }}
+        >
+          <Ionicons name="notifications-outline" size={26} color={colors.navy} />
+          {unread > 0 && (
+            <View style={{ position: 'absolute', top: 6, right: 6, backgroundColor: colors.danger, borderRadius: 999, minWidth: 18, paddingHorizontal: 4, alignItems: 'center' }}>
+              <Text style={{ color: colors.white, fontFamily: fonts.semibold, fontSize: 11 }}>{unread > 9 ? '9+' : unread}</Text>
+            </View>
+          )}
+        </Pressable>
       </View>
 
       <Button title="Get quotes for a repair" onPress={() => router.push('/requests/new')} />

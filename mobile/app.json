@@ -10,7 +10,9 @@
     "ios": {
       "bundleIdentifier": "ie.garix.app",
       "supportsTablet": false,
-      "config": { "usesNonExemptEncryption": false }
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "ie.garix.app",
@@ -18,16 +20,45 @@
         "backgroundColor": "#FFFFFF",
         "foregroundImage": "./assets/brand-mark.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "plugins": [
       "expo-router",
       "expo-status-bar",
       "expo-sqlite",
       "expo-font",
-      ["expo-splash-screen", { "image": "./assets/brand-mark.png", "imageWidth": 160, "backgroundColor": "#FFFFFF" }],
-      ["expo-image-picker", { "photosPermission": "Garix uses your photos so you can show garages the problem with your vehicle." , "cameraPermission": "Garix uses the camera so you can photograph the problem with your vehicle." }]
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/brand-mark.png",
+          "imageWidth": 160,
+          "backgroundColor": "#FFFFFF"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Garix uses your photos so you can show garages the problem with your vehicle.",
+          "cameraPermission": "Garix uses the camera so you can photograph the problem with your vehicle."
+        }
+      ]
     ],
-    "experiments": { "typedRoutes": true }
+    "experiments": {
+      "typedRoutes": true
+    },
+    "owner": "teora-technologies-limited",
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "9b694bc5-f2df-405c-aa66-d4a4986ff035"
+      }
+    }
   }
 }
