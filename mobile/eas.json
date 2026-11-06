@@ -29,8 +29,8 @@
         "ascApiKeyPath": "$ASC_API_KEY_PATH",
         "ascApiKeyId": "$ASC_API_KEY_ID",
         "ascApiKeyIssuerId": "$ASC_API_KEY_ISSUER_ID",
-        "appleTeamId": "$APPLE_TEAM_ID",
-        "ascAppId": "$ASC_APP_ID"
+        "appleTeamId": "HTW237LBA6",
+        "ascAppId": "6831375094"
       },
       "android": {
         "serviceAccountKeyPath": "$GOOGLE_SERVICE_ACCOUNT_KEY_PATH",
