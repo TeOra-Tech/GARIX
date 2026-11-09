@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { useVehicles, vehicleName } from '@/lib/queries';
 import { useAuth } from '@/lib/auth';
 import { Body, Button, Card, ErrorText, Loading, Muted, Screen } from '@/components/ui';
+import { TransferInbox } from '@/components/transfer-inbox';
 import { colors, fonts } from '@/lib/theme';
 
 export default function Vehicles() {
@@ -11,6 +12,7 @@ export default function Vehicles() {
 
   return (
     <Screen edges={[]}>
+      <TransferInbox />
       <Button title="Add a vehicle" onPress={() => router.push('/vehicles/new')} disabled={atLimit} />
       {atLimit && <Muted>Personal accounts can hold up to 3 vehicles. Garix for business has no limit.</Muted>}
       {vehicles.isPending && <Loading />}

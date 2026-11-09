@@ -19,7 +19,9 @@ export default function AppLayout() {
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="vehicles/new" options={{ title: 'Add a vehicle', presentation: 'modal' }} />
-      <Stack.Screen name="vehicles/[id]" options={{ title: 'Vehicle' }} />
+      <Stack.Screen name="vehicles/[id]/index" options={{ title: 'Vehicle' }} />
+      <Stack.Screen name="vehicles/[id]/record-new" options={{ title: 'Add service record', presentation: 'modal' }} />
+      <Stack.Screen name="vehicles/[id]/reminder-new" options={{ title: 'Add reminder', presentation: 'modal' }} />
       <Stack.Screen name="requests/new" options={{ title: 'New request' }} />
       <Stack.Screen name="requests/[id]/index" options={{ title: 'Request' }} />
       <Stack.Screen name="requests/[id]/edit" options={{ title: 'Edit request' }} />

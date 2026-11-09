@@ -44,7 +44,8 @@
           "photosPermission": "Garix uses your photos so you can show garages the problem with your vehicle.",
           "cameraPermission": "Garix uses the camera so you can photograph the problem with your vehicle."
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true

@@ -4,6 +4,9 @@ import { router } from 'expo-router';
 import { useAuth } from '@/lib/auth';
 import { useMyRequests, useVehicles, vehicleName } from '@/lib/queries';
 import { useUnreadNotificationCount } from '@/lib/inbox';
+import { formatDate, isoDate, useUpcomingReminders } from '@/lib/vehicle-care';
+import { reminderTypeLabel } from '@/shared/validation/vehicle-care';
+import { TransferInbox } from '@/components/transfer-inbox';
 import { Body, Button, Card, H1, H2, Loading, Muted, Pill, Screen } from '@/components/ui';
 import { colors, fonts } from '@/lib/theme';
 
@@ -12,6 +15,8 @@ export default function Home() {
   const vehicles = useVehicles();
   const requests = useMyRequests();
   const unread = useUnreadNotificationCount().data ?? 0;
+  const reminders = useUpcomingReminders();
+  const today = isoDate(new Date());
   const firstName = profile?.full_name?.split(' ')[0];
   const active = requests.data?.filter((r) => ['open', 'quoted', 'accepted', 'in_progress'].includes(r.status)) ?? [];
 
@@ -40,6 +45,20 @@ export default function Home() {
       </View>
 
       <Button title="Get quotes for a repair" onPress={() => router.push('/requests/new')} />
+
+      <TransferInbox />
+
+      {(reminders.data?.length ?? 0) > 0 && (
+        <Card>
+          <H2>Upcoming maintenance</H2>
+          {reminders.data!.map((r) => (
+            <Pressable key={r.id} accessibilityRole="button" onPress={() => router.push(`/vehicles/${r.vehicle_id}`)} style={{ paddingVertical: 6 }}>
+              <Body style={{ fontFamily: fonts.medium }}>{r.title || reminderTypeLabel(r.reminder_type)} · {r.vehicles?.registration_number}</Body>
+              <Muted style={r.due_date < today ? { color: colors.danger } : undefined}>{r.due_date < today ? 'Overdue — was due ' : 'Due '}{formatDate(r.due_date)}</Muted>
+            </Pressable>
+          ))}
+        </Card>
+      )}
 
       <Card>
         <H2>Active requests</H2>
