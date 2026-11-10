@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -16,6 +17,10 @@ import { colors, fonts } from '@/lib/theme';
 
 SplashScreen.preventAutoHideAsync();
 
+// Apple only allows spending credits bought on the web if the same credits can also be bought
+// in the app, so the garage side ships on iPhone together with in-app purchase.
+const GARAGE_TOOLS_ENABLED = Platform.OS !== 'ios';
+
 function RootNavigator() {
   const { session, profile } = useAuth();
   const signedIn = !!session;
@@ -27,7 +32,9 @@ function RootNavigator() {
   }, [ready]);
   if (!ready) return null;
 
-  const customerSide = profile?.role === 'customer';
+  const role = profile?.role;
+  const customerSide = role === 'customer';
+  const garageSide = role === 'garage_owner' && GARAGE_TOOLS_ENABLED;
 
   return (
     <Stack
@@ -44,7 +51,10 @@ function RootNavigator() {
       <Stack.Protected guard={signedIn && customerSide}>
         <Stack.Screen name="(app)" options={{ headerShown: false }} />
       </Stack.Protected>
-      <Stack.Protected guard={signedIn && !customerSide}>
+      <Stack.Protected guard={signedIn && garageSide}>
+        <Stack.Screen name="garage" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={signedIn && !customerSide && !garageSide}>
         <Stack.Screen name="other-roles" options={{ headerShown: false }} />
       </Stack.Protected>
     </Stack>

@@ -15,6 +15,7 @@ import {
 import { URGENCY_LABELS } from '@/shared/validation/request';
 import { formatEur } from '@/shared/vat';
 import { useOpenConversation } from '@/lib/inbox';
+import { ReviewSection } from '@/components/review-section';
 import { Body, Button, Card, ErrorText, H1, H2, Loading, Muted, Pill, Screen } from '@/components/ui';
 import { colors, fonts } from '@/lib/theme';
 
@@ -142,6 +143,12 @@ export default function RequestDetail() {
           <Body>Quote accepted — the garage will be in touch. You can message them from their quote below.</Body>
         </Card>
       )}
+
+      <ReviewSection
+        requestId={id}
+        garageId={quotes.data?.find((q) => q.id === r.accepted_quote_id || q.status === 'accepted')?.garage_id ?? null}
+        status={r.status}
+      />
 
       <View style={{ flexDirection: 'row', gap: 12 }}>
         {EDITABLE_REQUEST_STATUSES.includes(r.status) && (

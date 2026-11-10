@@ -9,10 +9,12 @@ import type { Tables } from '@/shared/database';
 // ---------------------------------------------------------------- messages
 export type Conversation = Tables<'conversations'> & {
   garages: { name: string; slug: string } | null;
+  customer: { full_name: string } | null;
   service_requests: { title: string } | null;
 };
 export type Message = Tables<'messages'>;
-const CONVERSATION_SELECT = '*, garages(name, slug), service_requests(title)';
+const CONVERSATION_SELECT =
+  '*, garages(name, slug), customer:user_profiles!conversations_customer_id_fkey(full_name), service_requests(title)';
 
 // RLS also shows garage owners their garages' threads, so "my conversations" scopes to the customer.
 export function useConversations() {
@@ -269,6 +271,29 @@ export function notificationRoute(n: AppNotification): string | null {
       return data.conversation_id ? `/messages/${data.conversation_id}` : '/messages';
     default:
       return data.kind === 'vehicle_reminder' ? '/vehicles' : null;
+  }
+}
+
+/** In-app route for a notification on the garage side of the app, or null if it has none. */
+export function garageNotificationRoute(n: AppNotification): string | null {
+  const data = (n.data ?? {}) as Record<string, string>;
+  switch (n.type) {
+    case 'new_service_request':
+      return data.request_id ? `/garage/requests/${data.request_id}` : '/garage';
+    case 'quote_accepted':
+    case 'quote_rejected':
+    case 'job_completed':
+      return data.request_id ? `/garage/requests/${data.request_id}` : '/garage/quotes';
+    case 'new_message':
+      return data.conversation_id ? `/garage/messages/${data.conversation_id}` : '/garage/messages';
+    case 'new_review':
+      return '/garage/reviews';
+    case 'credit_low':
+    case 'credit_purchase':
+    case 'garage_approved':
+      return '/garage/account';
+    default:
+      return null;
   }
 }
 
