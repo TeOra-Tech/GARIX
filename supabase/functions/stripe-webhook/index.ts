@@ -7,6 +7,7 @@
 // Configure endpoint in Stripe Dashboard; set STRIPE_WEBHOOK_SECRET.
 import Stripe from 'npm:stripe@17';
 import { createClient } from 'jsr:@supabase/supabase-js@2';
+import { recordAppTransaction } from '../_shared/app-purchases.ts';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!);
 const admin = createClient(
@@ -127,6 +128,21 @@ Deno.serve(async (req) => {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
 
+        // ----- Started in the mobile app: store for Apple/Google reporting -----
+        const appLinkId = session.metadata?.app_link_id;
+        if (appLinkId && session.payment_status === 'paid') {
+          await recordAppTransaction(admin, {
+            linkId: appLinkId,
+            kind: 'purchase',
+            stripeRef: session.id,
+            subscriptionId: (session.subscription as string | null) ?? null,
+            amountCents: session.amount_total ?? 0,
+            taxCents: session.total_details?.amount_tax ?? 0,
+            currency: session.currency ?? 'eur',
+            occurredAt: new Date(event.created * 1000),
+          });
+        }
+
         // ----- Subscription checkout (garage Pro or fleet) -----
         if (session.mode === 'subscription' && session.subscription) {
           const sub = await stripe.subscriptions.retrieve(session.subscription as string);
@@ -193,6 +209,19 @@ Deno.serve(async (req) => {
           const sub = await stripe.subscriptions.retrieve(subId);
           if (isGarageSub(sub)) await syncGarageFromSubscription(sub);
           else await syncFleetFromSubscription(sub);
+          // Renewals of a Pro plan bought from the app are reported to the store too.
+          if (event.type === 'invoice.paid' && invoice.billing_reason === 'subscription_cycle' && sub.metadata?.app_link_id) {
+            await recordAppTransaction(admin, {
+              linkId: sub.metadata.app_link_id,
+              kind: 'renewal',
+              stripeRef: invoice.id!,
+              subscriptionId: sub.id,
+              amountCents: invoice.amount_paid,
+              taxCents: (invoice as unknown as { tax?: number | null }).tax ?? 0,
+              currency: invoice.currency,
+              occurredAt: new Date(event.created * 1000),
+            });
+          }
         }
         break;
       }

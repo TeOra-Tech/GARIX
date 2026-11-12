@@ -9,8 +9,10 @@ const AUTH_PAGES = ['/auth/login', '/auth/register'];
 function redirectToLogin(request: NextRequest, path: string) {
   const url = request.nextUrl.clone();
   url.pathname = '/auth/login';
+  // Keep the query string (e.g. ?app_link=… from the mobile app) so it survives sign-in.
+  const next = path + request.nextUrl.search;
   url.search = '';
-  url.searchParams.set('next', path);
+  url.searchParams.set('next', next);
   return NextResponse.redirect(url);
 }
 

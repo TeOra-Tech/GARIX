@@ -45,7 +45,9 @@
           "cameraPermission": "Garix uses the camera so you can photograph the problem with your vehicle."
         }
       ],
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      "expo-iap",
+      "./plugins/with-external-purchase"
     ],
     "experiments": {
       "typedRoutes": true

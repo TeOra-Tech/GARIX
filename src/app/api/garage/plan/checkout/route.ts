@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server';
 import { appOrigin, proPriceId, requireGarageOwner, stripeClient } from '@/lib/garage-plan/server';
+import { AppLinkError, appLinkIdSchema, appReturnUrls, verifyAppLink } from '@/lib/app-purchases/server';
 
 /** Start the €49/mo garage Pro subscription checkout for a garage the caller owns. */
 export async function POST(request: Request) {
-  const { garageId } = await request.json().catch(() => ({ garageId: '' }));
+  const { garageId, appLinkId: rawLinkId } = await request.json().catch(() => ({ garageId: '' }));
+  const linkParse = appLinkIdSchema.safeParse(rawLinkId ?? undefined);
+  if (!linkParse.success) return NextResponse.json({ error: 'INVALID_BODY' }, { status: 400 });
+  const appLinkId = linkParse.data;
   let ctx;
   try {
     ctx = await requireGarageOwner(garageId);
@@ -15,6 +19,14 @@ export async function POST(request: Request) {
   const stripe = stripeClient();
 
   try {
+    if (appLinkId) {
+      try {
+        await verifyAppLink(admin, { linkId: appLinkId, userId, garageId, product: 'pro' });
+      } catch (e) {
+        if (e instanceof AppLinkError) return NextResponse.json({ error: e.code }, { status: e.status });
+        throw e;
+      }
+    }
     const priceId = await proPriceId(admin);
     const { data: row } = await admin
       .from('garage_subscriptions')
@@ -43,11 +55,16 @@ export async function POST(request: Request) {
       mode: 'subscription',
       customer: customerId,
       line_items: [{ price: priceId, quantity: 1 }],
-      subscription_data: { metadata: { garage_id: garageId } },
-      metadata: { garage_id: garageId },
+      // app_link_id on the subscription too, so renewals can be reported to the store.
+      subscription_data: { metadata: { garage_id: garageId, ...(appLinkId ? { app_link_id: appLinkId } : {}) } },
+      metadata: { garage_id: garageId, ...(appLinkId ? { app_link_id: appLinkId } : {}) },
       allow_promotion_codes: true,
-      success_url: `${origin}/dashboard/garages/${garageId}/plan?setup=success`,
-      cancel_url: `${origin}/dashboard/garages/${garageId}/plan?setup=cancelled`,
+      ...(appLinkId
+        ? appReturnUrls(origin)
+        : {
+            success_url: `${origin}/dashboard/garages/${garageId}/plan?setup=success`,
+            cancel_url: `${origin}/dashboard/garages/${garageId}/plan?setup=cancelled`,
+          }),
     });
     return NextResponse.json({ url: session.url });
   } catch (e) {

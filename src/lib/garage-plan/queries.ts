@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import type { Tables } from '@/types/database';
+import { appLinkFromUrl } from '@/lib/wallet/queries';
 
 export type GarageSubscription = Tables<'garage_subscriptions'>;
 export const PRO_PRICE_EUR = 49;
@@ -66,7 +67,7 @@ async function postJson(url: string, body: unknown): Promise<Record<string, unkn
 export function useStartProCheckout(garageId: string) {
   return useMutation({
     mutationFn: async () => {
-      const body = await postJson('/api/garage/plan/checkout', { garageId });
+      const body = await postJson('/api/garage/plan/checkout', { garageId, appLinkId: appLinkFromUrl() });
       if (typeof body.url === 'string') window.location.href = body.url;
       return body;
     },

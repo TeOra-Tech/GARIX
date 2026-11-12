@@ -4,6 +4,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useGarage } from '@/lib/garage-context';
 import {
   isProSubscription,
+  SubmitQuoteError,
   submitErrorMessage,
   useFeedRequest,
   useGarageQuotes,
@@ -18,6 +19,7 @@ import { calculateVat, formatEur } from '@/shared/vat';
 import { quoteSchema, quoteTotals } from '@/shared/validation/quote';
 import { URGENCY_LABELS } from '@/shared/validation/request';
 import { DateField } from '@/components/date-field';
+import { BuyButton } from '@/components/buy-button';
 import { Body, Button, Card, ChoiceList, ErrorText, Field, H1, H2, Input, Loading, Muted, Pill, Screen, TextField } from '@/components/ui';
 import { colors, fonts, space } from '@/lib/theme';
 
@@ -186,6 +188,9 @@ export default function GarageRequest() {
               : `Sending uses ${cost} credits. You have ${wallet.data?.balance ?? 0}.`}
           </Muted>
           <ErrorText>{error ?? (submit.isError ? submitErrorMessage(submit.error, cost) : null)}</ErrorText>
+          {submit.error instanceof SubmitQuoteError && submit.error.status === 402 && garage && (
+            <BuyButton garageId={garage.id} product="credits" title="Buy credits" variant="secondary" />
+          )}
           <Button title="Send quote" onPress={send} loading={submit.isPending} />
         </>
       )}

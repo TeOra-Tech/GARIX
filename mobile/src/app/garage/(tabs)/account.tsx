@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { Body, Button, Card, H2, Loading, Muted, Screen } from '@/components/ui';
 import { NotificationSettings } from '@/components/notification-settings';
 import { DeleteAccountCard, HelpLinks, ProfileCard } from '@/components/account-sections';
+import { BuyButton } from '@/components/buy-button';
 import { colors, fonts } from '@/lib/theme';
 
 const STATUS_LABEL: Record<string, string> = {
@@ -41,6 +42,9 @@ export default function GarageAccount() {
           <H2>{garage.name}</H2>
           <Row label="Status" value={STATUS_LABEL[garage.status] ?? garage.status} />
           {plansEnabled && <Row label="Plan" value={isPro ? 'Garix Pro' : 'Basic'} />}
+          {plansEnabled && !isPro && garage.status === 'active' && (
+            <BuyButton garageId={garage.id} product="pro" title="Upgrade to Garix Pro" variant="secondary" />
+          )}
           {garage.review_count > 0 && <Row label="Rating" value={`${Number(garage.avg_rating).toFixed(1)} from ${garage.review_count} reviews`} />}
           {garage.status === 'active' && (
             <Text accessibilityRole="link" onPress={() => Linking.openURL(`https://garix.ie/garages/${garage.slug}`)}
@@ -57,6 +61,7 @@ export default function GarageAccount() {
           <H2>Credits</H2>
           <Row label="Balance" value={`${wallet.data?.balance ?? 0} credits`} />
           <Muted>Your credits are shared between the Garix app and website.</Muted>
+          {garage.status === 'active' && <BuyButton garageId={garage.id} product="credits" title="Buy credits" />}
           {!showLedger ? (
             <Button title="Show recent activity" variant="secondary" onPress={() => setShowLedger(true)} />
           ) : ledger.isPending ? (

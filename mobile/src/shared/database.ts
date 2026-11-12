@@ -40,6 +40,109 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_purchase_links: {
+        Row: {
+          apple_reported_at: string | null
+          created_at: string
+          external_token: string | null
+          garage_id: string | null
+          id: string
+          platform: string
+          product: string
+          program: string
+          token_type: string | null
+          user_id: string | null
+        }
+        Insert: {
+          apple_reported_at?: string | null
+          created_at?: string
+          external_token?: string | null
+          garage_id?: string | null
+          id?: string
+          platform: string
+          product: string
+          program: string
+          token_type?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          apple_reported_at?: string | null
+          created_at?: string
+          external_token?: string | null
+          garage_id?: string | null
+          id?: string
+          platform?: string
+          product?: string
+          program?: string
+          token_type?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_purchase_links_garage_id_fkey"
+            columns: ["garage_id"]
+            isOneToOne: false
+            referencedRelation: "garages"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      app_purchase_transactions: {
+        Row: {
+          amount_cents: number
+          apple_reported_at: string | null
+          created_at: string
+          currency: string
+          google_report_error: string | null
+          google_reported_at: string | null
+          id: string
+          kind: string
+          link_id: string
+          occurred_at: string
+          stripe_ref: string
+          stripe_subscription_id: string | null
+          tax_cents: number
+        }
+        Insert: {
+          amount_cents: number
+          apple_reported_at?: string | null
+          created_at?: string
+          currency?: string
+          google_report_error?: string | null
+          google_reported_at?: string | null
+          id?: string
+          kind: string
+          link_id: string
+          occurred_at?: string
+          stripe_ref: string
+          stripe_subscription_id?: string | null
+          tax_cents?: number
+        }
+        Update: {
+          amount_cents?: number
+          apple_reported_at?: string | null
+          created_at?: string
+          currency?: string
+          google_report_error?: string | null
+          google_reported_at?: string | null
+          id?: string
+          kind?: string
+          link_id?: string
+          occurred_at?: string
+          stripe_ref?: string
+          stripe_subscription_id?: string | null
+          tax_cents?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_purchase_transactions_link_id_fkey"
+            columns: ["link_id"]
+            isOneToOne: false
+            referencedRelation: "app_purchase_links"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       appointments: {
         Row: {
           created_at: string
