@@ -8,7 +8,8 @@ app as built; check it again if features change before submission.
 | Field | Value |
 |---|---|
 | App name | Garix |
-| Bundle ID / package | ie.garix.app |
+| Bundle ID (iOS) | ie.garix.app |
+| Package (Android) | ie.garix.myapp (fixed by the Play Console listing) |
 | Developer / seller | TeOra Technologies Limited |
 | Category | Primary: Lifestyle (Apple) / Auto & Vehicles (Google). Secondary (Apple): Utilities |
 | Price | Free |

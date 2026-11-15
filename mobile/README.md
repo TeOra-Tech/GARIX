@@ -32,7 +32,7 @@ After a migration: `npm run db:types` at the repo root, then `npm run sync-share
 
 ## Identifiers
 
-- Bundle ID / package: `ie.garix.app`
+- iOS bundle ID: `ie.garix.app`; Android package: `ie.garix.myapp` (fixed by the Play Console listing, which cannot be renamed)
 - Deep-link scheme: `garix://`
 
 Store builds use EAS (`npx eas-cli@latest build`) once the Apple and Google developer

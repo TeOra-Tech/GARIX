@@ -3,7 +3,8 @@
 // Google requires each purchase to be reported within 24 hours.
 //
 // Secrets: GOOGLE_PLAY_SERVICE_ACCOUNT_JSON (the service account key JSON; the account
-// needs Play Console access to the app's financial data/orders), GOOGLE_PLAY_PACKAGE_NAME.
+// needs Play Console access to the app's financial data/orders), GOOGLE_PLAY_PACKAGE_NAME
+// (ie.garix.myapp — the Android package differs from the iOS bundle id ie.garix.app).
 
 const SCOPE = 'https://www.googleapis.com/auth/androidpublisher';
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';

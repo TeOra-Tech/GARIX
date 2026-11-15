@@ -15,7 +15,7 @@
       }
     },
     "android": {
-      "package": "ie.garix.app",
+      "package": "ie.garix.myapp",
       "adaptiveIcon": {
         "backgroundColor": "#FFFFFF",
         "foregroundImage": "./assets/brand-mark.png"
