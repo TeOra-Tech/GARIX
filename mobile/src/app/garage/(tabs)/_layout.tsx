@@ -25,7 +25,7 @@ export default function GarageTabs() {
       }}
     >
       <Tabs.Screen name="index" options={{ title: 'Requests', headerShown: false, tabBarIcon: icon('list-outline') }} />
-      <Tabs.Screen name="quotes" options={{ title: 'Quotes & jobs', tabBarIcon: icon('document-text-outline') }} />
+      <Tabs.Screen name="quotes" options={{ title: 'Quotes & jobs', tabBarLabel: 'Jobs', tabBarIcon: icon('document-text-outline') }} />
       <Tabs.Screen
         name="messages"
         options={{
