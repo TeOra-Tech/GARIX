@@ -25,9 +25,22 @@ async function retryGoogle() {
   return { pending: pending?.length ?? 0, reported };
 }
 
+/**
+ * Only callers holding a service-role key may run this. The key injected into the function
+ * isn't necessarily the same string as the one the cron job holds (Supabase can issue
+ * several), so ask the platform instead: only a service-role key may list users.
+ */
+async function isServiceRole(req: Request): Promise<boolean> {
+  const token = (req.headers.get('authorization') ?? '').replace(/^Bearer\s+/i, '');
+  if (!token) return false;
+  if (token === Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')) return true;
+  const caller = createClient(Deno.env.get('SUPABASE_URL')!, token, { auth: { persistSession: false } });
+  const { error } = await caller.auth.admin.listUsers({ page: 1, perPage: 1 });
+  return !error;
+}
+
 Deno.serve(async (req) => {
-  const auth = req.headers.get('authorization') ?? '';
-  if (auth !== `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`) {
+  if (!(await isServiceRole(req))) {
     return new Response('Forbidden', { status: 403 });
   }
   try {
