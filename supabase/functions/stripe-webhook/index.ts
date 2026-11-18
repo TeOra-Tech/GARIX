@@ -7,6 +7,7 @@
 // Configure endpoint in Stripe Dashboard; set STRIPE_WEBHOOK_SECRET.
 import Stripe from 'npm:stripe@17';
 import { createClient } from 'jsr:@supabase/supabase-js@2';
+import { recordAppTransaction } from '../_shared/app-purchases.ts';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!);
 const admin = createClient(
@@ -59,6 +60,22 @@ async function syncGarageFromSubscription(sub: Stripe.Subscription) {
       });
     }
   }
+}
+
+// Current billing period of a subscription (newer Stripe API versions keep it on the item).
+async function subscriptionPeriod(subId: string): Promise<{ start: Date; end: Date } | null> {
+  const sub = await stripe.subscriptions.retrieve(subId);
+  const item = sub.items?.data?.[0] as unknown as { current_period_start?: number; current_period_end?: number } | undefined;
+  const s = sub as unknown as { current_period_start?: number; current_period_end?: number };
+  const start = s.current_period_start ?? item?.current_period_start;
+  const end = s.current_period_end ?? item?.current_period_end;
+  return start && end ? { start: new Date(start * 1000), end: new Date(end * 1000) } : null;
+}
+
+// Period a subscription invoice pays for (its first line).
+function invoicePeriod(invoice: Stripe.Invoice): { periodStart: Date | null; periodEnd: Date | null } {
+  const p = invoice.lines?.data?.[0]?.period;
+  return { periodStart: p?.start ? new Date(p.start * 1000) : null, periodEnd: p?.end ? new Date(p.end * 1000) : null };
 }
 
 function isGarageSub(sub: Stripe.Subscription): boolean {
@@ -127,6 +144,24 @@ Deno.serve(async (req) => {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
 
+        // ----- Started in the mobile app: store for Apple/Google reporting -----
+        const appLinkId = session.metadata?.app_link_id;
+        if (appLinkId && session.payment_status === 'paid') {
+          const period = session.subscription ? await subscriptionPeriod(session.subscription as string) : null;
+          await recordAppTransaction(admin, {
+            linkId: appLinkId,
+            kind: 'purchase',
+            stripeRef: session.id,
+            subscriptionId: (session.subscription as string | null) ?? null,
+            amountCents: session.amount_total ?? 0,
+            taxCents: session.total_details?.amount_tax ?? 0,
+            currency: session.currency ?? 'eur',
+            occurredAt: new Date(event.created * 1000),
+            periodStart: period?.start ?? null,
+            periodEnd: period?.end ?? null,
+          });
+        }
+
         // ----- Subscription checkout (garage Pro or fleet) -----
         if (session.mode === 'subscription' && session.subscription) {
           const sub = await stripe.subscriptions.retrieve(session.subscription as string);
@@ -193,6 +228,20 @@ Deno.serve(async (req) => {
           const sub = await stripe.subscriptions.retrieve(subId);
           if (isGarageSub(sub)) await syncGarageFromSubscription(sub);
           else await syncFleetFromSubscription(sub);
+          // Renewals of a Pro plan bought from the app are reported to the store too.
+          if (event.type === 'invoice.paid' && invoice.billing_reason === 'subscription_cycle' && sub.metadata?.app_link_id) {
+            await recordAppTransaction(admin, {
+              linkId: sub.metadata.app_link_id,
+              kind: 'renewal',
+              stripeRef: invoice.id!,
+              subscriptionId: sub.id,
+              amountCents: invoice.amount_paid,
+              taxCents: (invoice as unknown as { tax?: number | null }).tax ?? 0,
+              currency: invoice.currency,
+              occurredAt: new Date(event.created * 1000),
+              ...invoicePeriod(invoice),
+            });
+          }
         }
         break;
       }

@@ -6,7 +6,7 @@ import type { MetadataRoute } from 'next';
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = process.env.NEXT_PUBLIC_APP_URL ?? 'https://garix.ie';
-  return ['', '/search', '/requests/new', '/garages/register'].map((p) => ({
+  return ['', '/search', '/garages/register'].map((p) => ({
     url: `${base}${p}`,
     changeFrequency: 'daily',
     priority: p === '' ? 1 : 0.8,

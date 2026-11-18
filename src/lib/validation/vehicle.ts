@@ -49,6 +49,16 @@ export const vehicleSchema = z
     fuelType: z.enum(FUEL_TYPES).nullable().or(z.literal('').transform(() => null)),
     transmission: z.enum(TRANSMISSIONS).nullable().or(z.literal('').transform(() => null)),
     vin: z.string().trim().max(17, 'A VIN is at most 17 characters').optional().or(z.literal('')),
+    /** Date of first registration (the NCT schedule runs from its anniversaries). */
+    firstRegistrationDate: z
+      .string()
+      .trim()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, 'Use the date picker')
+      .refine((d) => d >= '1950-01-01' && d <= new Date().toISOString().slice(0, 10), 'Enter a date in the past')
+      .nullable()
+      .optional()
+      .or(z.literal('').transform(() => null))
+      .transform((v) => v ?? null),
     mileageKm: z.coerce
       .number()
       .int()
@@ -64,7 +74,9 @@ export const vehicleSchema = z
         message: 'Choose a make, or tick “my make isn’t listed”',
       });
     }
-  });
+  })
+  // The registration date fixes the year.
+  .transform((v) => (v.firstRegistrationDate ? { ...v, year: Number(v.firstRegistrationDate.slice(0, 4)) } : v));
 
 export type VehicleInput = z.input<typeof vehicleSchema>;
 export type VehicleData = z.output<typeof vehicleSchema>;

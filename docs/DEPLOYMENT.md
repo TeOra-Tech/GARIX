@@ -14,6 +14,20 @@ supabase secrets set STRIPE_SECRET_KEY=sk_... STRIPE_WEBHOOK_SECRET=whsec_...
 npm run db:types                 # real TypeScript types
 ```
 
+### App store reporting (mobile app purchases, migrations 00030–00031)
+
+```bash
+supabase functions deploy report-app-purchases          # scheduled; service-role bearer only
+supabase functions deploy apple-notifications --no-verify-jwt
+supabase secrets set GOOGLE_PLAY_PACKAGE_NAME=ie.garix.myapp GOOGLE_PLAY_SERVICE_ACCOUNT_JSON="$(cat service-account.json)"
+supabase secrets set APPLE_IAP_KEY_ID=... APPLE_ISSUER_ID=... APPLE_BUNDLE_ID=ie.garix.app APPLE_IAP_KEY_P8="$(cat SubscriptionKey_XXXX.p8)"
+```
+
+- Schedule `report-app-purchases` daily (pg_cron + pg_net, `Authorization: Bearer <service role key>`).
+- App Store Connect → Garix → App Information → App Store Server Notifications: set the
+  production and sandbox URLs to `https://YOUR_REF.supabase.co/functions/v1/apple-notifications`
+  (Version 2). Apple uses it to flag unreported external purchase tokens.
+
 Auth providers: enable **Email OTP**, **Phone OTP** (Twilio), **Google**, **Apple** in Dashboard → Authentication → Providers. Set the Site URL to your Netlify domain and add `http://localhost:3000` for dev.
 
 ## 2. Stripe

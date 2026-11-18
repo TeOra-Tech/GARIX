@@ -51,8 +51,9 @@ describe('serviceRecordSchema', () => {
 });
 
 describe('reminderSchema', () => {
+  // NCT/tax/insurance have their own rules (tests/compliance-reminders.test.ts).
   const base = {
-    reminderType: 'nct',
+    reminderType: 'service',
     title: '',
     dueDate: '2026-09-01',
     dueMileageKm: '',
@@ -62,7 +63,7 @@ describe('reminderSchema', () => {
 
   it('accepts a minimal reminder', () => {
     const parsed = reminderSchema.parse(base);
-    expect(parsed.reminderType).toBe('nct');
+    expect(parsed.reminderType).toBe('service');
     expect(parsed.intervalMonths).toBeNull();
   });
 
@@ -70,17 +71,8 @@ describe('reminderSchema', () => {
     expect(reminderSchema.safeParse({ ...base, dueDate: '' }).success).toBe(false);
   });
 
-  it("requires a title when type is 'other'", () => {
-    expect(reminderSchema.safeParse({ ...base, reminderType: 'other' }).success).toBe(false);
-    expect(
-      reminderSchema.safeParse({ ...base, reminderType: 'other', title: 'Coolant flush' }).success,
-    ).toBe(true);
-  });
-
-  it('bounds the repeat interval', () => {
-    expect(reminderSchema.safeParse({ ...base, intervalMonths: '0' }).success).toBe(false);
-    expect(reminderSchema.safeParse({ ...base, intervalMonths: '12' }).success).toBe(true);
-    expect(reminderSchema.safeParse({ ...base, intervalMonths: '999' }).success).toBe(false);
+  it('rejects the old consumable and "other" types', () => {
+    expect(reminderSchema.safeParse({ ...base, reminderType: 'other', title: 'Coolant flush' }).success).toBe(false);
   });
 });
 
@@ -101,7 +93,8 @@ describe('labels', () => {
     expect(recordTypeLabel('gearbox_service')).toBe('Gearbox service');
     expect(recordTypeLabel('ownership_change')).toBe('Ownership change');
     expect(recordTypeLabel('mystery')).toBe('Other');
-    expect(reminderTypeLabel('road_tax')).toBe('Road tax');
+    expect(reminderTypeLabel('road_tax')).toBe('Motor tax');
+    expect(reminderTypeLabel('oil_service')).toBe('Oil service');
     expect(reminderTypeLabel('mystery')).toBe('Other');
   });
 });

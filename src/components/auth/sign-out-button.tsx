@@ -1,18 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
 export function SignOutButton() {
-  const router = useRouter();
   const [pending, setPending] = useState(false);
 
   async function signOut() {
     setPending(true);
     await createClient().auth.signOut();
-    router.push('/');
-    router.refresh();
+    // Full page load so no signed-in pages linger in the client router cache.
+    window.location.assign('/');
   }
 
   return (

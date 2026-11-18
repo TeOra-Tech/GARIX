@@ -2,10 +2,12 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
+import { AppLinkError, appLinkIdSchema, appReturnUrls, verifyAppLink } from '@/lib/app-purchases/server';
 
 const bodySchema = z.object({
   garageId: z.string().uuid(),
   creditPackId: z.string().uuid(),
+  appLinkId: appLinkIdSchema,
 });
 
 /**
@@ -18,7 +20,7 @@ export async function POST(request: Request) {
   if (!parsed.success) {
     return NextResponse.json({ error: 'INVALID_BODY' }, { status: 400 });
   }
-  const { garageId, creditPackId } = parsed.data;
+  const { garageId, creditPackId, appLinkId } = parsed.data;
 
   const supabase = await createClient();
   const {
@@ -45,6 +47,16 @@ export async function POST(request: Request) {
     .maybeSingle();
   if (!pack) return NextResponse.json({ error: 'PACK_NOT_FOUND' }, { status: 404 });
 
+  // Started from the mobile app: tie the checkout to the store token for reporting.
+  if (appLinkId) {
+    try {
+      await verifyAppLink(supabase, { linkId: appLinkId, userId: user.id, garageId, product: 'credits' });
+    } catch (e) {
+      if (e instanceof AppLinkError) return NextResponse.json({ error: e.code }, { status: e.status });
+      throw e;
+    }
+  }
+
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
   const origin = request.headers.get('origin') ?? process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
 
@@ -69,9 +81,14 @@ export async function POST(request: Request) {
       garage_id: garageId,
       credits: String(pack.credits),
       credit_pack_id: creditPackId,
+      ...(appLinkId ? { app_link_id: appLinkId } : {}),
     },
-    success_url: `${origin}/dashboard/garages/${garageId}/wallet?purchase=success`,
-    cancel_url: `${origin}/dashboard/garages/${garageId}/wallet?purchase=cancelled`,
+    ...(appLinkId
+      ? appReturnUrls(origin)
+      : {
+          success_url: `${origin}/dashboard/garages/${garageId}/wallet?purchase=success`,
+          cancel_url: `${origin}/dashboard/garages/${garageId}/wallet?purchase=cancelled`,
+        }),
   });
 
   return NextResponse.json({ url: session.url });

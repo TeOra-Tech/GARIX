@@ -5,6 +5,10 @@ const nextConfig = {
       { protocol: 'https', hostname: '*.supabase.co', pathname: '/storage/v1/object/public/**' },
     ],
   },
+  // The request wizard moved inside the dashboard; keep old links working.
+  redirects: async () => [
+    { source: '/requests/new', destination: '/dashboard/requests/new', permanent: false },
+  ],
   headers: async () => [
     {
       source: '/(.*)',

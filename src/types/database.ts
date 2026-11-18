@@ -39,6 +39,157 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_purchase_links: {
+        Row: {
+          apple_external_purchase_id: string | null
+          apple_token_expires_at: string | null
+          apple_reported_at: string | null
+          created_at: string
+          external_token: string | null
+          garage_id: string | null
+          id: string
+          platform: string
+          product: string
+          program: string
+          token_type: string | null
+          user_id: string | null
+        }
+        Insert: {
+          apple_external_purchase_id?: string | null
+          apple_token_expires_at?: string | null
+          apple_reported_at?: string | null
+          created_at?: string
+          external_token?: string | null
+          garage_id?: string | null
+          id?: string
+          platform: string
+          product: string
+          program: string
+          token_type?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          apple_external_purchase_id?: string | null
+          apple_token_expires_at?: string | null
+          apple_reported_at?: string | null
+          created_at?: string
+          external_token?: string | null
+          garage_id?: string | null
+          id?: string
+          platform?: string
+          product?: string
+          program?: string
+          token_type?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_purchase_links_garage_id_fkey"
+            columns: ["garage_id"]
+            isOneToOne: false
+            referencedRelation: "garages"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      app_purchase_transactions: {
+        Row: {
+          apple_report_error: string | null
+          period_end: string | null
+          period_start: string | null
+          amount_cents: number
+          apple_reported_at: string | null
+          created_at: string
+          currency: string
+          google_report_error: string | null
+          google_reported_at: string | null
+          id: string
+          kind: string
+          link_id: string
+          occurred_at: string
+          stripe_ref: string
+          stripe_subscription_id: string | null
+          tax_cents: number
+        }
+        Insert: {
+          apple_report_error?: string | null
+          period_end?: string | null
+          period_start?: string | null
+          amount_cents: number
+          apple_reported_at?: string | null
+          created_at?: string
+          currency?: string
+          google_report_error?: string | null
+          google_reported_at?: string | null
+          id?: string
+          kind: string
+          link_id: string
+          occurred_at?: string
+          stripe_ref: string
+          stripe_subscription_id?: string | null
+          tax_cents?: number
+        }
+        Update: {
+          apple_report_error?: string | null
+          period_end?: string | null
+          period_start?: string | null
+          amount_cents?: number
+          apple_reported_at?: string | null
+          created_at?: string
+          currency?: string
+          google_report_error?: string | null
+          google_reported_at?: string | null
+          id?: string
+          kind?: string
+          link_id?: string
+          occurred_at?: string
+          stripe_ref?: string
+          stripe_subscription_id?: string | null
+          tax_cents?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_purchase_transactions_link_id_fkey"
+            columns: ["link_id"]
+            isOneToOne: false
+            referencedRelation: "app_purchase_links"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      apple_external_purchase_reports: {
+        Row: {
+          body: Json
+          environment: string
+          external_purchase_id: string
+          http_status: number | null
+          request_identifier: string
+          response: string | null
+          sent_at: string
+          status: string
+        }
+        Insert: {
+          body: Json
+          environment: string
+          external_purchase_id: string
+          http_status?: number | null
+          request_identifier?: string
+          response?: string | null
+          sent_at?: string
+          status: string
+        }
+        Update: {
+          body?: Json
+          environment?: string
+          external_purchase_id?: string
+          http_status?: number | null
+          request_identifier?: string
+          response?: string | null
+          sent_at?: string
+          status?: string
+        }
+        Relationships: []
+      }
       appointments: {
         Row: {
           created_at: string
@@ -3028,8 +3179,16 @@ export type Database = {
           },
         ]
       }
+      vehicle_reminder_notices: {
+        Row: { due_date: string; reminder_id: string; sent_at: string; stage: string }
+        Insert: { due_date: string; reminder_id: string; sent_at?: string; stage: string }
+        Update: { due_date?: string; reminder_id?: string; sent_at?: string; stage?: string }
+        Relationships: []
+      }
       vehicle_reminders: {
         Row: {
+          duration_months: number | null
+          start_date: string | null
           completed_at: string | null
           created_at: string
           due_date: string
@@ -3044,6 +3203,8 @@ export type Database = {
           vehicle_id: string
         }
         Insert: {
+          duration_months?: number | null
+          start_date?: string | null
           completed_at?: string | null
           created_at?: string
           due_date: string
@@ -3058,6 +3219,8 @@ export type Database = {
           vehicle_id: string
         }
         Update: {
+          duration_months?: number | null
+          start_date?: string | null
           completed_at?: string | null
           created_at?: string
           due_date?: string
@@ -3138,6 +3301,7 @@ export type Database = {
       }
       vehicles: {
         Row: {
+          first_registration_date: string | null
           created_at: string
           engine_id: string | null
           engine_size_custom: string | null
@@ -3160,6 +3324,7 @@ export type Database = {
           year: number | null
         }
         Insert: {
+          first_registration_date?: string | null
           created_at?: string
           engine_id?: string | null
           engine_size_custom?: string | null
@@ -3182,6 +3347,7 @@ export type Database = {
           year?: number | null
         }
         Update: {
+          first_registration_date?: string | null
           created_at?: string
           engine_id?: string | null
           engine_size_custom?: string | null
@@ -3461,6 +3627,7 @@ export type Database = {
         Returns: Database["public"]["Enums"]["user_role"]
       }
       delete_my_account_data: { Args: never; Returns: undefined }
+      delete_my_request: { Args: { p_request_id: string }; Returns: string }
       disablelongtransactions: { Args: never; Returns: string }
       dispatched_to_my_garage: { Args: { b: string }; Returns: boolean }
       dropgeometrycolumn:
@@ -3720,7 +3887,7 @@ export type Database = {
       }
       postgis_version: { Args: never; Returns: string }
       postgis_wagyu_version: { Args: never; Returns: string }
-      process_due_reminders: { Args: never; Returns: number }
+      process_due_reminders: { Args: { p_force?: boolean }; Returns: number }
       process_garage_reminders: { Args: never; Returns: number }
       quote_comparison_stats: {
         Args: { p_request_id: string }
@@ -4361,6 +4528,25 @@ export type Database = {
         Returns: unknown
       }
       unlockrows: { Args: { "": string }; Returns: number }
+      update_my_request: {
+        Args: {
+          p_budget_amount: number
+          p_collection_required: boolean
+          p_description: string
+          p_expected_completion_date: string
+          p_lat: number
+          p_lng: number
+          p_location_county: string
+          p_location_town: string
+          p_problem_category_id: string
+          p_request_id: string
+          p_service_category_id: string
+          p_title: string
+          p_urgency: Database["public"]["Enums"]["urgency_level"]
+          p_vehicle_id: string
+        }
+        Returns: undefined
+      }
       updategeometrysrid: {
         Args: {
           catalogn_name: string

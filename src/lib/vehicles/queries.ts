@@ -23,6 +23,7 @@ function toDbRow(v: VehicleData, ownerId: string): TablesInsert<'vehicles'> {
     model_text: v.modelText || null,
     variant: v.variant || null,
     year: v.year,
+    first_registration_date: v.firstRegistrationDate,
     engine_id: v.engineId,
     engine_size_custom: v.engineSizeCustom || null,
     fuel_type: v.fuelType,

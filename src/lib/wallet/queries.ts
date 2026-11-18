@@ -38,6 +38,12 @@ export function useTransactions(garageId: string | undefined) {
   });
 }
 
+/** `?app_link=<id>` when the purchase was started from the mobile app (see lib/app-purchases). */
+export function appLinkFromUrl(): string | undefined {
+  if (typeof window === 'undefined') return undefined;
+  return new URLSearchParams(window.location.search).get('app_link') ?? undefined;
+}
+
 /** Creates the Checkout session server-side, then sends the browser to Stripe. */
 export function useStartCheckout() {
   return useMutation({
@@ -45,7 +51,7 @@ export function useStartCheckout() {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, appLinkId: appLinkFromUrl() }),
       });
       const body = (await res.json().catch(() => null)) as { url?: string; error?: string } | null;
       if (!res.ok || !body?.url) throw new Error(body?.error ?? 'CHECKOUT_FAILED');
