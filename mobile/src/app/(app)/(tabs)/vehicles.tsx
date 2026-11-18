@@ -1,4 +1,6 @@
+import { View } from 'react-native';
 import { router } from 'expo-router';
+import { VehicleAvatar } from '@/components/vehicle-photo';
 import { useVehicles, vehicleName } from '@/lib/queries';
 import { useAuth } from '@/lib/auth';
 import { Body, Button, Card, ErrorText, Loading, Muted, Screen } from '@/components/ui';
@@ -20,9 +22,14 @@ export default function Vehicles() {
       {vehicles.data?.length === 0 && <Muted>You haven’t added a vehicle yet.</Muted>}
       {vehicles.data?.map((v) => (
         <Card key={v.id} onPress={() => router.push(`/vehicles/${v.id}`)} accessibilityLabel={`${vehicleName(v)}, ${v.registration_number}`}>
-          <Body style={{ fontFamily: fonts.semibold }}>{vehicleName(v) || 'Vehicle'}</Body>
-          <Muted style={{ color: colors.navy }}>{v.registration_number}</Muted>
-          {v.mileage_km != null && <Muted>{v.mileage_km.toLocaleString('en-IE')} km</Muted>}
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+            <VehicleAvatar photoPath={v.photo_path} label={vehicleName(v) || 'Vehicle'} size={56} />
+            <View style={{ flex: 1, gap: 2 }}>
+              <Body style={{ fontFamily: fonts.semibold }}>{vehicleName(v) || 'Vehicle'}</Body>
+              <Muted style={{ color: colors.navy }}>{v.registration_number}</Muted>
+              {v.mileage_km != null && <Muted>{v.mileage_km.toLocaleString('en-IE')} km</Muted>}
+            </View>
+          </View>
         </Card>
       ))}
     </Screen>

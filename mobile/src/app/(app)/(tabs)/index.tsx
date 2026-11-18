@@ -1,3 +1,4 @@
+import { VehicleAvatar } from '@/components/vehicle-photo';
 import { Pressable, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -92,8 +93,13 @@ export default function Home() {
         ) : (
           vehicles.data?.map((v) => (
             <Card key={v.id} style={{ backgroundColor: colors.white }} onPress={() => router.push(`/vehicles/${v.id}`)} accessibilityLabel={`${vehicleName(v)}, ${v.registration_number}`}>
-              <Body style={{ fontFamily: fonts.medium }}>{vehicleName(v) || 'Vehicle'}</Body>
-              <Muted style={{ color: colors.navy }}>{v.registration_number}</Muted>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                <VehicleAvatar photoPath={v.photo_path} label={vehicleName(v) || 'Vehicle'} size={44} />
+                <View style={{ flex: 1 }}>
+                  <Body style={{ fontFamily: fonts.medium }}>{vehicleName(v) || 'Vehicle'}</Body>
+                  <Muted style={{ color: colors.navy }}>{v.registration_number}</Muted>
+                </View>
+              </View>
             </Card>
           ))
         )}

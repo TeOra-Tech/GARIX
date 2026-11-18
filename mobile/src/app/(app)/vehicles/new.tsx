@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { DateField } from '@/components/date-field';
 import { router } from 'expo-router';
 import { vehicleSchema, FUEL_TYPES, TRANSMISSIONS } from '@/shared/validation/vehicle';
 import { useCreateVehicle, useMakes, useModels, vehicleErrorMessage } from '@/lib/queries';
-import { Button, ErrorText, Screen, SelectField, TextField } from '@/components/ui';
+import { Button, ErrorText, Muted, Screen, SelectField, TextField } from '@/components/ui';
 
 const OTHER = '__other__';
 const FUEL_LABELS: Record<(typeof FUEL_TYPES)[number], string> = {
@@ -17,7 +18,7 @@ export default function NewVehicle() {
   const [makeId, setMakeId] = useState('');
   const models = useModels(makeId && makeId !== OTHER ? makeId : null);
   const [modelId, setModelId] = useState('');
-  const [f, setF] = useState({ registrationNumber: '', makeText: '', modelText: '', year: '', fuelType: '', transmission: '', mileageKm: '' });
+  const [f, setF] = useState({ registrationNumber: '', makeText: '', modelText: '', year: '', firstRegistrationDate: '', fuelType: '', transmission: '', mileageKm: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const create = useCreateVehicle();
   const set = (k: keyof typeof f, v: string) => setF((s) => ({ ...s, [k]: v }));
@@ -31,6 +32,7 @@ export default function NewVehicle() {
       modelText: modelId === OTHER || makeId === OTHER ? f.modelText : '',
       variant: '',
       year: f.year,
+      firstRegistrationDate: f.firstRegistrationDate,
       engineId: '',
       engineSizeCustom: '',
       fuelType: f.fuelType,
@@ -65,7 +67,12 @@ export default function NewVehicle() {
       {(makeId === OTHER || modelId === OTHER) && (
         <TextField label="Model name" value={f.modelText} onChangeText={(v) => set('modelText', v)} error={errors['modelText']} />
       )}
-      <TextField label="Year (optional)" value={f.year} onChangeText={(v) => set('year', v)} keyboardType="number-pad" maxLength={4} error={errors['year']} />
+      <DateField label="Date of first registration" value={f.firstRegistrationDate} onChange={(v) => set('firstRegistrationDate', v)}
+        optional maximumDate={new Date()} error={errors['firstRegistrationDate']} />
+      <Muted>On your vehicle registration certificate. We use it to work out exact NCT dates.</Muted>
+      {!f.firstRegistrationDate && (
+        <TextField label="Year (optional)" value={f.year} onChangeText={(v) => set('year', v)} keyboardType="number-pad" maxLength={4} error={errors['year']} />
+      )}
       <SelectField label="Fuel (optional)" value={f.fuelType as (typeof FUEL_TYPES)[number] | ''}
         options={FUEL_TYPES.map((t) => ({ value: t, label: FUEL_LABELS[t] }))} onChange={(v) => set('fuelType', v)} />
       <SelectField label="Gearbox (optional)" value={f.transmission as (typeof TRANSMISSIONS)[number] | ''}

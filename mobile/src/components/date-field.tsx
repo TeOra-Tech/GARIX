@@ -7,13 +7,14 @@ import { Button, Field } from '@/components/ui';
 import { colors, fonts, radius, space } from '@/lib/theme';
 
 /** Date field: native dialog on Android, inline calendar in a sheet on iOS. Value is YYYY-MM-DD or ''. */
-export function DateField({ label, value, onChange, error, optional, minimumDate }: {
+export function DateField({ label, value, onChange, error, optional, minimumDate, maximumDate }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   error?: string;
   optional?: boolean;
   minimumDate?: Date;
+  maximumDate?: Date;
 }) {
   const [open, setOpen] = useState(false);
   const current = value ? new Date(`${value}T12:00:00`) : new Date();
@@ -48,13 +49,13 @@ export function DateField({ label, value, onChange, error, optional, minimumDate
       </View>
 
       {open && Platform.OS === 'android' && (
-        <DateTimePicker value={current} mode="date" onChange={handle} minimumDate={minimumDate} />
+        <DateTimePicker value={current} mode="date" onChange={handle} minimumDate={minimumDate} maximumDate={maximumDate} />
       )}
       {Platform.OS === 'ios' && (
         <Modal visible={open} transparent animationType="slide" onRequestClose={() => setOpen(false)}>
           <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.3)' }}>
             <SafeAreaView edges={['bottom']} style={{ backgroundColor: colors.white, borderTopLeftRadius: radius.lg, borderTopRightRadius: radius.lg, padding: space.lg }}>
-              <DateTimePicker value={current} mode="date" display="inline" onChange={handle} minimumDate={minimumDate} accentColor={colors.navy} />
+              <DateTimePicker value={current} mode="date" display="inline" onChange={handle} minimumDate={minimumDate} maximumDate={maximumDate} accentColor={colors.navy} />
               <Button title="Done" onPress={() => { if (!value) onChange(isoDate(current)); setOpen(false); }} />
             </SafeAreaView>
           </View>

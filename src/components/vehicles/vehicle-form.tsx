@@ -22,6 +22,7 @@ type FormState = {
   modelText: string;
   variant: string;
   year: string;
+  firstRegistrationDate: string;
   engineId: string;
   engineSizeCustom: string;
   fuelType: string;
@@ -39,6 +40,7 @@ function fromRow(v?: VehicleRow): FormState {
     modelText: v?.model_text ?? '',
     variant: v?.variant ?? '',
     year: v?.year?.toString() ?? '',
+    firstRegistrationDate: v?.first_registration_date ?? '',
     engineId: v?.engine_id ?? '',
     engineSizeCustom: v?.engine_size_custom ?? '',
     fuelType: v?.fuel_type ?? '',
@@ -103,6 +105,7 @@ export function VehicleForm({
       modelText: manualMake ? form.modelText : '',
       variant: form.variant,
       year: form.year,
+      firstRegistrationDate: form.firstRegistrationDate,
       engineId: form.engineId,
       engineSizeCustom: selectedEngine?.is_custom ? form.engineSizeCustom : '',
       fuelType: form.fuelType,
@@ -198,6 +201,12 @@ export function VehicleForm({
             <Field label="Year (optional)" htmlFor="year" error={errors['year']}>
               <input id="year" inputMode="numeric" className={inputCls} value={form.year}
                 onChange={(e) => set('year', e.target.value)} placeholder="2019" />
+            </Field>
+            <Field label="Date of first registration (optional)" htmlFor="firstRegistrationDate" error={errors['firstRegistrationDate']}>
+              <input id="firstRegistrationDate" type="date" className={inputCls} value={form.firstRegistrationDate}
+                aria-describedby="firstRegistrationDate-hint"
+                onChange={(e) => set('firstRegistrationDate', e.target.value)} />
+              <p id="firstRegistrationDate-hint" className="mt-1 text-xs text-paper/70">On your vehicle registration certificate. We use it to work out exact NCT dates.</p>
             </Field>
           </div>
 

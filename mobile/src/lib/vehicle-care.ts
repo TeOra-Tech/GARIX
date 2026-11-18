@@ -115,11 +115,35 @@ export function useAddReminder(vehicleId: string) {
         vehicle_id: vehicleId,
         reminder_type: r.reminderType,
         title: r.title || null,
+        start_date: r.startDate,
         due_date: r.dueDate,
+        duration_months: r.durationMonths,
         due_mileage_km: r.dueMileageKm,
         interval_months: r.intervalMonths,
         notes: r.notes || null,
       });
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['vehicle_reminders'] }),
+  });
+}
+
+/** NCT, tax, insurance or service renewed: new dates replace the old ones, which stops the
+ * expiry notices and starts a fresh schedule (see migration 00032). */
+export function useRenewReminder() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: ReminderData }) => {
+      const { error } = await supabase
+        .from('vehicle_reminders')
+        .update({
+          start_date: data.startDate,
+          due_date: data.dueDate,
+          duration_months: data.durationMonths,
+          notes: data.notes || null,
+          completed_at: null,
+        })
+        .eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['vehicle_reminders'] }),

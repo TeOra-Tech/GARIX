@@ -88,6 +88,7 @@ export function useCreateVehicle() {
         model_text: v.modelText || null,
         variant: v.variant || null,
         year: v.year,
+        first_registration_date: v.firstRegistrationDate,
         engine_id: v.engineId,
         engine_size_custom: v.engineSizeCustom || null,
         fuel_type: v.fuelType,
@@ -99,6 +100,21 @@ export function useCreateVehicle() {
       const { data, error } = await supabase.from('vehicles').insert(row).select(VEHICLE_SELECT).single();
       if (error) throw error;
       return data as VehicleRow;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['vehicles'] }),
+  });
+}
+
+/** Set the date of first registration on an existing vehicle (also fixes its year). */
+export function useSetRegistrationDate(vehicleId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (date: string) => {
+      const { error } = await supabase
+        .from('vehicles')
+        .update({ first_registration_date: date, year: Number(date.slice(0, 4)) })
+        .eq('id', vehicleId);
+      if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['vehicles'] }),
   });

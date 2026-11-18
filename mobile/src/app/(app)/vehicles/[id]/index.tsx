@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Alert, Pressable, Text, View } from 'react-native';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { useDeleteVehicle, useVehicle, vehicleErrorMessage, vehicleName } from '@/lib/queries';
+import { useDeleteVehicle, useSetRegistrationDate, useVehicle, vehicleErrorMessage, vehicleName } from '@/lib/queries';
+import { DateField } from '@/components/date-field';
+import { VehiclePhoto } from '@/components/vehicle-photo';
 import {
   formatDate,
   isoDate,
@@ -15,7 +17,7 @@ import {
   useServiceRecords,
   useTransfers,
 } from '@/lib/vehicle-care';
-import { recordTypeLabel, reminderTypeLabel, transferSchema } from '@/shared/validation/vehicle-care';
+import { isComplianceType, recordTypeLabel, reminderTypeLabel, transferSchema } from '@/shared/validation/vehicle-care';
 import { formatEur } from '@/shared/vat';
 import { Body, Button, Card, ErrorText, H1, H2, Loading, Muted, Screen, TextField } from '@/components/ui';
 import { colors, fonts } from '@/lib/theme';
@@ -78,6 +80,28 @@ function ServiceHistory({ vehicleId }: { vehicleId: string }) {
   );
 }
 
+function RegistrationDate({ vehicleId, date }: { vehicleId: string; date: string | null }) {
+  const save = useSetRegistrationDate(vehicleId);
+  const [editing, setEditing] = useState(false);
+  const [value, setValue] = useState(date ?? '');
+  if (date && !editing) {
+    return (
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Row label="First registered" value={formatDate(date)} />
+        <SmallLink title="Change" onPress={() => setEditing(true)} />
+      </View>
+    );
+  }
+  return (
+    <View style={{ gap: 6 }}>
+      <DateField label="Date of first registration" value={value} onChange={setValue} maximumDate={new Date()} />
+      <Muted>On your vehicle registration certificate. We use it to work out exact NCT dates.</Muted>
+      <ErrorText>{save.isError ? 'Could not save the date. Try again.' : null}</ErrorText>
+      {value ? <Button title="Save date" variant="secondary" loading={save.isPending} onPress={() => save.mutate(value, { onSuccess: () => setEditing(false) })} /> : null}
+    </View>
+  );
+}
+
 function Reminders({ vehicleId }: { vehicleId: string }) {
   const reminders = useReminders(vehicleId);
   const complete = useCompleteReminder();
@@ -92,20 +116,26 @@ function Reminders({ vehicleId }: { vehicleId: string }) {
       </View>
       {reminders.isPending && <Loading />}
       {!reminders.isPending && open.length === 0 && (
-        <Muted>No reminders. Set NCT, service, insurance or road tax reminders and we’ll notify you 14 days before.</Muted>
+        <Muted>No reminders. Add your NCT, motor tax, insurance and service dates and we’ll remind you before they run out.</Muted>
       )}
       {open.map((r) => {
         const overdue = r.due_date < today;
+        const compliance = isComplianceType(r.reminder_type);
+        const expires = compliance && r.reminder_type !== 'service';
         return (
           <View key={r.id} style={{ borderTopWidth: 1, borderColor: colors.line, paddingTop: 10, gap: 2 }}>
             <Body style={{ fontFamily: fonts.semibold }}>{r.title || reminderTypeLabel(r.reminder_type)}</Body>
-            <Muted style={overdue ? { color: colors.danger } : undefined}>
-              {overdue ? 'Overdue — was due ' : 'Due '}
+            <Muted style={overdue || r.due_date === today ? { color: colors.danger } : undefined}>
+              {overdue ? (expires ? 'Expired ' : 'Overdue — was due ') : expires ? 'Expires ' : 'Due '}
               {formatDate(r.due_date)}
               {r.interval_months ? ` · repeats every ${r.interval_months} month${r.interval_months > 1 ? 's' : ''}` : ''}
             </Muted>
             <View style={{ flexDirection: 'row' }}>
-              <SmallLink title="Mark done" onPress={() => complete.mutate(r)} />
+              {compliance ? (
+                <SmallLink title={r.reminder_type === 'service' ? 'Serviced' : 'Add renewal'} onPress={() => router.push(`/vehicles/${vehicleId}/reminder-new?renew=${r.id}`)} />
+              ) : (
+                <SmallLink title="Mark done" onPress={() => complete.mutate(r)} />
+              )}
               <SmallLink title="Delete" danger onPress={() => remove.mutate(r.id)} />
             </View>
           </View>
@@ -196,11 +226,13 @@ export default function VehicleDetail() {
             <H1>{vehicleName(v) || 'Vehicle'}</H1>
             <Muted style={{ color: colors.navy }}>{v.registration_number}</Muted>
           </View>
+          <VehiclePhoto vehicleId={v.id} photoPath={v.photo_path} label={vehicleName(v) || 'Vehicle'} />
           <Card>
             <Row label="Fuel" value={v.fuel_type?.replace('_', ' ')} />
             <Row label="Gearbox" value={v.transmission?.replace('_', ' ')} />
             <Row label="Engine" value={v.vehicle_engines?.label ?? v.engine_size_custom} />
             <Row label="Mileage" value={v.mileage_km != null ? `${v.mileage_km.toLocaleString('en-IE')} km` : null} />
+            <RegistrationDate vehicleId={v.id} date={v.first_registration_date} />
           </Card>
           <Button title="Get quotes for this vehicle" onPress={() => router.push({ pathname: '/requests/new', params: { vehicleId: v.id } })} />
           <Reminders vehicleId={v.id} />

@@ -65,7 +65,7 @@ export default function VehicleDetailPage() {
           </header>
 
           <div className="mt-10 space-y-12">
-            <Reminders vehicleId={vehicle.data.id} />
+            <Reminders vehicleId={vehicle.data.id} reg={{ year: vehicle.data.year, firstRegistrationDate: vehicle.data.first_registration_date }} />
             <ServiceHistory vehicleId={vehicle.data.id} />
             <TransferPanel vehicleId={vehicle.data.id} />
           </div>
