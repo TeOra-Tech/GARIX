@@ -30,9 +30,10 @@ function connect() {
 }
 
 /** Whether this device and store allow buying here (EU storefront, programme approved). */
-export function usePurchaseSupport() {
+export function usePurchaseSupport(enabled = true) {
   return useQuery({
     queryKey: ['purchase_support', Platform.OS],
+    enabled,
     staleTime: Infinity,
     retry: false,
     queryFn: async (): Promise<boolean> => {

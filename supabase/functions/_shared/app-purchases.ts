@@ -1,6 +1,7 @@
 // Purchases started in the mobile app carry metadata.app_link_id (see migration 00030).
 // Every resulting payment is stored in app_purchase_transactions; Android ones are
-// reported to Google straight away (24-hour deadline), iOS ones go in Apple's monthly report.
+// reported to Google straight away (24-hour deadline); iOS ones are reported to Apple by the
+// report-app-purchases job (see apple-reporting.ts).
 import type { SupabaseClient } from 'jsr:@supabase/supabase-js@2';
 import { googlePlayConfigured, reportExternalTransaction } from './google-play.ts';
 
@@ -13,6 +14,9 @@ export type AppTransactionInput = {
   taxCents: number;
   currency: string;
   occurredAt: Date;
+  /** Subscription period this payment covers (Pro), for Apple's report. */
+  periodStart?: Date | null;
+  periodEnd?: Date | null;
 };
 
 export async function recordAppTransaction(admin: SupabaseClient, t: AppTransactionInput): Promise<void> {
@@ -37,6 +41,8 @@ export async function recordAppTransaction(admin: SupabaseClient, t: AppTransact
       tax_cents: t.taxCents,
       currency: t.currency.toUpperCase(),
       occurred_at: t.occurredAt.toISOString(),
+      period_start: t.periodStart?.toISOString() ?? null,
+      period_end: t.periodEnd?.toISOString() ?? null,
     })
     .select('id')
     .single();

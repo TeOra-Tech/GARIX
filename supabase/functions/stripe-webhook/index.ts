@@ -62,6 +62,22 @@ async function syncGarageFromSubscription(sub: Stripe.Subscription) {
   }
 }
 
+// Current billing period of a subscription (newer Stripe API versions keep it on the item).
+async function subscriptionPeriod(subId: string): Promise<{ start: Date; end: Date } | null> {
+  const sub = await stripe.subscriptions.retrieve(subId);
+  const item = sub.items?.data?.[0] as unknown as { current_period_start?: number; current_period_end?: number } | undefined;
+  const s = sub as unknown as { current_period_start?: number; current_period_end?: number };
+  const start = s.current_period_start ?? item?.current_period_start;
+  const end = s.current_period_end ?? item?.current_period_end;
+  return start && end ? { start: new Date(start * 1000), end: new Date(end * 1000) } : null;
+}
+
+// Period a subscription invoice pays for (its first line).
+function invoicePeriod(invoice: Stripe.Invoice): { periodStart: Date | null; periodEnd: Date | null } {
+  const p = invoice.lines?.data?.[0]?.period;
+  return { periodStart: p?.start ? new Date(p.start * 1000) : null, periodEnd: p?.end ? new Date(p.end * 1000) : null };
+}
+
 function isGarageSub(sub: Stripe.Subscription): boolean {
   return !!sub.metadata?.garage_id;
 }
@@ -131,6 +147,7 @@ Deno.serve(async (req) => {
         // ----- Started in the mobile app: store for Apple/Google reporting -----
         const appLinkId = session.metadata?.app_link_id;
         if (appLinkId && session.payment_status === 'paid') {
+          const period = session.subscription ? await subscriptionPeriod(session.subscription as string) : null;
           await recordAppTransaction(admin, {
             linkId: appLinkId,
             kind: 'purchase',
@@ -140,6 +157,8 @@ Deno.serve(async (req) => {
             taxCents: session.total_details?.amount_tax ?? 0,
             currency: session.currency ?? 'eur',
             occurredAt: new Date(event.created * 1000),
+            periodStart: period?.start ?? null,
+            periodEnd: period?.end ?? null,
           });
         }
 
@@ -220,6 +239,7 @@ Deno.serve(async (req) => {
               taxCents: (invoice as unknown as { tax?: number | null }).tax ?? 0,
               currency: invoice.currency,
               occurredAt: new Date(event.created * 1000),
+              ...invoicePeriod(invoice),
             });
           }
         }

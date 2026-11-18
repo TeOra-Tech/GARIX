@@ -20,7 +20,10 @@
     },
     "production": {
       "autoIncrement": true,
-      "environment": "production"
+      "environment": "production",
+      "env": {
+        "GARIX_IOS_EXTERNAL_PURCHASE": "1"
+      }
     }
   },
   "submit": {

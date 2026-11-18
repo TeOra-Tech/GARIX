@@ -41,6 +41,8 @@ export type Database = {
     Tables: {
       app_purchase_links: {
         Row: {
+          apple_external_purchase_id: string | null
+          apple_token_expires_at: string | null
           apple_reported_at: string | null
           created_at: string
           external_token: string | null
@@ -53,6 +55,8 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          apple_external_purchase_id?: string | null
+          apple_token_expires_at?: string | null
           apple_reported_at?: string | null
           created_at?: string
           external_token?: string | null
@@ -65,6 +69,8 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          apple_external_purchase_id?: string | null
+          apple_token_expires_at?: string | null
           apple_reported_at?: string | null
           created_at?: string
           external_token?: string | null
@@ -88,6 +94,9 @@ export type Database = {
       }
       app_purchase_transactions: {
         Row: {
+          apple_report_error: string | null
+          period_end: string | null
+          period_start: string | null
           amount_cents: number
           apple_reported_at: string | null
           created_at: string
@@ -103,6 +112,9 @@ export type Database = {
           tax_cents: number
         }
         Insert: {
+          apple_report_error?: string | null
+          period_end?: string | null
+          period_start?: string | null
           amount_cents: number
           apple_reported_at?: string | null
           created_at?: string
@@ -118,6 +130,9 @@ export type Database = {
           tax_cents?: number
         }
         Update: {
+          apple_report_error?: string | null
+          period_end?: string | null
+          period_start?: string | null
           amount_cents?: number
           apple_reported_at?: string | null
           created_at?: string
@@ -141,6 +156,39 @@ export type Database = {
             referencedColumns: ["id"]
           }
         ]
+      }
+      apple_external_purchase_reports: {
+        Row: {
+          body: Json
+          environment: string
+          external_purchase_id: string
+          http_status: number | null
+          request_identifier: string
+          response: string | null
+          sent_at: string
+          status: string
+        }
+        Insert: {
+          body: Json
+          environment: string
+          external_purchase_id: string
+          http_status?: number | null
+          request_identifier?: string
+          response?: string | null
+          sent_at?: string
+          status: string
+        }
+        Update: {
+          body?: Json
+          environment?: string
+          external_purchase_id?: string
+          http_status?: number | null
+          request_identifier?: string
+          response?: string | null
+          sent_at?: string
+          status?: string
+        }
+        Relationships: []
       }
       appointments: {
         Row: {
@@ -3131,8 +3179,16 @@ export type Database = {
           },
         ]
       }
+      vehicle_reminder_notices: {
+        Row: { due_date: string; reminder_id: string; sent_at: string; stage: string }
+        Insert: { due_date: string; reminder_id: string; sent_at?: string; stage: string }
+        Update: { due_date?: string; reminder_id?: string; sent_at?: string; stage?: string }
+        Relationships: []
+      }
       vehicle_reminders: {
         Row: {
+          duration_months: number | null
+          start_date: string | null
           completed_at: string | null
           created_at: string
           due_date: string
@@ -3147,6 +3203,8 @@ export type Database = {
           vehicle_id: string
         }
         Insert: {
+          duration_months?: number | null
+          start_date?: string | null
           completed_at?: string | null
           created_at?: string
           due_date: string
@@ -3161,6 +3219,8 @@ export type Database = {
           vehicle_id: string
         }
         Update: {
+          duration_months?: number | null
+          start_date?: string | null
           completed_at?: string | null
           created_at?: string
           due_date?: string
@@ -3241,6 +3301,7 @@ export type Database = {
       }
       vehicles: {
         Row: {
+          first_registration_date: string | null
           created_at: string
           engine_id: string | null
           engine_size_custom: string | null
@@ -3263,6 +3324,7 @@ export type Database = {
           year: number | null
         }
         Insert: {
+          first_registration_date?: string | null
           created_at?: string
           engine_id?: string | null
           engine_size_custom?: string | null
@@ -3285,6 +3347,7 @@ export type Database = {
           year?: number | null
         }
         Update: {
+          first_registration_date?: string | null
           created_at?: string
           engine_id?: string | null
           engine_size_custom?: string | null
@@ -3824,7 +3887,7 @@ export type Database = {
       }
       postgis_version: { Args: never; Returns: string }
       postgis_wagyu_version: { Args: never; Returns: string }
-      process_due_reminders: { Args: never; Returns: number }
+      process_due_reminders: { Args: { p_force?: boolean }; Returns: number }
       process_garage_reminders: { Args: never; Returns: number }
       quote_comparison_stats: {
         Args: { p_request_id: string }
