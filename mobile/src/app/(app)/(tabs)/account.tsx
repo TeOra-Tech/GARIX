@@ -1,4 +1,5 @@
 import { Linking } from 'react-native';
+import { router } from 'expo-router';
 import { useAuth } from '@/lib/auth';
 import { supabase } from '@/lib/supabase';
 import { Button, Card, H2, Muted, Screen } from '@/components/ui';
@@ -25,6 +26,12 @@ export default function Account() {
           )}
         </Card>
       )}
+
+      <Card>
+        <H2>Run a garage?</H2>
+        <Muted>Register it free and quote for repair jobs near you.</Muted>
+        <Button title="Register a garage" variant="secondary" onPress={() => router.push('/garage-register')} />
+      </Card>
 
       <NotificationSettings />
       <HelpLinks />

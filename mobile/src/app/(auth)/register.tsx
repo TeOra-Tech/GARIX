@@ -14,7 +14,7 @@ const EMPTY: Form = { fullName: '', email: '', mobile: '', line1: '', line2: '',
 
 /** Mirrors garix.ie/auth/register: details → email code → profile + address saved. */
 export default function Register() {
-  const [accountType, setAccountType] = useState<'individual' | 'fleet'>('individual');
+  const [accountType, setAccountType] = useState<'individual' | 'fleet' | 'garage'>('individual');
   const [form, setForm] = useState<Form>(EMPTY);
   const [validated, setValidated] = useState<RegisterData | null>(null);
   const [code, setCode] = useState('');
@@ -23,6 +23,7 @@ export default function Register() {
   const [pending, setPending] = useState(false);
   const set = <K extends keyof Form>(k: K, v: Form[K]) => setForm((f) => ({ ...f, [k]: v }));
   const isFleet = accountType === 'fleet';
+  const isGarage = accountType === 'garage';
 
   async function submitDetails() {
     setFormError(null);
@@ -50,7 +51,13 @@ export default function Register() {
       email: parsed.data.email,
       options: {
         shouldCreateUser: true,
-        data: { full_name: parsed.data.fullName, role: 'customer', ...(isFleet ? { account_type: 'fleet' } : {}) },
+        // Garages sign up as customers; registering the garage (next screen) makes them garage owners.
+        data: {
+          full_name: parsed.data.fullName,
+          role: 'customer',
+          ...(isFleet ? { account_type: 'fleet' } : {}),
+          ...(isGarage ? { signup_intent: 'garage' } : {}),
+        },
       },
     });
     setPending(false);
@@ -115,6 +122,7 @@ export default function Register() {
         options={[
           { value: 'individual', label: 'Personal', hint: 'Up to 3 vehicles, free' },
           { value: 'fleet', label: 'Business (fleet)', hint: 'Unlimited vehicles, €5 per vehicle a month' },
+          { value: 'garage', label: 'Garage', hint: 'Free to register. Quote for repair jobs near you' },
         ]}
       />
       <TextField label="Full name" value={form.fullName} onChangeText={(v) => set('fullName', v)} autoComplete="name" textContentType="name" error={errors['fullName']} />
@@ -138,6 +146,7 @@ export default function Register() {
       <ErrorText>{errors['termsAccepted']}</ErrorText>
       <Checkbox label="Send me Garix news and offers (optional)" checked={form.marketingOptIn} onChange={(v) => set('marketingOptIn', v)} />
       {isFleet && <Muted>You’ll set up business billing after creating your account.</Muted>}
+      {isGarage && <Muted>These are your own details. You’ll add your garage’s details next.</Muted>}
       <ErrorText>{formError}</ErrorText>
       <View style={{ marginTop: 4 }}>
         <Button title="Send verification code" onPress={submitDetails} loading={pending} />

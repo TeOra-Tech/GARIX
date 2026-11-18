@@ -1,4 +1,5 @@
-import { Stack } from 'expo-router';
+import { useEffect, useRef } from 'react';
+import { Stack, router } from 'expo-router';
 import { useAuth } from '@/lib/auth';
 import { useRealtimeInbox } from '@/lib/inbox';
 import { colors, fonts } from '@/lib/theme';
@@ -7,6 +8,16 @@ export default function AppLayout() {
   const { session } = useAuth();
   // Live badges for new notifications and messages anywhere in the signed-in app.
   useRealtimeInbox(session?.user.id);
+
+  // Chose "Garage" when creating the account: go straight to garage registration (once per launch).
+  const sentToGarageForm = useRef(false);
+  const wantsGarage = session?.user.user_metadata?.signup_intent === 'garage';
+  useEffect(() => {
+    if (!wantsGarage || sentToGarageForm.current) return;
+    sentToGarageForm.current = true;
+    const t = setTimeout(() => router.push('/garage-register'), 0);
+    return () => clearTimeout(t);
+  }, [wantsGarage]);
 
   return (
     <Stack
@@ -27,6 +38,7 @@ export default function AppLayout() {
       <Stack.Screen name="requests/[id]/edit" options={{ title: 'Edit request' }} />
       <Stack.Screen name="messages/[id]" options={{ title: 'Messages' }} />
       <Stack.Screen name="notifications" options={{ title: 'Notifications' }} />
+      <Stack.Screen name="garage-register" options={{ title: 'Register a garage' }} />
     </Stack>
   );
 }

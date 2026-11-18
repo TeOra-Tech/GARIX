@@ -21,6 +21,8 @@ const files = {
   'lib/validation/review.ts': 'validation/review.ts',
   'lib/validation/quote.ts': 'validation/quote.ts',
   'lib/credits.ts': 'credits.ts',
+  'lib/validation/garage.ts': 'validation/garage.ts',
+  'lib/garages/slug.ts': 'slug.ts',
 };
 
 // Web '@/...' imports that the copied files use, rewritten relative to src/shared.
